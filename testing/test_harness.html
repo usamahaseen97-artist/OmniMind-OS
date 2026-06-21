@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>OmniMind V11 Ultra Master Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js" defer></script>
+    <style>
+        body { background-color: #060212; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .cyber-card {
+            background: rgba(19, 11, 43, 0.6);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(139, 92, 246, 0.25);
+        }
+        .netflix-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 15px;
+        }
+        .spotify-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 12px;
+            max-height: 420px;
+            overflow-y: auto;
+        }
+        .spotify-ad {
+            background: linear-gradient(90deg, rgba(16,185,129,0.15), rgba(139,92,246,0.15));
+            border: 1px solid rgba(16,185,129,0.3);
+        }
+        .now-playing-bar {
+            background: rgba(0,0,0,0.85);
+            border-top: 1px solid rgba(139,92,246,0.35);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn { animation: fadeIn 0.25s ease-out; }
+        .media-card-enter {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="text-slate-200 min-h-screen p-4 sm:p-6">
+
+    <div class="max-w-6xl mx-auto space-y-6">
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 border-b border-purple-900/40 pb-4">
+            <div>
+                <h1 class="text-xl sm:text-2xl font-extrabold text-[#00ffcc] tracking-wide">⚙️ OmniMind V11 Sovereign Workspace</h1>
+                <p class="text-xs text-purple-400">Owner: Usama Haseen | Status: Native Mode Active</p>
+            </div>
+            <div class="flex gap-2 items-center">
+                <input
+                    id="backendUrl"
+                    type="url"
+                    value="http://127.0.0.1:8000"
+                    class="bg-black/40 border border-purple-900/60 rounded-full px-3 py-1 text-[10px] text-white w-44"
+                    title="Backend base URL"
+                />
+                <button
+                    type="button"
+                    onclick="checkEngineLiveness()"
+                    class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-4 py-1.5 rounded-full text-xs font-bold hover:bg-emerald-500/30 transition-all"
+                >
+                    📡 Test Engine Node
+                </button>
+            </div>
+        </div>
+
+        <div class="bg-[#0b0f19] border border-green-500/20 rounded-2xl p-6 shadow-2xl space-y-4 max-w-5xl mx-auto text-slate-100">
+            <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
+                <div>
+                    <h2 class="text-lg font-black text-white flex items-center gap-2">🟢 OmniMusic Production Deck</h2>
+                    <p class="text-xs text-zinc-400">Instant Spotify/SoundCloud catalog matrix syncing with live high-res covers.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button
+                        type="button"
+                        onclick="launchSpotifyFree('desktop')"
+                        class="bg-[#1db954]/20 hover:bg-[#1db954] text-[#1db954] hover:text-black border border-[#1db954]/40 text-[10px] uppercase font-extrabold px-3 py-1 rounded-full transition-all"
+                        title="Opens Spotify desktop app (Free with ads)"
+                    >
+                        🎧 Spotify App
+                    </button>
+                    <button
+                        type="button"
+                        onclick="launchSpotifyFree('web')"
+                        class="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 border border-zinc-700 text-[10px] uppercase font-bold px-3 py-1 rounded-full transition-all"
+                        title="Opens open.spotify.com in browser"
+                    >
+                        🌐 Spotify Web
+                    </button>
+                    <span class="bg-green-500/10 text-green-400 border border-green-500/20 text-[10px] uppercase font-mono px-3 py-1 rounded-full font-bold animate-pulse hidden sm:inline">Free Tier</span>
+                </div>
+            </div>
+
+            <div class="flex gap-2">
+                <input
+                    type="text"
+                    id="omnimusic-search-box"
+                    value="Nusrat Fateh Ali Khan"
+                    class="flex-grow bg-black/50 border border-zinc-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-green-500/50 placeholder-zinc-600"
+                    placeholder="Search track name, romantic songs, pop playlist, rock band..."
+                    onkeydown="if (event.key === 'Enter') executeOmniMusicSearch()"
+                />
+                <button
+                    type="button"
+                    onclick="executeOmniMusicSearch()"
+                    class="bg-[#1db954] hover:bg-[#1ed760] text-black px-6 rounded-xl text-xs font-extrabold tracking-wide transition-all duration-200"
+                >
+                    SEARCH STREAM
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-2">
+                <div class="lg:col-span-2 space-y-2 max-h-[420px] overflow-y-auto pr-2" id="omnimusic-tracks-view">
+                    <div class="text-xs text-zinc-500 italic p-6 text-center border border-dashed border-zinc-800 rounded-xl">Type a song title above and execute stream search node...</div>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="bg-black/40 border border-zinc-800 rounded-2xl p-4 text-center space-y-3" id="omnimusic-player-chassis">
+                        <div class="w-20 h-20 bg-zinc-900 border border-zinc-800 rounded-xl mx-auto flex items-center justify-center text-[10px] text-zinc-600 font-mono">STANDBY</div>
+                        <div class="text-xs font-bold text-zinc-400">Click any track from the left panel to play instant audio</div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-zinc-900 to-black border border-amber-500/10 rounded-2xl p-3" id="omnimusic-ad-slot" style="display: none;">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="text-[9px] font-extrabold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded uppercase">Sponsor Ad</span>
+                            <span class="text-[10px] text-zinc-600 hover:text-white cursor-pointer" onclick="document.getElementById('omnimusic-ad-slot').style.display='none'">Hide ×</span>
+                        </div>
+                        <img id="omnimusic-ad-banner" src="" alt="Sponsor" class="w-full h-24 object-cover rounded-lg mb-2 opacity-80 border border-zinc-800">
+                        <div class="text-xs font-bold text-white" id="omnimusic-ad-title">Brand Loading</div>
+                        <p class="text-[11px] text-zinc-400" id="omnimusic-ad-tagline">Marketing payload streaming.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Integrated OmniMind V11 Multi-Tool Workspace -->
+        <div class="max-w-6xl mx-auto p-6 bg-[#090d16] border border-zinc-800 rounded-3xl shadow-2xl space-y-8">
+            <div class="flex flex-wrap justify-between items-center gap-4 bg-black/40 border border-zinc-800/60 p-4 rounded-2xl">
+                <div class="flex items-center gap-3">
+                    <div class="w-3 h-3 bg-green-500 rounded-full animate-ping" id="vibe-stack-pulse"></div>
+                    <div>
+                        <h2 class="text-sm font-black text-white tracking-wider uppercase">⚡ Vibe-Stack Performance Link</h2>
+                        <p class="text-[11px] text-zinc-400" id="vibe-stack-subtitle">Cursor Composer + Vercel Global CDN + v0 Framework active.</p>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-2" id="vibe-stack-badges">
+                    <span class="bg-purple-500/10 text-purple-400 text-[10px] px-2.5 py-1 rounded-md border border-purple-500/20 font-mono">Cursor Core</span>
+                    <span class="bg-blue-500/10 text-blue-400 text-[10px] px-2.5 py-1 rounded-md border border-blue-500/20 font-mono">Vercel Edge</span>
+                    <span class="bg-emerald-500/10 text-emerald-400 text-[10px] px-2.5 py-1 rounded-md border border-emerald-500/20 font-mono">Supabase DB</span>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div class="flex gap-2">
+                    <input
+                        type="text"
+                        id="integrated-search"
+                        value="Hasan Raheem"
+                        class="flex-grow bg-zinc-900/60 border border-zinc-800 rounded-xl p-3.5 text-xs text-white focus:outline-none focus:border-green-500 transition-all placeholder-zinc-600 font-medium"
+                        placeholder="Search across integrated music meshes..."
+                        onkeydown="if (event.key === 'Enter') triggerIntegratedSearch()"
+                    />
+                    <button
+                        type="button"
+                        onclick="triggerIntegratedSearch()"
+                        class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 text-black px-8 rounded-xl text-xs font-black tracking-wide uppercase transition-all duration-200 shadow-lg shadow-green-500/10"
+                    >
+                        Run Pipeline
+                    </button>
+                </div>
+
+                <div id="integrated-display-deck" class="min-h-[200px] flex items-center justify-center border border-dashed border-zinc-800 rounded-2xl bg-black/20 p-4">
+                    <p class="text-xs text-zinc-500 italic">Click "Run Pipeline" to stream automated data elements.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Omni Entertainment Cluster -->
+        <div class="bg-[#0c0e17] border border-zinc-800/80 rounded-3xl p-6 shadow-2xl space-y-6 max-w-6xl mx-auto">
+            <div class="flex flex-wrap justify-between items-center gap-3 border-b border-zinc-800 pb-4">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                        <h2 class="text-base font-black uppercase tracking-wider text-white">🎬 Omni Entertainment Cluster</h2>
+                    </div>
+                    <p class="text-xs text-zinc-400 mt-0.5">High-fidelity Netflix grid rendering via automated backend metadata nodes.</p>
+                </div>
+                <div class="flex bg-black/60 rounded-xl p-1 border border-zinc-800" id="media-mode-toggle">
+                    <button type="button" onclick="toggleMediaClusterView('movies')" id="btn-mode-movies" class="px-4 py-1.5 rounded-lg text-xs font-bold bg-red-600 text-white transition-all">Movies Deck</button>
+                    <button type="button" onclick="toggleMediaClusterView('tv')" id="btn-mode-tv" class="px-4 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition-all">OmniTV Streams</button>
+                </div>
+            </div>
+
+            <div class="flex gap-2">
+                <input
+                    type="text"
+                    id="media-search-input"
+                    value="Latest"
+                    class="flex-grow bg-zinc-900/50 border border-zinc-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-red-500 transition-all font-medium"
+                    placeholder="Search movies, live television, dramas, anime series..."
+                    onkeydown="if (event.key === 'Enter') executeMediaClusterFetch()"
+                />
+                <button
+                    type="button"
+                    onclick="executeMediaClusterFetch()"
+                    class="bg-red-600 hover:bg-red-500 text-white px-8 rounded-xl text-xs font-black tracking-wide uppercase transition-all duration-150"
+                >
+                    LOAD CARDS
+                </button>
+            </div>
+
+            <div id="media-grid-viewport" class="min-h-[250px] transition-all">
+                <div class="text-center text-zinc-600 italic text-xs pt-16">Execute load sequence parameters above...</div>
+            </div>
+        </div>
+
+        <!-- Quantum Signal Matrix + OmniMap Geometric Engine -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-7xl mx-auto">
+            <div class="bg-[#0a0d16] border border-zinc-800 rounded-3xl p-6 shadow-2xl space-y-4 flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center border-b border-zinc-800 pb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 bg-cyan-400 rounded-full animate-pulse"></span>
+                            <h2 class="text-sm font-black uppercase tracking-wider text-white">📊 Quantum Signal Matrix</h2>
+                        </div>
+                        <span class="text-[9px] font-mono text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-2 py-0.5 rounded">Microservice Active</span>
+                    </div>
+
+                    <div class="flex gap-2 mt-4">
+                        <input
+                            type="text"
+                            id="quantum-ticker"
+                            value="BTC"
+                            class="w-24 bg-zinc-900 border border-zinc-800 rounded-xl p-2.5 text-xs text-white text-center font-bold focus:outline-none focus:border-cyan-500"
+                            placeholder="Ticker"
+                            onkeydown="if (event.key === 'Enter') streamQuantumSignals()"
+                        />
+                        <button
+                            type="button"
+                            onclick="streamQuantumSignals()"
+                            class="flex-grow bg-cyan-500 hover:bg-cyan-400 text-black font-black text-xs rounded-xl tracking-wider uppercase transition-all duration-150"
+                        >
+                            Compute Algorithm
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 mt-4 text-xs hidden" id="quantum-metrics-deck">
+                        <div class="bg-black/40 p-3 border border-zinc-900 rounded-xl">
+                            <div class="text-zinc-500 text-[10px] uppercase">Signal Status</div>
+                            <div id="q-signal" class="font-black text-white mt-1">--</div>
+                        </div>
+                        <div class="bg-black/40 p-3 border border-zinc-900 rounded-xl">
+                            <div class="text-zinc-500 text-[10px] uppercase">Confidence Delta</div>
+                            <div id="q-confidence" class="font-black text-emerald-400 mt-1">--</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-black/60 border border-zinc-900 rounded-2xl p-4 min-h-[140px] flex items-center justify-center relative mt-4">
+                    <div id="quantum-chart-logs" class="w-full font-mono text-[10px] text-zinc-400 space-y-1">
+                        <p class="text-zinc-600 italic text-center">Awaiting financial node vector parameter ingestion...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-[#0a0d16] border border-zinc-800 rounded-3xl p-6 shadow-2xl space-y-4 flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center border-b border-zinc-800 pb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-pulse"></span>
+                            <h2 class="text-sm font-black uppercase tracking-wider text-white">🌐 OmniMap Geometric Engine</h2>
+                        </div>
+                        <span class="text-[9px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded">Vector Mapping Ready</span>
+                    </div>
+
+                    <div class="flex gap-2 mt-4">
+                        <input
+                            type="text"
+                            id="map-query-input"
+                            value="Karachi"
+                            class="flex-grow bg-zinc-900 border border-zinc-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 font-medium"
+                            placeholder="Enter target city mapping coordinates (e.g. Karachi)..."
+                            onkeydown="if (event.key === 'Enter') renderSpatialVectors()"
+                        />
+                        <button
+                            type="button"
+                            onclick="renderSpatialVectors()"
+                            class="bg-emerald-500 hover:bg-emerald-400 text-black font-black text-xs px-6 rounded-xl tracking-wider uppercase transition-all duration-150"
+                        >
+                            Map Spatial
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-black/60 border border-zinc-900 rounded-2xl p-4 min-h-[200px] flex flex-col justify-between mt-4 relative overflow-hidden">
+                    <div id="map-coordinates-overlay" class="font-mono text-[11px] text-emerald-400 space-y-1 z-10">
+                        <p class="text-zinc-600 italic font-sans text-center pt-16">Enter coordinate sector above...</p>
+                    </div>
+                    <div class="absolute inset-0 bg-[linear-gradient(to_right,#18181b_1px,transparent_1px),linear-gradient(to_bottom,#18181b_1px,transparent_1px)] bg-[size:20px_20px] opacity-20 pointer-events-none"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enterprise Optimization Grid -->
+        <div class="bg-[#0b0f19] border border-zinc-800/80 rounded-3xl p-6 shadow-2xl space-y-6 max-w-7xl mx-auto">
+            <div class="flex flex-wrap justify-between items-center gap-3 border-b border-zinc-800 pb-4">
+                <div>
+                    <h2 class="text-sm font-black uppercase tracking-wider text-white flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
+                        💼 Enterprise Optimization Grid
+                    </h2>
+                    <p class="text-[11px] text-zinc-400 mt-0.5">Asynchronous webhook triggers, metadata parsing pipelines, and instant translation matrix links.</p>
+                </div>
+                <span class="text-[9px] font-mono bg-amber-500/10 text-amber-400 border border-amber-500/20 px-3 py-1 rounded-md">Webhook Routing Active</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-black/30 border border-zinc-900 rounded-2xl p-4 flex flex-col justify-between space-y-4">
+                    <div>
+                        <h3 class="text-xs font-bold text-zinc-200 uppercase tracking-wide">📊 Analytics Engine</h3>
+                        <p class="text-[10px] text-zinc-500">Sub-second retail metrics computation node.</p>
+                    </div>
+                    <div class="bg-zinc-900/40 border border-zinc-800/60 p-3 rounded-xl space-y-2 font-mono text-[11px]" id="analytics-data-card">
+                        <div class="text-zinc-500 italic text-center py-4">Metrics payload standby...</div>
+                    </div>
+                    <button type="button" onclick="fetchBusinessAnalyticsData()" class="w-full bg-amber-500 hover:bg-amber-400 text-black font-black text-[11px] py-2 rounded-xl transition-all uppercase tracking-wider">Compute Financials</button>
+                </div>
+
+                <div class="bg-black/30 border border-zinc-900 rounded-2xl p-4 flex flex-col justify-between space-y-4">
+                    <div>
+                        <h3 class="text-xs font-bold text-zinc-200 uppercase tracking-wide">🚀 TikTok Marketing Node</h3>
+                        <p class="text-[10px] text-zinc-500">Asynchronous background webhook emitter system.</p>
+                    </div>
+                    <div class="space-y-2">
+                        <input
+                            type="text"
+                            id="marketing-campaign-name"
+                            value="Bakra Eid Premium Promotion"
+                            class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-amber-500 font-medium"
+                            placeholder="Enter campaign signature..."
+                            onkeydown="if (event.key === 'Enter') triggerMarketingCampaignPipeline()"
+                        />
+                        <div id="marketing-webhook-logs" class="bg-zinc-900/40 p-3 border border-zinc-800/60 rounded-xl font-mono text-[10px] text-zinc-400 min-h-[44px] flex items-center">
+                            <span class="text-zinc-600 italic">No marketing hooks deployed yet.</span>
+                        </div>
+                    </div>
+                    <button type="button" onclick="triggerMarketingCampaignPipeline()" class="w-full bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 font-bold text-[11px] py-2 rounded-xl transition-all uppercase tracking-wider">Deploy Webhook Link</button>
+                </div>
+
+                <div class="bg-black/30 border border-zinc-900 rounded-2xl p-4 flex flex-col justify-between space-y-4">
+                    <div>
+                        <h3 class="text-xs font-bold text-zinc-200 uppercase tracking-wide">🗣️ OmniTranslator Module</h3>
+                        <p class="text-[10px] text-zinc-500">Dictionary mesh fallback localization processing tool.</p>
+                    </div>
+                    <div class="space-y-2">
+                        <input
+                            type="text"
+                            id="translator-source-text"
+                            value="Bakra Eid premium packages active"
+                            class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-amber-500 font-medium"
+                            placeholder="Type text to translate..."
+                            onkeydown="if (event.key === 'Enter') executeOmniTranslationLoop()"
+                        />
+                        <div id="translator-output-box" class="bg-zinc-900/60 p-3 border border-zinc-800/60 rounded-xl font-sans text-xs text-amber-400 font-medium min-h-[44px] flex items-center">
+                            <span class="text-zinc-600 italic font-mono text-[10px]">Awaiting input sequence...</span>
+                        </div>
+                    </div>
+                    <button type="button" onclick="executeOmniTranslationLoop()" class="w-full bg-gradient-to-r from-amber-500 to-orange-600 text-black font-black text-[11px] py-2 rounded-xl transition-all uppercase tracking-wider shadow-md shadow-amber-500/5">Process Localization</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advanced Physics & Spatial Matrix Engine -->
+        <div class="bg-[#090c15] border border-zinc-800/90 rounded-3xl p-6 shadow-2xl space-y-6 max-w-7xl mx-auto">
+            <div class="flex flex-wrap justify-between items-center gap-3 border-b border-zinc-800 pb-4">
+                <div>
+                    <h2 class="text-sm font-black uppercase tracking-wider text-white flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-violet-500 animate-pulse"></span>
+                        🔬 Advanced Physics &amp; Spatial Matrix Engine
+                    </h2>
+                    <p class="text-[11px] text-zinc-400 mt-0.5">Procedural generation nodes, mathematical vector solvers, and ultra-realistic layout arrays.</p>
+                </div>
+                <span class="text-[9px] font-mono bg-violet-500/10 text-violet-400 border border-violet-500/20 px-3 py-1 rounded-md">Hardware Acceleration Capable</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-black/40 border border-zinc-900 rounded-2xl p-4 flex flex-col justify-between space-y-4">
+                    <div>
+                        <h3 class="text-xs font-bold text-zinc-200 uppercase tracking-wide">🚀 NASA Trajectory Solver</h3>
+                        <p class="text-[10px] text-zinc-500 mb-3">Keplerian orbital math processor parameters.</p>
+                        <div class="space-y-2">
+                            <label class="text-[9px] font-mono text-zinc-400 block" for="nasa-velocity">Velocity Parameter (km/s):</label>
+                            <input type="number" step="0.1" id="nasa-velocity" value="7.6" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-2 text-xs text-white focus:outline-none focus:border-violet-500 font-bold" onkeydown="if (event.key === 'Enter') executeNasaTrajectoryCalculation()" />
+                        </div>
+                    </div>
+                    <div id="nasa-output-box" class="bg-zinc-900/40 p-3 border border-zinc-800/60 rounded-xl font-mono text-[10px] text-zinc-400 min-h-[75px] space-y-1">
+                        <span class="text-zinc-600 italic">Standby for orbital math triggers...</span>
+                    </div>
+                    <button type="button" onclick="executeNasaTrajectoryCalculation()" class="w-full bg-violet-600 hover:bg-violet-500 text-white font-black text-[11px] py-2 rounded-xl transition-all uppercase tracking-wider">Solve Trajectory</button>
+                </div>
+
+                <div class="bg-black/40 border border-zinc-900 rounded-2xl p-4 flex flex-col justify-between space-y-4">
+                    <div>
+                        <h3 class="text-xs font-bold text-zinc-200 uppercase tracking-wide">📐 Architectural Grid Mesh</h3>
+                        <p class="text-[10px] text-zinc-500 mb-3">Procedural blueprint structural dimension bounding boxes.</p>
+                        <div class="space-y-2">
+                            <label class="text-[9px] font-mono text-zinc-400 block" for="arch-layout-theme">Theme Layout Profile:</label>
+                            <input type="text" id="arch-layout-theme" value="modern_villa" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-2 text-xs text-white focus:outline-none focus:border-violet-500 font-medium" onkeydown="if (event.key === 'Enter') executeArchitecturalMeshGeneration()" />
+                        </div>
+                    </div>
+                    <div id="arch-output-box" class="bg-zinc-900/40 p-3 border border-zinc-800/60 rounded-xl font-mono text-[10px] text-zinc-400 min-h-[75px] max-h-[110px] overflow-y-auto space-y-1">
+                        <span class="text-zinc-600 italic">No mesh models mapped.</span>
+                    </div>
+                    <button type="button" onclick="executeArchitecturalMeshGeneration()" class="w-full bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 font-bold text-[11px] py-2 rounded-xl transition-all uppercase tracking-wider">Generate Mesh Vectors</button>
+                </div>
+
+                <div class="bg-black/40 border border-zinc-900 rounded-2xl p-4 flex flex-col justify-between space-y-4">
+                    <div>
+                        <h3 class="text-xs font-bold text-zinc-200 uppercase tracking-wide">🎮 Game Engine State Hook</h3>
+                        <p class="text-[10px] text-zinc-500 mb-3">Procedural biome setups and light tracing profiles.</p>
+                        <div class="space-y-2">
+                            <label class="text-[9px] font-mono text-zinc-400 block" for="game-seed">Generation Entropy Seed:</label>
+                            <input type="number" id="game-seed" value="4321" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-2 text-xs text-white focus:outline-none focus:border-violet-500 font-bold" onkeydown="if (event.key === 'Enter') executeGameWorldSimulation()" />
+                        </div>
+                    </div>
+                    <div id="game-output-box" class="bg-zinc-900/40 p-3 border border-zinc-800/60 rounded-xl font-sans text-xs text-violet-400 font-medium min-h-[75px] space-y-1">
+                        <span class="text-zinc-600 italic font-mono text-[10px]">Awaiting map entropy compilation...</span>
+                    </div>
+                    <button type="button" onclick="executeGameWorldSimulation()" class="w-full bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-black text-[11px] py-2 rounded-xl transition-all uppercase tracking-wider shadow-md shadow-violet-500/5">Compile Environment</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <div class="space-y-4">
+                <div class="cyber-card rounded-2xl p-4 shadow-xl">
+                    <h2 class="text-sm font-bold text-purple-300 mb-3">🎵 1. OmniMusic &amp; TV Panel</h2>
+                    <input
+                        type="text"
+                        id="music-query"
+                        value="Atif Aslam"
+                        class="w-full bg-black/40 border border-purple-900/60 rounded-xl p-2.5 text-xs text-white mb-2"
+                        placeholder="Song, Artist, Drama..."
+                    />
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        <button type="button" onclick="triggerOmniMusic()" class="bg-green-900/50 hover:bg-green-800/60 p-2 text-center rounded-lg text-[10px] font-bold border border-green-500/30">🎵 OmniMusic</button>
+                        <button type="button" onclick="triggerMediaSearch('movie')" class="bg-purple-900/40 hover:bg-purple-800/60 p-2 text-center rounded-lg text-[10px] font-bold">🎬 Movie</button>
+                        <button type="button" onclick="triggerMediaSearch('series')" class="bg-purple-900/40 hover:bg-purple-800/60 p-2 text-center rounded-lg text-[10px] font-bold">📺 Series</button>
+                        <button type="button" onclick="triggerMediaSearch('live_tv')" class="bg-purple-900/40 hover:bg-purple-800/60 p-2 text-center rounded-lg text-[10px] font-bold">📡 Live TV</button>
+                    </div>
+                </div>
+
+                <div class="cyber-card rounded-2xl p-4 shadow-xl">
+                    <h2 class="text-sm font-bold text-cyan-300 mb-3">📍 2. OmniMap Drive Mode (Karachi Voice)</h2>
+                    <input
+                        type="text"
+                        id="map-destination"
+                        value="DHA Phase 6"
+                        class="w-full bg-black/40 border border-purple-900/60 rounded-xl p-2.5 text-xs text-white mb-2"
+                        placeholder="Enter Destination..."
+                    />
+                    <button
+                        type="button"
+                        onclick="triggerMapRouting()"
+                        class="w-full bg-cyan-900/40 hover:bg-cyan-800/60 border border-cyan-500/30 py-2 rounded-xl text-xs font-bold"
+                    >
+                        🗺️ Start Verbal Navigation
+                    </button>
+                </div>
+
+                <div class="cyber-card rounded-2xl p-4 shadow-xl">
+                    <h2 class="text-sm font-bold text-amber-300 mb-3">🎨 3. Visionary AI &amp; Ads Creator</h2>
+                    <input
+                        type="text"
+                        id="ad-product"
+                        value="Dehli Mutton Special Cut"
+                        class="w-full bg-black/40 border border-purple-900/60 rounded-xl p-2.5 text-xs text-white mb-2"
+                    />
+                    <button
+                        type="button"
+                        onclick="triggerMarketingAd()"
+                        class="w-full bg-amber-900/40 hover:bg-amber-800/60 border border-amber-500/30 py-2 rounded-xl text-xs font-bold"
+                    >
+                        🎨 Fast Ad Synth (1.5s)
+                    </button>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2 space-y-4">
+                <div class="cyber-card rounded-2xl p-5 min-h-[300px] flex flex-col justify-between" id="display-canvas">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4" id="canvas-title">Display Output Node</h3>
+                    <div id="canvas-content" class="flex-grow flex items-center justify-center text-xs text-purple-400/70 italic">
+                        No active framework rendering. Trigger any module from the control deck.
+                    </div>
+                </div>
+
+                <div class="bg-black/80 border border-purple-950 rounded-xl p-4 h-40 overflow-y-auto text-xs font-mono space-y-1 text-slate-300" id="terminal-logs">
+                    <p class="text-purple-500">$ Kernel connection established successfully on Port 8000. Standing by...</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const logsContainer = document.getElementById("terminal-logs");
+        const canvasContent = document.getElementById("canvas-content");
+        const canvasTitle = document.getElementById("canvas-title");
+        let omniAudio = null;
+        let nowPlayingId = null;
+        let omniTrackCatalog = [];
+        let omniSpotifyFreeBridge = null;
+        let currentMediaCategory = "movies";
+
+        function baseUrl() {
+            return document.getElementById("backendUrl").value.replace(/\/$/, "");
+        }
+
+        function log(msg, color = "text-slate-300") {
+            const line = document.createElement("p");
+            line.className = color;
+            line.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+            logsContainer.appendChild(line);
+            logsContainer.scrollTop = logsContainer.scrollHeight;
+        }
+
+        function posterSrc(item) {
+            return item.poster_frame || item.poster || "https://images.unsplash.com/photo-1594909122845-11baa439b7bf";
+        }
+
+        function streamHref(item, type) {
+            return (
+                item.stream_embed_url ||
+                item.stream_embed ||
+                `https://vidsrc.to/embed/${type === "series" ? "tv" : "movie"}/${item.id}`
+            );
+        }
+
+        async function checkEngineLiveness() {
+            try {
+                const r = await fetch(`${baseUrl()}/`);
+                const d = await r.json();
+                const cacheOn = d.virtual_layers?.redis_emulated_cache ? "RAM Mock Active" : "Offline";
+                const engine = d.engine || d.status || "OmniMind V11";
+                log(`✓ Engine operational: ${engine} | Cache layer: ${cacheOn}`, "text-emerald-400");
+            } catch (e) {
+                log("× Engine node connection refused. Check uvicorn on port 8000.", "text-rose-400");
+            }
+        }
+
+        async function applyEmotionalTheme(contextVector) {
+            try {
+                const res = await fetch(`${baseUrl()}/api/v1/theme/customize`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        mode: "ai_emotional_auto",
+                        context_vector: contextVector,
+                    }),
+                });
+                const themeData = await res.json();
+                if (themeData.success) {
+                    const palette = themeData.resolved_palette_tokens;
+                    log(`🎭 AI theme: ${palette.mood_state}`, "text-cyan-400");
+                    document.documentElement.style.setProperty("--theme-primary", palette.primary);
+                    document.body.style.backgroundColor = palette.primary;
+                }
+            } catch {
+                /* non-blocking */
+            }
+        }
+
+        async function triggerMediaSearch(type) {
+            const query = document.getElementById("music-query").value.trim();
+            if (!query) {
+                log("⚠️ Enter a search query first.", "text-amber-400");
+                return;
+            }
+
+            if (type === "movie" || type === "live_tv") {
+                document.getElementById("media-search-input").value = query;
+                currentMediaCategory = type === "live_tv" ? "tv" : "movies";
+                const btnMovies = document.getElementById("btn-mode-movies");
+                const btnTv = document.getElementById("btn-mode-tv");
+                const active = "px-4 py-1.5 rounded-lg text-xs font-bold bg-red-600 text-white transition-all";
+                const idle = "px-4 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition-all";
+                if (currentMediaCategory === "movies") {
+                    btnMovies.className = active;
+                    btnTv.className = idle;
+                } else {
+                    btnTv.className = active;
+                    btnMovies.className = idle;
+                }
+                await executeMediaClusterFetch();
+                return;
+            }
+
+            canvasTitle.innerText = `OmniMedia Output Grid: ${type.toUpperCase()}`;
+            canvasContent.innerHTML = '<div class="text-xs text-purple-400">Searching global grids...</div>';
+            log(`Triggering ${type} search for "${query}"...`, "text-purple-400");
+
+            try {
+                const url = `${baseUrl()}/api/v1/entertainment/search?query=${encodeURIComponent(query)}&media_type=${encodeURIComponent(type)}`;
+                const r = await fetch(url);
+                const d = await r.json();
+
+                if (!d.success || !d.catalog) {
+                    log(`× Search failed: ${d.msg || d.error || "unknown"}`, "text-rose-400");
+                    return;
+                }
+
+                log(`✓ Search completed. Found ${d.catalog.length} record(s).`, "text-emerald-400");
+
+                if (type === "movie" || type === "series") {
+                    let html = '<div class="netflix-grid w-full">';
+                    d.catalog.forEach((item) => {
+                        const title = item.title || "Untitled";
+                        const rating = item.rating != null ? item.rating.toFixed(1) : "—";
+                        const stream = streamHref(item, type);
+                        html += `
+                            <div class="bg-black/50 border border-purple-900/30 rounded-xl overflow-hidden text-[11px] p-2 flex flex-col justify-between">
+                                <img src="${posterSrc(item)}" alt="${title}" class="w-full h-32 object-cover rounded-lg mb-2" loading="lazy">
+                                <div class="font-bold truncate text-white" title="${title}">${title}</div>
+                                <div class="text-amber-400 font-mono my-1">★ ${rating}</div>
+                                <a href="${stream}" target="_blank" rel="noopener" class="bg-rose-600/80 hover:bg-rose-600 text-center text-[10px] py-1 rounded font-bold block transition-all text-white">► Stream</a>
+                            </div>`;
+                    });
+                    html += "</div>";
+                    canvasContent.innerHTML = html;
+                    applyEmotionalTheme(query);
+                    return;
+                }
+
+                if (type === "live_tv") {
+                    const tv = d.catalog[0];
+                    canvasContent.innerHTML = `
+                        <div class="text-center space-y-2 w-full">
+                            <img src="${tv.thumbnail}" alt="live" class="w-full max-w-md mx-auto h-36 object-cover rounded-xl border border-purple-900/40">
+                            <div class="text-red-500 font-bold text-xs animate-pulse">● ${tv.status}</div>
+                            <div class="text-white font-bold">${tv.title}</div>
+                            <a href="${tv.stream_source}" target="_blank" rel="noopener" class="inline-block bg-purple-600 px-4 py-1.5 rounded-xl font-bold text-xs text-white">Watch Stream Feed</a>
+                        </div>`;
+                    applyEmotionalTheme("live tv drama");
+                }
+            } catch (e) {
+                log(`× Media cluster interface failed: ${e.message}`, "text-rose-400");
+            }
+        }
+
+        function escapeHtml(str) {
+            return String(str || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+        }
+
+        function spotifyLinksFor(track) {
+            const label = `${track.track_name || track.title || ""} ${track.artist_name || track.artist || ""}`.trim();
+            const enc = encodeURIComponent(label);
+            return {
+                web: track.spotify_mirror || track.stream_nodes?.spotify || `https://open.spotify.com/search/${enc}`,
+                desktop: track.spotify_free_uri || `spotify:search:${enc}`,
+            };
+        }
+
+        function trackField(track, legacyKey, vibeKey, fallback = "") {
+            return track[legacyKey] ?? track[vibeKey] ?? fallback;
+        }
+
+        function launchSpotifyFree(mode, queryOverride) {
+            const query = (queryOverride || document.getElementById("omnimusic-search-box").value || "").trim();
+            if (!query) {
+                log("⚠️ Enter a search query for Spotify Free.", "text-amber-400");
+                return;
+            }
+            const enc = encodeURIComponent(query);
+            const web = omniSpotifyFreeBridge?.web_search || `https://open.spotify.com/search/${enc}`;
+            const desktop = omniSpotifyFreeBridge?.desktop_app_uri || `spotify:search:${enc}`;
+
+            if (mode === "web") {
+                window.open(web, "_blank", "noopener");
+                log(`🌐 Spotify Web Free opened: "${query}"`, "text-[#1db954]");
+                return;
+            }
+
+            const launcher = document.createElement("a");
+            launcher.href = desktop;
+            launcher.style.display = "none";
+            document.body.appendChild(launcher);
+            launcher.click();
+            launcher.remove();
+            log(`🎧 Spotify desktop app launch: "${query}" (Free with ads)`, "text-[#1db954]");
+            setTimeout(() => {
+                if (confirm(`Spotify app khuli? Agar nahi, to Web Free player kholein?`)) {
+                    window.open(web, "_blank", "noopener");
+                }
+            }, 1200);
+        }
+
+        function playPreview(trackId, previewUrl, label) {
+            if (!previewUrl) {
+                log(`⚠ No preview stream for: ${label}`, "text-amber-400");
+                return;
+            }
+            if (!omniAudio) omniAudio = new Audio();
+            if (nowPlayingId === trackId && !omniAudio.paused) {
+                omniAudio.pause();
+                nowPlayingId = null;
+                log(`⏸ Paused: ${label}`, "text-slate-400");
+                return;
+            }
+            omniAudio.src = previewUrl;
+            omniAudio.play().catch(() => log("× Preview playback blocked by browser.", "text-rose-400"));
+            nowPlayingId = trackId;
+            log(`▶ Streaming preview: ${label}`, "text-emerald-400");
+        }
+
+        function renderSpotifyGrid(d) {
+            const ad = d.ad_break || {};
+            let html = `<div class="w-full space-y-3 text-xs">`;
+
+            if (ad.banner) {
+                html += `
+                    <div class="spotify-ad rounded-xl p-3 flex gap-3 items-center">
+                        <img src="${ad.banner}" alt="ad" class="w-16 h-16 rounded-lg object-cover shrink-0">
+                        <div>
+                            <div class="text-[9px] uppercase text-emerald-400 font-bold">Sponsored</div>
+                            <div class="font-bold text-white">${escapeHtml(ad.brand)}</div>
+                            <div class="text-slate-400 text-[10px]">${escapeHtml(ad.tagline)}</div>
+                        </div>
+                    </div>`;
+            }
+
+            html += `<div class="spotify-grid w-full">`;
+            (d.catalog || []).forEach((track) => {
+                const id = track.track_id || track.track_name;
+                const art = track.album_art || "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17";
+                const name = escapeHtml(track.track_name);
+                const artist = escapeHtml(track.artist_name || track.artist);
+                const preview = track.audio_preview_url || "";
+                html += `
+                    <div class="bg-black/50 border border-purple-900/30 rounded-xl p-2 flex flex-col">
+                        <img src="${art}" alt="${name}" class="w-full aspect-square object-cover rounded-lg mb-2" loading="lazy">
+                        <div class="font-bold text-white truncate" title="${name}">${name}</div>
+                        <div class="text-[10px] text-slate-400 truncate mb-2">${artist}</div>
+                        <button type="button" onclick='playPreview(${JSON.stringify(String(id))}, ${JSON.stringify(preview)}, ${JSON.stringify(track.track_name)})'
+                            class="bg-green-600 hover:bg-green-500 text-white text-[10px] font-bold py-1 rounded mb-1">▶ Play Preview</button>
+                        <div class="flex gap-1">
+                            <a href="${spotifyLinksFor(track).desktop}" class="flex-1 text-center bg-[#1db954]/80 py-0.5 rounded text-[9px] text-black font-bold">SP</a>
+                            <a href="${track.youtube_mirror || "#"}" target="_blank" rel="noopener" class="flex-1 text-center bg-red-700/80 py-0.5 rounded text-[9px]">YT</a>
+                            <a href="${track.soundcloud_mirror || "#"}" target="_blank" rel="noopener" class="flex-1 text-center bg-orange-600/80 py-0.5 rounded text-[9px]">SC</a>
+                        </div>
+                    </div>`;
+            });
+            html += `</div></div>`;
+            canvasContent.innerHTML = html;
+        }
+
+        async function executeOmniMusicSearch() {
+            const query = document.getElementById("omnimusic-search-box").value.trim();
+            const targetGrid = document.getElementById("omnimusic-tracks-view");
+            const adBox = document.getElementById("omnimusic-ad-slot");
+
+            if (!query) {
+                log("⚠️ Enter a song or artist.", "text-amber-400");
+                return;
+            }
+
+            document.getElementById("music-query").value = query;
+            targetGrid.innerHTML = '<div class="text-xs text-green-400 animate-pulse p-6 text-center">Connecting to media core vectors...</div>';
+            const t0 = performance.now();
+            log(`OmniMusic search: "${query}"`, "text-green-400");
+
+            try {
+                const res = await fetch(`${baseUrl()}/api/v1/entertainment/music?query=${encodeURIComponent(query)}`);
+                const data = await res.json();
+                const ms = (performance.now() - t0).toFixed(0);
+
+                if (data.success && data.catalog?.length > 0) {
+                    omniTrackCatalog = data.catalog;
+                    omniSpotifyFreeBridge = data.spotify_free || null;
+                    let html = "";
+                    data.catalog.forEach((track, i) => {
+                        const art = escapeHtml(track.album_art || "");
+                        const name = escapeHtml(track.track_name);
+                        const artist = escapeHtml(track.artist_name);
+                        const album = escapeHtml(track.album_name || "");
+                        html += `
+                            <div onclick="playSelectedTrackNode(${i})" class="flex items-center justify-between p-2.5 bg-zinc-900/30 hover:bg-green-500/10 border border-zinc-900 hover:border-green-500/20 rounded-xl cursor-pointer transition-all duration-150 group">
+                                <div class="flex items-center gap-3 min-w-0">
+                                    <span class="text-xs font-mono text-zinc-600 w-4 text-center group-hover:text-green-400">${i + 1}</span>
+                                    <img src="${art}" alt="${name}" class="w-10 h-10 object-cover rounded-lg shadow-md flex-shrink-0" loading="lazy">
+                                    <div class="min-w-0">
+                                        <div class="text-xs font-bold text-zinc-200 group-hover:text-white truncate max-w-[200px] sm:max-w-[340px]">${name}</div>
+                                        <div class="text-[11px] text-zinc-400 truncate max-w-[220px]">${artist} • <span class="text-purple-400/80 text-[10px]">${album}</span></div>
+                                    </div>
+                                </div>
+                                <button type="button" class="text-xs text-green-400 font-bold border border-green-500/20 px-3 py-1 rounded-lg group-hover:bg-[#1db954] group-hover:text-black transition-all">PLAY</button>
+                            </div>`;
+                    });
+                    targetGrid.innerHTML = html;
+
+                    if (data.ad_break) {
+                        document.getElementById("omnimusic-ad-banner").src = data.ad_break.banner;
+                        document.getElementById("omnimusic-ad-title").textContent = data.ad_break.brand;
+                        document.getElementById("omnimusic-ad-tagline").textContent = data.ad_break.tagline;
+                        adBox.style.display = "block";
+                    }
+
+                    log(`✓ ${data.count || data.catalog.length} tracks in ${ms}ms — ${data.mode}`, "text-emerald-400");
+                    canvasTitle.innerText = "🎵 OmniMusic — Spotify Free Live Grid";
+                    canvasContent.innerHTML = `<div class="text-xs text-green-400 text-center p-4">Production deck synced — ${data.catalog.length} tracks loaded in ${ms}ms. Select a track in the deck above.</div>`;
+                    applyEmotionalTheme("music relax spotify");
+                } else {
+                    targetGrid.innerHTML = '<div class="text-xs text-rose-400 p-4 text-center">No structural song formats captured. Try another keyword.</div>';
+                    log(`× Music search failed: ${data.error || "empty"}`, "text-rose-400");
+                }
+            } catch (e) {
+                targetGrid.innerHTML = '<div class="text-xs text-rose-500 p-4 text-center">Backend engine connection offline. Launch Uvicorn stack server.</div>';
+                log(`× OmniMusic failed: ${e.message}`, "text-rose-400");
+            }
+        }
+
+        function playSelectedTrackNode(index) {
+            const track = omniTrackCatalog[index];
+            if (!track) return;
+
+            const chassis = document.getElementById("omnimusic-player-chassis");
+            const art = escapeHtml(trackField(track, "album_art", "poster_frame"));
+            const name = escapeHtml(trackField(track, "track_name", "title"));
+            const artist = escapeHtml(trackField(track, "artist_name", "artist"));
+            const yt = track.youtube_mirror || track.stream_nodes?.youtube || "#";
+            const sc = track.soundcloud_mirror || track.stream_nodes?.soundcloud || "#";
+            const preview = track.audio_preview_url || track.audio_url;
+            const sp = spotifyLinksFor(track);
+
+            let playerHtml = `
+                <div class="space-y-3 animate-fadeIn">
+                    <div class="overflow-hidden rounded-xl border border-zinc-800 shadow-xl relative group">
+                        <img src="${art}" alt="${name}" class="w-full h-44 object-cover mx-auto transition-transform duration-500 group-hover:scale-105">
+                    </div>
+                    <div class="text-center">
+                        <div class="text-xs font-bold text-white truncate px-1">${name}</div>
+                        <div class="text-[11px] text-zinc-400 truncate px-1">${artist}</div>
+                    </div>`;
+
+            if (preview) {
+                playerHtml += `
+                    <audio controls autoplay class="w-full h-8 mt-1.5 filter invert hue-rotate-180 brightness-125 rounded-md">
+                        <source src="${preview}" type="audio/mpeg">
+                    </audio>`;
+                log(`▶ Streaming preview: ${trackField(track, "track_name", "title")}`, "text-emerald-400");
+            } else {
+                playerHtml += `
+                    <div class="text-[10px] text-amber-400 bg-amber-500/5 p-2 rounded-xl border border-amber-500/10 my-1.5">
+                        Direct stream bypassed. Mirror tunnels ready below.
+                    </div>`;
+            }
+
+            playerHtml += `
+                    <div class="grid grid-cols-3 gap-2 pt-1">
+                        <a href="${sp.desktop}" class="text-center bg-[#1db954]/15 hover:bg-[#1db954] text-[#1db954] hover:text-black border border-[#1db954]/30 py-1.5 rounded-xl text-[10px] font-bold transition-all">Spotify</a>
+                        <a href="${yt}" target="_blank" rel="noopener" class="text-center bg-red-600/10 hover:bg-red-600 text-red-400 hover:text-white border border-red-600/20 py-1.5 rounded-xl text-[10px] font-bold transition-all">YouTube</a>
+                        <a href="${sc}" target="_blank" rel="noopener" class="text-center bg-orange-500/10 hover:bg-orange-500 text-orange-400 hover:text-white border border-orange-500/20 py-1.5 rounded-xl text-[10px] font-bold transition-all">SoundCloud</a>
+                    </div>
+                    <a href="${sp.web}" target="_blank" rel="noopener" class="block text-center text-[10px] text-zinc-500 hover:text-[#1db954] pt-1">Spotify Web Free player →</a>
+                </div>`;
+
+            chassis.innerHTML = playerHtml;
+        }
+
+        async function triggerOmniMusic() {
+            const query = document.getElementById("music-query").value.trim();
+            if (!query) {
+                log("⚠️ Enter a song or artist.", "text-amber-400");
+                return;
+            }
+            document.getElementById("omnimusic-search-box").value = query;
+            await executeOmniMusicSearch();
+        }
+
+        async function triggerMapRouting() {
+            const dest = document.getElementById("map-destination").value.trim();
+            if (!dest) {
+                log("⚠️ Enter a destination.", "text-amber-400");
+                return;
+            }
+
+            canvasTitle.innerText = "📍 OmniMap Spatial View Mode";
+            log(`Routing query to Karachi map matrix targeting: ${dest}`, "text-cyan-400");
+
+            try {
+                const r = await fetch(
+                    `${baseUrl()}/api/v1/maps/route?origin=Karachi&destination=${encodeURIComponent(dest)}&drive_mode=true`
+                );
+                const d = await r.json();
+
+                if (!d.success) {
+                    log("× Spatial matrix returned error.", "text-rose-400");
+                    return;
+                }
+
+                log("✓ Spatial telemetry synchronized.", "text-emerald-400");
+
+                let audioHtml = `<div class="space-y-2 w-full text-xs">
+                    <div class="bg-cyan-950/40 border border-cyan-500/30 p-2 rounded-lg font-mono text-cyan-300">
+                        🎮 Viewport: ${d.virtual_reality_viewport.spatial_rendering}
+                    </div>
+                    <div class="bg-black/50 p-3 rounded-xl border border-slate-800 space-y-1.5 text-slate-300">
+                        <div class="text-[10px] font-bold text-purple-400 uppercase">📢 Driver Mode Voice Prompts (Urdu):</div>`;
+
+                (d.ai_verbal_assistant_urdu?.realtime_audio_scripts || []).forEach((script) => {
+                    audioHtml += `<p class="border-l-2 border-cyan-500 pl-2 py-0.5">${script}</p>`;
+                });
+
+                audioHtml += "</div></div>";
+                canvasContent.innerHTML = audioHtml;
+                applyEmotionalTheme("map karachi navigation");
+            } catch (e) {
+                log(`× Spatial matrix error: ${e.message}`, "text-rose-400");
+            }
+        }
+
+        async function triggerMarketingAd() {
+            const prod = document.getElementById("ad-product").value.trim();
+            if (!prod) {
+                log("⚠️ Enter a product name.", "text-amber-400");
+                return;
+            }
+
+            canvasTitle.innerText = "🎨 Visionary Commercial Output";
+            log(`Transmitting asset layout parameters for: ${prod}`, "text-amber-400");
+            canvasContent.innerHTML = '<div class="text-xs text-amber-400 animate-pulse">Synthesizing professional layout frame via serverless GPU...</div>';
+
+            try {
+                const r = await fetch(`${baseUrl()}/api/v1/marketing/generate-ad`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        product_name: prod,
+                        product_description: "Premium organic presentation layout, high resolution studio lighting",
+                        aspect_ratio: "1:1",
+                    }),
+                });
+                const d = await r.json();
+
+                if (!d.success) {
+                    log("× Ad generation failed.", "text-rose-400");
+                    return;
+                }
+
+                log(`✓ Marketing assets rendered (${d.processing_speed || "instant"}).`, "text-emerald-400");
+
+                const copy = d.ad_copywriting || {};
+                const media = d.media_resource_assets || {};
+                const imgUrl = media.high_fidelity_cdn_link || media.high_fidelity_cdn_url;
+
+                canvasContent.innerHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full text-xs">
+                        <div class="space-y-2">
+                            <div class="bg-amber-500/10 border border-amber-500/30 p-3 rounded-xl">
+                                <div class="font-extrabold text-white text-sm mb-1">${copy.headline || ""}</div>
+                                <p class="text-slate-400">${copy.body_content || ""}</p>
+                                <span class="inline-block mt-3 bg-amber-500 text-black px-3 py-1 font-bold rounded-lg text-[10px]">${copy.call_to_action || "Order Now"}</span>
+                            </div>
+                        </div>
+                        <div class="relative rounded-xl overflow-hidden border border-amber-500/20 bg-black">
+                            <img src="${imgUrl}" alt="Generated ad" class="w-full h-40 object-cover" loading="lazy">
+                            <div class="absolute bottom-1 right-1 bg-black/70 text-[9px] text-amber-400 px-1.5 py-0.5 rounded">Flux Fast Gen</div>
+                        </div>
+                    </div>`;
+                applyEmotionalTheme("marketing ad corporate");
+            } catch (e) {
+                log(`× Ad generation channel timeout: ${e.message}`, "text-rose-400");
+            }
+        }
+
+        function animateMediaDeck() {
+            const deck = document.getElementById("netflix-animated-deck");
+            if (!deck) return;
+            if (typeof anime !== "undefined") {
+                anime({
+                    targets: "#netflix-animated-deck > div",
+                    translateY: [20, 0],
+                    opacity: [0, 1],
+                    delay: anime.stagger(60),
+                    easing: "easeOutQuad",
+                    duration: 400,
+                });
+                return;
+            }
+            Array.from(deck.children).forEach((el, i) => {
+                el.classList.add("media-card-enter");
+                el.style.animationDelay = `${i * 60}ms`;
+            });
+        }
+
+        function toggleMediaClusterView(mode) {
+            currentMediaCategory = mode;
+            const btnMovies = document.getElementById("btn-mode-movies");
+            const btnTv = document.getElementById("btn-mode-tv");
+            const active = "px-4 py-1.5 rounded-lg text-xs font-bold bg-red-600 text-white transition-all";
+            const idle = "px-4 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition-all";
+
+            if (mode === "movies") {
+                btnMovies.className = active;
+                btnTv.className = idle;
+            } else {
+                btnTv.className = active;
+                btnMovies.className = idle;
+            }
+            executeMediaClusterFetch();
+        }
+
+        async function streamQuantumSignals() {
+            const ticker = document.getElementById("quantum-ticker").value.trim();
+            const metricsDeck = document.getElementById("quantum-metrics-deck");
+            const logBox = document.getElementById("quantum-chart-logs");
+
+            if (!ticker) {
+                log("⚠️ Enter a ticker symbol.", "text-amber-400");
+                return;
+            }
+
+            logBox.innerHTML = '<div class="text-center text-cyan-400 animate-pulse">Running advanced tensor regressions...</div>';
+            const t0 = performance.now();
+            log(`Quantum compute: ${ticker}`, "text-cyan-400");
+
+            try {
+                const res = await fetch(
+                    `${baseUrl()}/api/v1/quantum/market-stream?ticker=${encodeURIComponent(ticker)}&depth=10`
+                );
+                const data = await res.json();
+                const ms = (performance.now() - t0).toFixed(0);
+
+                if (data.success) {
+                    metricsDeck.classList.remove("hidden");
+                    metricsDeck.style.display = "grid";
+                    document.getElementById("q-signal").textContent = data.metrics.signal_state;
+                    document.getElementById("q-confidence").textContent = data.metrics.confidence_score;
+
+                    let logHtml = `<div class="border-b border-zinc-800/60 pb-1 mb-1.5 text-cyan-400 font-bold uppercase text-[9px]">Execution Track: ${escapeHtml(data.metrics.load_balanced_node)} · ${ms}ms</div>`;
+                    (data.matrix_data_points || []).forEach((val, index) => {
+                        const block = String(index).padStart(2, "0");
+                        logHtml += `<div class="flex justify-between"><span>Matrix Block [${block}]:</span> <span class="text-white font-bold">${val} USD</span></div>`;
+                    });
+                    logBox.innerHTML = logHtml;
+                    log(`✓ ${data.ticker} signal: ${data.metrics.signal_state}`, "text-emerald-400");
+                } else {
+                    logBox.innerHTML = '<div class="text-center text-amber-400">Quantum pipeline returned no data.</div>';
+                }
+            } catch (e) {
+                logBox.innerHTML = '<div class="text-center text-rose-500">Pipeline Offline. Activate Python Microservice node.</div>';
+                log(`× Quantum fault: ${e.message}`, "text-rose-400");
+            }
+        }
+
+        async function renderSpatialVectors() {
+            const targetCity = document.getElementById("map-query-input").value.trim();
+            const overlay = document.getElementById("map-coordinates-overlay");
+
+            if (!targetCity) {
+                log("⚠️ Enter a city for spatial lookup.", "text-amber-400");
+                return;
+            }
+
+            document.getElementById("map-destination").value = targetCity;
+            overlay.innerHTML = '<div class="text-center text-emerald-400 animate-pulse pt-16">Scanning orbital telemetry grids...</div>';
+            const t0 = performance.now();
+            log(`Spatial lookup: ${targetCity}`, "text-emerald-400");
+
+            try {
+                const res = await fetch(
+                    `${baseUrl()}/api/v1/maps/spatial-lookup?location_query=${encodeURIComponent(targetCity)}`
+                );
+                const data = await res.json();
+                const ms = (performance.now() - t0).toFixed(0);
+
+                if (data.success) {
+                    const zones = (data.regional_nodes || [])
+                        .map((z) => `<div class="text-emerald-300/90">• ${escapeHtml(z)}</div>`)
+                        .join("");
+                    overlay.innerHTML = `
+                        <div class="space-y-2 animate-fadeIn">
+                            <div class="text-white font-black text-xs border-b border-zinc-900 pb-1 uppercase tracking-wide">📍 Target Verified: ${escapeHtml(data.location)} <span class="text-zinc-500 font-normal normal-case">(${ms}ms)</span></div>
+                            <div class="grid grid-cols-2 gap-2 text-zinc-400 text-[10px] bg-black/40 p-2 rounded-lg border border-zinc-900">
+                                <div>Latitude: <span class="text-emerald-400 font-bold">${data.coordinates.latitude}</span></div>
+                                <div>Longitude: <span class="text-emerald-400 font-bold">${data.coordinates.longitude}</span></div>
+                            </div>
+                            <div class="text-[10px] text-zinc-500 pt-1">
+                                <span class="text-zinc-400 font-bold block uppercase text-[9px] mb-1">Active Mesh Sectors · ${escapeHtml(data.vector_status || "")}</span>
+                                ${zones}
+                            </div>
+                        </div>`;
+                    log(`✓ Spatial vectors locked for ${data.location}`, "text-emerald-400");
+                } else {
+                    overlay.innerHTML = '<div class="text-center text-amber-400 pt-16">Spatial lookup returned no vectors.</div>';
+                }
+            } catch (e) {
+                overlay.innerHTML = '<div class="text-center text-rose-500 pt-16">Spatial Gateway Route Unresolved.</div>';
+                log(`× Spatial fault: ${e.message}`, "text-rose-400");
+            }
+        }
+
+        async function executeMediaClusterFetch() {
+            const query = document.getElementById("media-search-input").value.trim();
+            const grid = document.getElementById("media-grid-viewport");
+
+            if (!query) {
+                log("⚠️ Enter a media search query.", "text-amber-400");
+                return;
+            }
+
+            document.getElementById("music-query").value = query;
+            grid.innerHTML = '<div class="text-xs font-mono text-red-500 text-center pt-16 animate-pulse">Streaming raw binary frames from global servers...</div>';
+            const t0 = performance.now();
+            log(`Media cluster (${currentMediaCategory}): "${query}"`, "text-red-400");
+
+            try {
+                const res = await fetch(
+                    `${baseUrl()}/api/v1/media/search?query=${encodeURIComponent(query)}&category=${encodeURIComponent(currentMediaCategory)}`
+                );
+                const resData = await res.json();
+                const ms = (performance.now() - t0).toFixed(0);
+
+                if (resData.success && resData.catalog?.length > 0) {
+                    let html = `<div class="w-full space-y-3">
+                        <div class="text-[10px] font-mono text-red-400/90">${escapeHtml(resData.source || "Media Mesh")} · ${resData.catalog.length} titles · ${ms}ms</div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 w-full" id="netflix-animated-deck">`;
+
+                    resData.catalog.forEach((item) => {
+                        const poster = escapeHtml(item.poster || "");
+                        const title = escapeHtml(item.title || "Untitled");
+                        const genre = escapeHtml(item.genre || "");
+                        const duration = escapeHtml(item.duration || "");
+                        const type = escapeHtml(item.type || currentMediaCategory);
+                        const stream = item.stream_url || "#";
+
+                        html += `
+                            <div class="bg-zinc-900/30 border border-zinc-800 rounded-2xl p-2.5 hover:border-red-500/40 transition-all duration-300 group flex flex-col justify-between overflow-hidden">
+                                <div class="relative overflow-hidden rounded-xl aspect-[14/20] bg-black mb-3">
+                                    <img src="${poster}" alt="${title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+                                    <span class="absolute top-2 left-2 bg-black/80 text-red-500 border border-red-500/30 text-[9px] font-mono px-2 py-0.5 rounded">${type}</span>
+                                </div>
+                                <div class="px-1 mb-2">
+                                    <div class="text-xs font-bold text-zinc-100 truncate group-hover:text-white mb-0.5" title="${title}">${title}</div>
+                                    <div class="text-[10px] text-zinc-500 flex justify-between items-center gap-1">
+                                        <span class="truncate">${genre}</span>
+                                        <span class="font-mono text-zinc-400 shrink-0">${duration}</span>
+                                    </div>
+                                </div>
+                                <a href="${stream}" target="_blank" rel="noopener" class="block w-full text-center bg-zinc-900 border border-zinc-800 text-zinc-300 hover:bg-red-600 hover:text-white hover:border-red-500 font-bold text-[10px] py-2 rounded-xl transition-all uppercase tracking-wider">
+                                    Watch Content
+                                </a>
+                            </div>`;
+                    });
+
+                    html += "</div></div>";
+                    grid.innerHTML = html;
+                    animateMediaDeck();
+                    log(`✓ ${resData.catalog.length} cards loaded via ${resData.source} in ${ms}ms`, "text-emerald-400");
+                    canvasTitle.innerText = `🎬 Omni Entertainment — ${currentMediaCategory.toUpperCase()}`;
+                    canvasContent.innerHTML = `<div class="text-xs text-red-400 text-center p-4">Entertainment cluster synced — ${resData.catalog.length} titles from ${escapeHtml(resData.source)}.</div>`;
+                } else {
+                    grid.innerHTML = '<div class="text-xs text-zinc-500 text-center pt-16">No media packages aligned with parameters.</div>';
+                    log("× Media cluster returned empty catalog.", "text-amber-400");
+                }
+            } catch (e) {
+                grid.innerHTML = '<div class="text-xs text-rose-500 font-mono text-center pt-16">Linkage failure. Ensure router endpoint is fully deployed.</div>';
+                log(`× Media cluster fault: ${e.message}`, "text-rose-400");
+            }
+        }
+
+        async function syncVibeStackStatus() {
+            const subtitle = document.getElementById("vibe-stack-subtitle");
+            const pulse = document.getElementById("vibe-stack-pulse");
+            try {
+                const res = await fetch(`${baseUrl()}/api/v1/system/status`);
+                const data = await res.json();
+                const latency = data.performance_latency || "Sub-10ms";
+                const integrations = data.integrations || {};
+                const parts = Object.entries(integrations)
+                    .slice(0, 3)
+                    .map(([, v]) => v)
+                    .join(" · ");
+                subtitle.textContent = `${data.core_version || "V11"} ${data.status || "Operational"} — ${parts} (${latency})`;
+                if (pulse) pulse.className = "w-3 h-3 bg-green-500 rounded-full animate-ping";
+                log(`✓ Vibe-Stack linked: ${data.engine_mode || data.engine || "OmniMind V11"}`, "text-emerald-400");
+            } catch {
+                if (subtitle) subtitle.textContent = "Backend offline — start uvicorn on port 8000.";
+                if (pulse) pulse.className = "w-3 h-3 bg-red-500 rounded-full";
+            }
+        }
+
+        async function triggerIntegratedSearch() {
+            const query = document.getElementById("integrated-search").value.trim();
+            const displayDeck = document.getElementById("integrated-display-deck");
+
+            if (!query) {
+                log("⚠️ Enter a search query.", "text-amber-400");
+                return;
+            }
+
+            document.getElementById("omnimusic-search-box").value = query;
+            document.getElementById("music-query").value = query;
+            displayDeck.innerHTML = '<div class="text-xs text-green-400 font-mono animate-pulse">Executing sub-second dynamic fetch protocol...</div>';
+            const t0 = performance.now();
+            log(`Vibe pipeline: "${query}"`, "text-green-400");
+
+            try {
+                const response = await fetch(
+                    `${baseUrl()}/api/v1/omnimind/search?query=${encodeURIComponent(query)}&module=music`
+                );
+                const data = await response.json();
+                const ms = (performance.now() - t0).toFixed(0);
+                const catalog = data.data || data.catalog || [];
+
+                if (data.success && catalog.length > 0) {
+                    let html = `<div class="w-full space-y-3">
+                        <div class="text-[10px] font-mono text-emerald-400/90">${data.source || data.engine_mode || "OmniMind"} · ${catalog.length} tracks · ${ms}ms</div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 w-full">`;
+
+                    catalog.forEach((item) => {
+                        const poster = escapeHtml(item.image || item.poster_frame || item.album_art || "");
+                        const title = escapeHtml(item.title || item.track_name || "Unknown");
+                        const artist = escapeHtml(item.subtext || item.artist || item.artist_name || "");
+                        const nodes = item.stream_nodes || {};
+                        const searchQ = encodeURIComponent(`${item.title || item.track_name || query} ${item.subtext || item.artist_name || ""}`.trim());
+                        const yt = nodes.youtube || item.youtube_mirror || `https://www.youtube.com/results?search_query=${searchQ}`;
+                        const sc = nodes.soundcloud || item.soundcloud_mirror || `https://soundcloud.com/search/sounds?q=${searchQ}`;
+                        const sp = nodes.spotify || item.spotify_mirror || `https://open.spotify.com/search/${searchQ}`;
+                        const preview = item.stream_url || item.audio_url || item.audio_preview_url || "";
+
+                        html += `
+                            <div class="bg-zinc-900/40 border border-zinc-800/80 rounded-2xl p-3 hover:border-green-500/40 transition-all duration-300 group flex flex-col justify-between">
+                                <div class="relative overflow-hidden rounded-xl mb-3 aspect-square bg-zinc-900">
+                                    <img src="${poster}" alt="${title}" class="w-full h-full object-cover rounded-xl transition-transform duration-500 group-hover:scale-105" loading="lazy">
+                                </div>
+                                <div class="space-y-1 mb-3">
+                                    <h3 class="text-xs font-bold text-zinc-100 truncate group-hover:text-white" title="${title}">${title}</h3>
+                                    <p class="text-[11px] text-zinc-400 truncate">${artist}</p>
+                                </div>`;
+
+                        if (preview) {
+                            html += `
+                                <audio controls preload="none" class="w-full h-7 mb-2 filter invert hue-rotate-180 brightness-125 rounded-md">
+                                    <source src="${preview}" type="audio/mpeg">
+                                </audio>`;
+                        }
+
+                        html += `
+                                <div class="grid grid-cols-3 gap-1.5">
+                                    <a href="${sp}" target="_blank" rel="noopener" class="text-center bg-[#1db954]/10 text-[#1db954] hover:bg-[#1db954] hover:text-black border border-[#1db954]/10 text-[10px] py-1.5 rounded-lg font-bold transition-all">Spotify</a>
+                                    <a href="${yt}" target="_blank" rel="noopener" class="text-center bg-red-600/10 text-red-400 hover:bg-red-600 hover:text-white border border-red-600/10 text-[10px] py-1.5 rounded-lg font-bold transition-all">YouTube</a>
+                                    <a href="${sc}" target="_blank" rel="noopener" class="text-center bg-orange-500/10 text-orange-400 hover:bg-orange-500 hover:text-white border border-orange-500/10 text-[10px] py-1.5 rounded-lg font-bold transition-all">SoundCloud</a>
+                                </div>
+                            </div>`;
+                    });
+
+                    html += "</div></div>";
+                    displayDeck.innerHTML = html;
+                    log(`✓ Pipeline complete — ${catalog.length} items via ${data.source || "mesh"} in ${ms}ms`, "text-emerald-400");
+                    applyEmotionalTheme("music vibe integrated");
+                } else {
+                    displayDeck.innerHTML = '<div class="text-xs text-amber-400">Stream pipeline empty.</div>';
+                    log("× Integrated search returned empty catalog.", "text-amber-400");
+                }
+            } catch (error) {
+                displayDeck.innerHTML = '<div class="text-xs text-red-500 font-mono">Backend linkage fault. Verify your FastAPI server status on port 8000.</div>';
+                log(`× Vibe pipeline fault: ${error.message}`, "text-rose-400");
+            }
+        }
+
+        checkEngineLiveness();
+        syncVibeStackStatus();
+
+        async function fetchBusinessAnalyticsData() {
+            const card = document.getElementById("analytics-data-card");
+            card.innerHTML = '<div class="text-center text-amber-400 animate-pulse py-4">Accessing cache tables...</div>';
+            const t0 = performance.now();
+            log("Business analytics compute started", "text-amber-400");
+
+            try {
+                const res = await fetch(`${baseUrl()}/api/v1/business/analytics-summary`);
+                const data = await res.json();
+                const ms = (performance.now() - t0).toFixed(0);
+
+                if (data.success && data.payload) {
+                    const p = data.payload;
+                    card.innerHTML = `
+                        <div class="flex justify-between"><span>Gross Revenue:</span><span class="text-white font-bold">${escapeHtml(p.gross_sales_index)}</span></div>
+                        <div class="flex justify-between"><span>Active Queue:</span><span class="text-white font-bold">${escapeHtml(String(p.active_orders_queue))} units</span></div>
+                        <div class="flex justify-between"><span>Margin Growth:</span><span class="text-emerald-400 font-bold">${escapeHtml(p.growth_margin_delta)}</span></div>
+                        <div class="flex justify-between truncate text-[10px] text-zinc-400 pt-1 border-t border-zinc-800/60 mt-1 gap-2"><span>Top Item:</span><span class="truncate">${escapeHtml(p.top_performing_sku)}</span></div>
+                        <div class="text-[9px] text-zinc-600 pt-1">${escapeHtml(data.source || "")} · ${ms}ms</div>`;
+                    log(`✓ Financial metrics loaded in ${ms}ms`, "text-emerald-400");
+                } else {
+                    card.innerHTML = '<div class="text-center text-amber-400 py-4">Empty analytics payload.</div>';
+                }
+            } catch (e) {
+                card.innerHTML = '<div class="text-center text-rose-500 py-4">Data Node Unreachable.</div>';
+                log(`× Analytics fault: ${e.message}`, "text-rose-400");
+            }
+        }
+
+        async function triggerMarketingCampaignPipeline() {
+            const campaign = document.getElementById("marketing-campaign-name").value.trim();
+            const logBox = document.getElementById("marketing-webhook-logs");
+            if (!campaign) {
+                log("⚠️ Enter a campaign name.", "text-amber-400");
+                return;
+            }
+
+            document.getElementById("ad-product").value = campaign;
+            logBox.innerHTML = '<span class="text-amber-400 animate-pulse">Broadcasting event streams...</span>';
+            log(`Marketing webhook deploy: ${campaign}`, "text-amber-400");
+
+            try {
+                const res = await fetch(
+                    `${baseUrl()}/api/v1/business/marketing-hook?campaign=${encodeURIComponent(campaign)}`
+                );
+                const data = await res.json();
+
+                if (data.success) {
+                    const impressions = data.projected_metrics?.estimated_impressions ?? "—";
+                    const ctr = data.projected_metrics?.ctr_ratio ?? "—";
+                    logBox.innerHTML = `<div><span class="text-emerald-400 font-bold">✔️ Webhook Handshake OK</span><br><span class="text-[9px] text-zinc-400">Campaign: ${escapeHtml(data.campaign_registered || campaign)} · Reach: ${impressions} users (CTR: ${ctr})</span></div>`;
+                    log(`✓ Webhook indexed: ${data.campaign_registered}`, "text-emerald-400");
+                } else {
+                    logBox.innerHTML = '<span class="text-amber-400">Webhook returned unsuccessful status.</span>';
+                }
+            } catch (e) {
+                logBox.innerHTML = '<span class="text-rose-500">Webhook transmission broken.</span>';
+                log(`× Marketing webhook fault: ${e.message}`, "text-rose-400");
+            }
+        }
+
+        async function executeOmniTranslationLoop() {
+            const text = document.getElementById("translator-source-text").value.trim();
+            const outBox = document.getElementById("translator-output-box");
+            if (!text) {
+                log("⚠️ Enter text to translate.", "text-amber-400");
+                return;
+            }
+
+            outBox.innerHTML = '<span class="text-amber-400 animate-pulse font-mono text-[10px]">Parsing dictionary array...</span>';
+            log(`OmniTranslator: "${text}"`, "text-amber-400");
+
+            try {
+                const res = await fetch(
+                    `${baseUrl()}/api/v1/business/omni-translator?text=${encodeURIComponent(text)}&target_lang=urdu`
+                );
+                const data = await res.json();
+
+                if (data.success) {
+                    outBox.innerHTML = `<span class="text-white">${escapeHtml(data.translated_result)}</span>`;
+                    log("✓ Localization processed.", "text-emerald-400");
+                } else {
+                    outBox.innerHTML = '<span class="text-amber-400 font-mono text-[10px]">Translation returned empty.</span>';
+                }
+            } catch (e) {
+                outBox.innerHTML = '<span class="text-rose-500 font-mono text-[10px]">Translation Pipeline offline.</span>';
+                log(`× Translator fault: ${e.message}`, "text-rose-400");
+            }
+        }
+
+        async function executeNasaTrajectoryCalculation() {
+            const vel = document.getElementById("nasa-velocity").value;
+            const box = document.getElementById("nasa-output-box");
+            box.innerHTML = '<span class="text-violet-400 animate-pulse">Running scalar equations...</span>';
+            const t0 = performance.now();
+            log(`NASA solver: velocity=${vel} km/s`, "text-violet-400");
+
+            try {
+                const res = await fetch(`${baseUrl()}/api/v1/simulation/nasa-solver?velocity=${encodeURIComponent(vel)}&altitude=400`);
+                const data = await res.json();
+                const ms = (performance.now() - t0).toFixed(0);
+
+                if (data.success) {
+                    const op = data.orbital_parameters || {};
+                    box.innerHTML = `
+                        <div class="text-emerald-400 font-bold border-b border-zinc-800/60 pb-0.5 mb-1">[${escapeHtml(data.system_tag)}] · ${ms}ms</div>
+                        <div>Input V: <span class="text-white">${escapeHtml(op.input_velocity || "")}</span></div>
+                        <div>Target Circ V: <span class="text-white">${escapeHtml(op.calculated_circular_velocity || "")}</span></div>
+                        <div>Escape Delta: <span class="text-white">${escapeHtml(op.escape_velocity_margin || "")}</span></div>`;
+                    log(`✓ Orbital vectors calculated (${ms}ms)`, "text-emerald-400");
+                } else {
+                    box.innerHTML = '<span class="text-amber-400">Solver returned no vectors.</span>';
+                }
+            } catch (e) {
+                box.innerHTML = '<span class="text-rose-500">Physics node interface timeout.</span>';
+                log(`× NASA solver fault: ${e.message}`, "text-rose-400");
+            }
+        }
+
+        async function executeArchitecturalMeshGeneration() {
+            const theme = document.getElementById("arch-layout-theme").value.trim();
+            const box = document.getElementById("arch-output-box");
+            if (!theme) {
+                log("⚠️ Enter a layout theme.", "text-amber-400");
+                return;
+            }
+
+            box.innerHTML = '<span class="text-violet-400 animate-pulse">Plotting 3D geometry vertices...</span>';
+            log(`Architectural mesh: ${theme}`, "text-violet-400");
+
+            try {
+                const res = await fetch(
+                    `${baseUrl()}/api/v1/simulation/architectural-mesh?layout_type=${encodeURIComponent(theme)}&floors=2`
+                );
+                const data = await res.json();
+
+                if (data.success) {
+                    let html = `<div class="text-violet-400 font-bold mb-1">Mesh: ${escapeHtml(data.blueprint_signature)} · ${data.total_rendered_nodes} nodes</div>`;
+                    (data.spatial_mesh_data || []).forEach((floor) => {
+                        const bb = floor.bounding_box_vectors || {};
+                        html += `<div class="text-zinc-300 border-t border-zinc-900/50 pt-0.5 mt-0.5">${escapeHtml(floor.level)}: <span class="text-white font-bold">${bb.x_axis}x${bb.y_axis}x${bb.z_axis}</span></div>`;
+                    });
+                    box.innerHTML = html;
+                    log(`✓ ${data.total_rendered_nodes} floor meshes generated`, "text-emerald-400");
+                } else {
+                    box.innerHTML = '<span class="text-amber-400">Mesh generation empty.</span>';
+                }
+            } catch (e) {
+                box.innerHTML = '<span class="text-rose-500">Geometry data link severed.</span>';
+                log(`× Architectural mesh fault: ${e.message}`, "text-rose-400");
+            }
+        }
+
+        async function executeGameWorldSimulation() {
+            const seed = document.getElementById("game-seed").value;
+            const box = document.getElementById("game-output-box");
+            box.innerHTML = '<span class="text-violet-400 animate-pulse font-mono text-[10px]">Evaluating engine execution stack...</span>';
+            log(`Game sim seed: ${seed}`, "text-violet-400");
+
+            try {
+                const res = await fetch(`${baseUrl()}/api/v1/simulation/game-state?seed=${encodeURIComponent(seed)}`);
+                const data = await res.json();
+
+                if (data.success && data.world_generation) {
+                    const w = data.world_generation;
+                    box.innerHTML = `
+                        <div class="text-[11px] font-bold text-white uppercase tracking-wide">🌌 Biome: ${escapeHtml(w.designated_biome)}</div>
+                        <div class="text-[10px] text-zinc-400 font-mono mt-1">Render: ${escapeHtml(w.render_fps_target)} · Entities: ${escapeHtml(String(w.entity_count))}</div>
+                        <div class="text-[10px] text-zinc-500 font-sans italic mt-0.5">FX: ${escapeHtml(w.lighting_profile)}</div>`;
+                    log(`✓ World compiled: ${w.designated_biome}`, "text-emerald-400");
+                } else {
+                    box.innerHTML = '<span class="text-amber-400 font-mono text-[10px]">Empty world generation payload.</span>';
+                }
+            } catch (e) {
+                box.innerHTML = '<span class="text-rose-500 font-mono text-[10px]">Game telemetry thread offline.</span>';
+                log(`× Game sim fault: ${e.message}`, "text-rose-400");
+            }
+        }
+    </script>
+</body>
+</html>

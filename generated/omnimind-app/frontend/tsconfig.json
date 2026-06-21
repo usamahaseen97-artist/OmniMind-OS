@@ -1,0 +1,11 @@
+﻿{
+  "compilerOptions": {
+    "jsx": "preserve",
+    "strict": true,
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    }
+  }
+}

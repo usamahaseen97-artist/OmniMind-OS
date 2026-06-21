@@ -1,0 +1,59 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: omnimind
+      POSTGRES_PASSWORD: omnimind
+      POSTGRES_DB: omnimind
+    ports:
+      - "5432:5432"
+    volumes:
+      - omni_pg_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  backend-fastapi:
+    build:
+      context: ./backend-fastapi
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_URL: postgresql+asyncpg://omnimind:omnimind@postgres:5432/omnimind
+      REDIS_URL: redis://redis:6379/0
+      JWT_SECRET_KEY: change-me
+      GATEWAY_ORIGIN: http://localhost:8080
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "8003:8001"
+
+  backend-node:
+    build:
+      context: ./backend-node
+      dockerfile: Dockerfile
+    environment:
+      NODE_PORT: "8090"
+    ports:
+      - "8090:8090"
+
+  gateway-go:
+    build:
+      context: ./gateway-go
+      dockerfile: Dockerfile
+    environment:
+      GATEWAY_PORT: "8080"
+      CORE_PYTHON_URL: http://backend-fastapi:8001
+      NODE_SERVICE_URL: http://backend-node:8090
+      REDIS_ADDR: redis:6379
+      JWT_SECRET_KEY: change-me
+    depends_on:
+      - backend-fastapi
+      - redis
+    ports:
+      - "8080:8080"
+
+volumes:
+  omni_pg_data:

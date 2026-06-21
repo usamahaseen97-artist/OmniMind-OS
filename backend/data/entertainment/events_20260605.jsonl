@@ -1,0 +1,4 @@
+{"event_id": "1a46962a-30db-405d-a9ba-1d008ef70192", "module": "omnimusic", "action": "trending", "user_id": "anonymous", "ts": 1780601598.5835931, "payload": {"count": 41, "playlist": null}}
+{"event_id": "bffe8974-1b62-4460-909c-846c10f09b62", "module": "omnimusic", "action": "play", "user_id": "anonymous", "ts": 1780601600.1143942, "payload": {"track_id": "m1", "title": "Neon Horizon", "artist": "OmniMind Synth"}}
+{"event_id": "1397edea-d036-47ea-84f4-727a1c6f50eb", "module": "omnimusic", "action": "catalog", "user_id": "anonymous", "ts": 1780601602.10913, "payload": {"q": "", "playlist": null, "count": 60, "total": 1255}}
+{"event_id": "d5e15cb6-9dee-412b-93a8-77c4cf16d8c5", "module": "omnimusic", "action": "catalog", "user_id": "anonymous", "ts": 1780601602.2633653, "payload": {"q": "", "playlist": "Pakistani Latest", "count": 60, "total": 1255}}

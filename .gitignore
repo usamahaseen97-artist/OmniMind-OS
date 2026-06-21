@@ -1,0 +1,27 @@
+# Dependencies & build output
+node_modules/
+.next/
+out/
+build/
+dist/
+.turbo/
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Logs & docker
+logs/
+*.log
+.docker/
+
+# Secrets — never commit
+.env
+.env.local
+.env.*.local
+
+# Large generated dumps
+ALL_CODE.txt

@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+venv/
+.venv/
+
+# Next.js build output
+/.next/
+/out/
+
+# Environment variables
+.env
+.env*.local
+
+# Python cache
+_pycache_/
+*.py[cod]
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+# FastAPI/Python specifics
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+dist/
+build/
+*.egg-info/
+*.db
+*.sqlite3
+
+.env.development.local
+.env.test.local
+.env.production.local
+node_modules/
+_pycache_/
+.next/

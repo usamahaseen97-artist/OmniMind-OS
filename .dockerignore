@@ -1,0 +1,12 @@
+# Docker build context exclusions (gateway-service image)
+frontend/
+.git/
+**/__pycache__/
+**/*.pyc
+**/.env
+**/.env.*
+node_modules/
+.next/
+*.md
+agent-transcripts/
+.cursor/

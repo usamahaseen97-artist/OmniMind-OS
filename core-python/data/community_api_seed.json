@@ -1,0 +1,26 @@
+[
+  {
+    "id": "github_models",
+    "name": "GitHub Models",
+    "type": "github_models",
+    "priority": 1,
+    "tags": ["llm", "open-source", "free-tier"]
+  },
+  {
+    "id": "pollinations_openai",
+    "name": "Pollinations OpenAI-compat",
+    "type": "openai_compat",
+    "url": "https://gen.pollinations.ai/v1/chat/completions",
+    "model": "openai",
+    "priority": 2,
+    "tags": ["llm", "free", "community"]
+  },
+  {
+    "id": "pollinations_text",
+    "name": "Pollinations Text",
+    "type": "text_get",
+    "url": "https://text.pollinations.ai",
+    "priority": 3,
+    "tags": ["llm", "free", "community"]
+  }
+]

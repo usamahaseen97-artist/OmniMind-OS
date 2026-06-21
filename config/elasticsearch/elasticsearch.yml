@@ -1,0 +1,40 @@
+﻿# --------------------------------------------------------------------------------------
+# OmniMind — Elasticsearch 8.x single-node (Docker)
+# YAML validated: cluster keys at column 0 (no leading spaces).
+# --------------------------------------------------------------------------------------
+
+# ------------------------------- Cluster --------------------------------
+cluster.name: omnimind-cluster
+node.name: omnimind-node-1
+
+# ------------------------------- Network --------------------------------
+network.host: 0.0.0.0
+http.port: 9200
+
+# ------------------------------- Discovery ------------------------------
+discovery.type: single-node
+
+# ------------------------------- Paths ----------------------------------
+path.data: /usr/share/elasticsearch/data
+path.logs: /usr/share/elasticsearch/logs
+
+# ------------------------------- Memory ---------------------------------
+bootstrap.memory_lock: false
+
+# ------------------------------- X-Pack Security (dev — disabled) -------
+# Lines 82-86: MUST start at column 0 (no leading spaces).
+xpack.security.enabled: false
+xpack.security.enrollment.enabled: false
+xpack.security.http.ssl.enabled: false
+xpack.security.transport.ssl.enabled: false
+
+# Line 88: cluster safeguard comment (server verify / dev deletes)
+# Allow delete-by-query without explicit index name in dev only.
+action.destructive_requires_name: false
+
+# ------------------------------- X-Pack ML ------------------------------
+xpack.ml.enabled: false
+
+# ------------------------------- HTTP -----------------------------------
+http.cors.enabled: true
+http.cors.allow-origin: "*"

@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package omnimind.internal.v1;
+
+service ToolDispatch {
+  rpc ExecuteTool (ExecuteToolRequest) returns (ExecuteToolResponse);
+}
+
+message ExecuteToolRequest {
+  string user_id = 1;
+  string tool_id = 2;
+  string prompt = 3;
+  bytes context_blob = 4;
+}
+
+message ExecuteToolResponse {
+  bool ok = 1;
+  string route = 2;
+  string payload_json = 3;
+  int64 latency_ms = 4;
+}

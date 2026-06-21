@@ -1,0 +1,69 @@
+[
+  {
+    "id": "geo-news",
+    "name": "Geo News",
+    "category": "Live News",
+    "region": "pakistan",
+    "trendingKarachi": true,
+    "sourceType": "youtube",
+    "embedUrl": "https://www.youtube.com/embed/live_stream?channel=UC_vt34wimdCzdkrzVejwX9g&autoplay=1&mute=0&rel=0",
+    "officialUrl": "https://www.youtube.com/channel/UC_vt34wimdCzdkrzVejwX9g",
+    "tags": ["geo", "news", "pakistan", "urdu", "official"],
+    "verifiedLegal": true,
+    "sources": []
+  },
+  {
+    "id": "ary-news",
+    "name": "ARY News",
+    "category": "Live News",
+    "region": "pakistan",
+    "trendingKarachi": true,
+    "sourceType": "youtube",
+    "embedUrl": "https://www.youtube.com/embed/live_stream?channel=UCMmpLL2ucRHAXbNHiCPyIyg&autoplay=1&mute=0&rel=0",
+    "officialUrl": "https://www.youtube.com/channel/UCMmpLL2ucRHAXbNHiCPyIyg",
+    "tags": ["ary", "news", "pakistan", "urdu", "official"],
+    "verifiedLegal": true,
+    "sources": []
+  },
+  {
+    "id": "aaj-tak",
+    "name": "Aaj Tak",
+    "category": "Live News",
+    "region": "international",
+    "sourceType": "youtube",
+    "embedUrl": "https://www.youtube.com/embed/live_stream?channel=UCt4t-jeY85JegMlZ-E5UWtA&autoplay=1&mute=0&rel=0",
+    "officialUrl": "https://www.youtube.com/channel/UCt4t-jeY85JegMlZ-E5UWtA",
+    "tags": ["aaj tak", "news", "india", "hindi", "official"],
+    "verifiedLegal": true,
+    "sources": []
+  },
+  {
+    "id": "hum-tv",
+    "name": "HUM TV",
+    "category": "Dramas",
+    "region": "pakistan",
+    "trendingKarachi": true,
+    "sourceType": "youtube",
+    "embedUrl": "https://www.youtube.com/embed/videoseries?list=UUEeEQxm6qc_qaTE7qTV5aLQ&autoplay=1&rel=0",
+    "officialUrl": "https://www.youtube.com/@HUMTV",
+    "tags": ["hum tv", "drama", "pakistan", "urdu", "official"],
+    "verifiedLegal": true,
+    "sources": []
+  },
+  {
+    "id": "nasa-tv-public",
+    "name": "NASA TV Public",
+    "category": "Live News",
+    "region": "international",
+    "sourceType": "hls",
+    "officialUrl": "https://www.nasa.gov/nasatv/",
+    "tags": ["nasa", "space", "public", "hls", "official"],
+    "verifiedLegal": true,
+    "sources": [
+      {
+        "url": "https://nasa-i.akamaihd.net/hls/live/253565/NASA-NTV1-Public/master.m3u8",
+        "source": "NASA TV public HLS"
+      }
+    ]
+  }
+]

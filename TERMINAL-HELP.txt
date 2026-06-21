@@ -1,0 +1,37 @@
+OmniMind — Terminal fix (Windows 10 / Cursor)
+=============================================
+
+PROBLEM: Commands like "cd frontend && npm run dev" FAIL in PowerShell 5.1.
+FIX: Use semicolon (;) instead of &&
+
+  WRONG:  cd frontend && npm run dev
+  RIGHT:  cd frontend; npm run dev
+
+EASIEST — double-click or run from project folder:
+  RUN-DEV.bat          → opens Backend + Frontend in 2 windows
+  RUN-DEV.ps1          → same (PowerShell)
+
+Manual (copy one line at a time):
+  cd "C:\Users\A.K Com\Desktop\omnimind 1"
+  .\run-backend-8001.ps1
+
+  (new terminal)
+  cd "C:\Users\A.K Com\Desktop\omnimind 1"
+  .\run-frontend.ps1
+
+Cursor terminal frozen / blank:
+  1) Ctrl+Shift+`  → New Terminal
+  2) Terminal dropdown → Select "PowerShell" or "Command Prompt"
+  3) Kill old terminal (trash icon) and open new one
+
+Script blocked ("running scripts is disabled"):
+  Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+  OR use:  RUN-DEV.bat  (no policy change needed)
+
+Test terminal works:
+  echo ok
+  python --version
+  node --version
+
+Open app: http://localhost:3000
+API docs: http://127.0.0.1:8001/docs

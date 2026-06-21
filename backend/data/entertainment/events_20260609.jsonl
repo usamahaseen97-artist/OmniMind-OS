@@ -1,0 +1,1 @@
+{"event_id": "66e1a7b1-13fb-49d3-ba06-b8b4ca42e666", "module": "omnimusic", "action": "search", "user_id": "anonymous", "ts": 1780996054.2496257, "payload": {"query": "atif", "count": 35, "category": null, "global_fallback": false, "sources": {"elasticsearch": 0, "local_json": 4, "local": 31, "audius": 0, "youtube": 0}}}

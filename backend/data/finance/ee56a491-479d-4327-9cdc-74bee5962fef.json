@@ -1,0 +1,1198 @@
+{
+  "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef",
+  "source": "bloomberg-mock",
+  "mode": "mock",
+  "generated_at": "2026-05-17T08:35:18.970464+00:00",
+  "symbols": [
+    "AAPL US Equity",
+    "MSFT US Equity",
+    "GOOGL US Equity",
+    "TSLA US Equity",
+    "SPY US Equity",
+    "EURUSD Curncy",
+    "GC1 Comdty"
+  ],
+  "ticks": [
+    {
+      "symbol": "AAPL US Equity",
+      "price": 232.4948,
+      "bid": 232.4483,
+      "ask": 232.5413,
+      "volume": 786420,
+      "timestamp": "2026-05-17T08:35:18.968832+00:00",
+      "currency": "USD",
+      "exchange": "XNYS"
+    },
+    {
+      "symbol": "MSFT US Equity",
+      "price": 264.4258,
+      "bid": 264.3729,
+      "ask": 264.4787,
+      "volume": 288037,
+      "timestamp": "2026-05-17T08:35:18.968832+00:00",
+      "currency": "USD",
+      "exchange": "XNYS"
+    },
+    {
+      "symbol": "GOOGL US Equity",
+      "price": 434.0706,
+      "bid": 433.9838,
+      "ask": 434.1574,
+      "volume": 1714774,
+      "timestamp": "2026-05-17T08:35:18.968832+00:00",
+      "currency": "USD",
+      "exchange": "XNYS"
+    },
+    {
+      "symbol": "TSLA US Equity",
+      "price": 499.4616,
+      "bid": 499.3617,
+      "ask": 499.5615,
+      "volume": 947533,
+      "timestamp": "2026-05-17T08:35:18.968832+00:00",
+      "currency": "USD",
+      "exchange": "XNYS"
+    },
+    {
+      "symbol": "SPY US Equity",
+      "price": 349.5923,
+      "bid": 349.5224,
+      "ask": 349.6622,
+      "volume": 160408,
+      "timestamp": "2026-05-17T08:35:18.968832+00:00",
+      "currency": "USD",
+      "exchange": "XNYS"
+    },
+    {
+      "symbol": "EURUSD Curncy",
+      "price": 355.2884,
+      "bid": 355.2173,
+      "ask": 355.3595,
+      "volume": 188288,
+      "timestamp": "2026-05-17T08:35:18.968832+00:00",
+      "currency": "USD",
+      "exchange": "XNYS"
+    },
+    {
+      "symbol": "GC1 Comdty",
+      "price": 386.1833,
+      "bid": 386.1061,
+      "ask": 386.2605,
+      "volume": 1206113,
+      "timestamp": "2026-05-17T08:35:18.968832+00:00",
+      "currency": "USD",
+      "exchange": "XNYS"
+    }
+  ],
+  "indicators": [
+    {
+      "name": "PE_RATIO",
+      "value": 18.35,
+      "unit": "x",
+      "as_of": "2026-05-17T08:35:18.969495+00:00"
+    },
+    {
+      "name": "DIV_YIELD",
+      "value": 2.85,
+      "unit": "%",
+      "as_of": "2026-05-17T08:35:18.969495+00:00"
+    },
+    {
+      "name": "BETA",
+      "value": 0.79,
+      "unit": "x",
+      "as_of": "2026-05-17T08:35:18.969495+00:00"
+    },
+    {
+      "name": "RSI_14",
+      "value": 44.74,
+      "unit": "index",
+      "as_of": "2026-05-17T08:35:18.969495+00:00"
+    },
+    {
+      "name": "MACD",
+      "value": -1.786,
+      "unit": "pts",
+      "as_of": "2026-05-17T08:35:18.969495+00:00"
+    },
+    {
+      "name": "IVOL_30D",
+      "value": 42.6,
+      "unit": "%",
+      "as_of": "2026-05-17T08:35:18.969495+00:00"
+    }
+  ],
+  "history": [
+    {
+      "symbol": "AAPL US Equity",
+      "date": "2026-05-11",
+      "open": 232.4948,
+      "high": 235.2868,
+      "low": 230.2847,
+      "close": 234.0237,
+      "volume": 14340858
+    },
+    {
+      "symbol": "AAPL US Equity",
+      "date": "2026-05-12",
+      "open": 234.0237,
+      "high": 240.0614,
+      "low": 231.7965,
+      "close": 238.7656,
+      "volume": 24176880
+    },
+    {
+      "symbol": "AAPL US Equity",
+      "date": "2026-05-13",
+      "open": 238.7656,
+      "high": 240.2359,
+      "low": 237.1994,
+      "close": 237.8279,
+      "volume": 36815647
+    },
+    {
+      "symbol": "AAPL US Equity",
+      "date": "2026-05-14",
+      "open": 237.8279,
+      "high": 245.8712,
+      "low": 236.8779,
+      "close": 244.6998,
+      "volume": 10356720
+    },
+    {
+      "symbol": "AAPL US Equity",
+      "date": "2026-05-15",
+      "open": 244.6998,
+      "high": 245.1491,
+      "low": 237.5587,
+      "close": 237.6236,
+      "volume": 2115349
+    },
+    {
+      "symbol": "AAPL US Equity",
+      "date": "2026-05-16",
+      "open": 237.6236,
+      "high": 239.7892,
+      "low": 232.5207,
+      "close": 233.6804,
+      "volume": 7743313
+    },
+    {
+      "symbol": "AAPL US Equity",
+      "date": "2026-05-17",
+      "open": 233.6804,
+      "high": 235.965,
+      "low": 231.9705,
+      "close": 233.0481,
+      "volume": 4961737
+    },
+    {
+      "symbol": "MSFT US Equity",
+      "date": "2026-05-11",
+      "open": 264.4258,
+      "high": 266.9445,
+      "low": 264.3051,
+      "close": 265.8924,
+      "volume": 3000834
+    },
+    {
+      "symbol": "MSFT US Equity",
+      "date": "2026-05-12",
+      "open": 265.8924,
+      "high": 267.594,
+      "low": 264.7885,
+      "close": 266.7026,
+      "volume": 27473368
+    },
+    {
+      "symbol": "MSFT US Equity",
+      "date": "2026-05-13",
+      "open": 266.7026,
+      "high": 271.0073,
+      "low": 264.1367,
+      "close": 269.0908,
+      "volume": 1339101
+    },
+    {
+      "symbol": "MSFT US Equity",
+      "date": "2026-05-14",
+      "open": 269.0908,
+      "high": 272.0193,
+      "low": 266.4324,
+      "close": 271.3194,
+      "volume": 48925143
+    },
+    {
+      "symbol": "MSFT US Equity",
+      "date": "2026-05-15",
+      "open": 271.3194,
+      "high": 276.5717,
+      "low": 269.3615,
+      "close": 274.2847,
+      "volume": 45399723
+    },
+    {
+      "symbol": "MSFT US Equity",
+      "date": "2026-05-16",
+      "open": 274.2847,
+      "high": 278.8521,
+      "low": 273.4935,
+      "close": 277.8052,
+      "volume": 49027932
+    },
+    {
+      "symbol": "MSFT US Equity",
+      "date": "2026-05-17",
+      "open": 277.8052,
+      "high": 280.8326,
+      "low": 275.8493,
+      "close": 278.5665,
+      "volume": 33898424
+    },
+    {
+      "symbol": "GOOGL US Equity",
+      "date": "2026-05-11",
+      "open": 434.0706,
+      "high": 436.8886,
+      "low": 432.6391,
+      "close": 434.2531,
+      "volume": 13891965
+    },
+    {
+      "symbol": "GOOGL US Equity",
+      "date": "2026-05-12",
+      "open": 434.2531,
+      "high": 437.377,
+      "low": 428.5119,
+      "close": 429.564,
+      "volume": 39747413
+    },
+    {
+      "symbol": "GOOGL US Equity",
+      "date": "2026-05-13",
+      "open": 429.564,
+      "high": 433.381,
+      "low": 420.5407,
+      "close": 423.1372,
+      "volume": 33039585
+    },
+    {
+      "symbol": "GOOGL US Equity",
+      "date": "2026-05-14",
+      "open": 423.1372,
+      "high": 438.8199,
+      "low": 421.0084,
+      "close": 435.7329,
+      "volume": 15101248
+    },
+    {
+      "symbol": "GOOGL US Equity",
+      "date": "2026-05-15",
+      "open": 435.7329,
+      "high": 436.6422,
+      "low": 426.7616,
+      "close": 429.1744,
+      "volume": 24067473
+    },
+    {
+      "symbol": "GOOGL US Equity",
+      "date": "2026-05-16",
+      "open": 429.1744,
+      "high": 442.316,
+      "low": 429.1228,
+      "close": 441.8766,
+      "volume": 39340465
+    },
+    {
+      "symbol": "GOOGL US Equity",
+      "date": "2026-05-17",
+      "open": 441.8766,
+      "high": 446.2151,
+      "low": 439.0387,
+      "close": 439.5818,
+      "volume": 14573616
+    },
+    {
+      "symbol": "TSLA US Equity",
+      "date": "2026-05-11",
+      "open": 499.4616,
+      "high": 499.481,
+      "low": 494.4399,
+      "close": 497.5065,
+      "volume": 48479087
+    },
+    {
+      "symbol": "TSLA US Equity",
+      "date": "2026-05-12",
+      "open": 497.5065,
+      "high": 504.099,
+      "low": 494.4961,
+      "close": 500.6589,
+      "volume": 34509245
+    },
+    {
+      "symbol": "TSLA US Equity",
+      "date": "2026-05-13",
+      "open": 500.6589,
+      "high": 513.2602,
+      "low": 497.6307,
+      "close": 509.2482,
+      "volume": 33865193
+    },
+    {
+      "symbol": "TSLA US Equity",
+      "date": "2026-05-14",
+      "open": 509.2482,
+      "high": 514.0966,
+      "low": 507.1777,
+      "close": 513.7928,
+      "volume": 16471116
+    },
+    {
+      "symbol": "TSLA US Equity",
+      "date": "2026-05-15",
+      "open": 513.7928,
+      "high": 513.9694,
+      "low": 501.0336,
+      "close": 501.5428,
+      "volume": 34759847
+    },
+    {
+      "symbol": "TSLA US Equity",
+      "date": "2026-05-16",
+      "open": 501.5428,
+      "high": 513.6316,
+      "low": 498.0291,
+      "close": 509.2079,
+      "volume": 4226126
+    },
+    {
+      "symbol": "TSLA US Equity",
+      "date": "2026-05-17",
+      "open": 509.2079,
+      "high": 513.346,
+      "low": 499.2009,
+      "close": 502.763,
+      "volume": 11214230
+    },
+    {
+      "symbol": "SPY US Equity",
+      "date": "2026-05-11",
+      "open": 349.5923,
+      "high": 357.7431,
+      "low": 348.4694,
+      "close": 354.2492,
+      "volume": 28971977
+    },
+    {
+      "symbol": "SPY US Equity",
+      "date": "2026-05-12",
+      "open": 354.2492,
+      "high": 356.7309,
+      "low": 345.4354,
+      "close": 348.3156,
+      "volume": 36578874
+    },
+    {
+      "symbol": "SPY US Equity",
+      "date": "2026-05-13",
+      "open": 348.3156,
+      "high": 348.96,
+      "low": 338.2978,
+      "close": 341.1781,
+      "volume": 35805169
+    },
+    {
+      "symbol": "SPY US Equity",
+      "date": "2026-05-14",
+      "open": 341.1781,
+      "high": 341.6844,
+      "low": 339.656,
+      "close": 340.5651,
+      "volume": 46700980
+    },
+    {
+      "symbol": "SPY US Equity",
+      "date": "2026-05-15",
+      "open": 340.5651,
+      "high": 342.004,
+      "low": 338.6058,
+      "close": 340.2054,
+      "volume": 33456888
+    },
+    {
+      "symbol": "SPY US Equity",
+      "date": "2026-05-16",
+      "open": 340.2054,
+      "high": 341.2414,
+      "low": 335.6625,
+      "close": 338.2539,
+      "volume": 7786909
+    },
+    {
+      "symbol": "SPY US Equity",
+      "date": "2026-05-17",
+      "open": 338.2539,
+      "high": 340.4433,
+      "low": 335.852,
+      "close": 339.7289,
+      "volume": 13636989
+    },
+    {
+      "symbol": "EURUSD Curncy",
+      "date": "2026-05-11",
+      "open": 355.2884,
+      "high": 355.919,
+      "low": 352.7905,
+      "close": 354.4685,
+      "volume": 23091629
+    },
+    {
+      "symbol": "EURUSD Curncy",
+      "date": "2026-05-12",
+      "open": 354.4685,
+      "high": 370.9259,
+      "low": 352.2357,
+      "close": 367.8281,
+      "volume": 13808787
+    },
+    {
+      "symbol": "EURUSD Curncy",
+      "date": "2026-05-13",
+      "open": 367.8281,
+      "high": 375.7062,
+      "low": 365.4805,
+      "close": 373.0999,
+      "volume": 11860705
+    },
+    {
+      "symbol": "EURUSD Curncy",
+      "date": "2026-05-14",
+      "open": 373.0999,
+      "high": 383.2594,
+      "low": 369.8895,
+      "close": 379.8766,
+      "volume": 31490464
+    },
+    {
+      "symbol": "EURUSD Curncy",
+      "date": "2026-05-15",
+      "open": 379.8766,
+      "high": 385.749,
+      "low": 379.0319,
+      "close": 382.8367,
+      "volume": 9030283
+    },
+    {
+      "symbol": "EURUSD Curncy",
+      "date": "2026-05-16",
+      "open": 382.8367,
+      "high": 383.6771,
+      "low": 382.4255,
+      "close": 383.6115,
+      "volume": 46963198
+    },
+    {
+      "symbol": "EURUSD Curncy",
+      "date": "2026-05-17",
+      "open": 383.6115,
+      "high": 391.2916,
+      "low": 380.2717,
+      "close": 388.0914,
+      "volume": 32639372
+    },
+    {
+      "symbol": "GC1 Comdty",
+      "date": "2026-05-11",
+      "open": 386.1833,
+      "high": 390.1566,
+      "low": 383.0193,
+      "close": 386.9842,
+      "volume": 41606412
+    },
+    {
+      "symbol": "GC1 Comdty",
+      "date": "2026-05-12",
+      "open": 386.9842,
+      "high": 387.2776,
+      "low": 378.3209,
+      "close": 381.4703,
+      "volume": 24000988
+    },
+    {
+      "symbol": "GC1 Comdty",
+      "date": "2026-05-13",
+      "open": 381.4703,
+      "high": 383.2112,
+      "low": 373.1474,
+      "close": 373.7661,
+      "volume": 40913716
+    },
+    {
+      "symbol": "GC1 Comdty",
+      "date": "2026-05-14",
+      "open": 373.7661,
+      "high": 385.3704,
+      "low": 372.8416,
+      "close": 382.521,
+      "volume": 26705878
+    },
+    {
+      "symbol": "GC1 Comdty",
+      "date": "2026-05-15",
+      "open": 382.521,
+      "high": 392.6599,
+      "low": 382.2593,
+      "close": 389.3035,
+      "volume": 38259718
+    },
+    {
+      "symbol": "GC1 Comdty",
+      "date": "2026-05-16",
+      "open": 389.3035,
+      "high": 403.8137,
+      "low": 388.0308,
+      "close": 401.7502,
+      "volume": 14070606
+    },
+    {
+      "symbol": "GC1 Comdty",
+      "date": "2026-05-17",
+      "open": 401.7502,
+      "high": 404.1319,
+      "low": 395.7568,
+      "close": 398.6911,
+      "volume": 3031621
+    }
+  ],
+  "metadata": {
+    "vendor": "OmniMind Mock Bloomberg",
+    "schema": "omnimind.finance.v1",
+    "spark_ingest": true
+  },
+  "spark_records": [
+    {
+      "symbol": "AAPL US Equity",
+      "price": 232.4948,
+      "bid": 232.4483,
+      "ask": 232.5413,
+      "volume": 786420,
+      "timestamp": "2026-05-17T08:35:18.968832+00:00",
+      "currency": "USD",
+      "exchange": "XNYS",
+      "record_type": "tick",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "MSFT US Equity",
+      "price": 264.4258,
+      "bid": 264.3729,
+      "ask": 264.4787,
+      "volume": 288037,
+      "timestamp": "2026-05-17T08:35:18.968832+00:00",
+      "currency": "USD",
+      "exchange": "XNYS",
+      "record_type": "tick",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "GOOGL US Equity",
+      "price": 434.0706,
+      "bid": 433.9838,
+      "ask": 434.1574,
+      "volume": 1714774,
+      "timestamp": "2026-05-17T08:35:18.968832+00:00",
+      "currency": "USD",
+      "exchange": "XNYS",
+      "record_type": "tick",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "TSLA US Equity",
+      "price": 499.4616,
+      "bid": 499.3617,
+      "ask": 499.5615,
+      "volume": 947533,
+      "timestamp": "2026-05-17T08:35:18.968832+00:00",
+      "currency": "USD",
+      "exchange": "XNYS",
+      "record_type": "tick",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "SPY US Equity",
+      "price": 349.5923,
+      "bid": 349.5224,
+      "ask": 349.6622,
+      "volume": 160408,
+      "timestamp": "2026-05-17T08:35:18.968832+00:00",
+      "currency": "USD",
+      "exchange": "XNYS",
+      "record_type": "tick",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "EURUSD Curncy",
+      "price": 355.2884,
+      "bid": 355.2173,
+      "ask": 355.3595,
+      "volume": 188288,
+      "timestamp": "2026-05-17T08:35:18.968832+00:00",
+      "currency": "USD",
+      "exchange": "XNYS",
+      "record_type": "tick",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "GC1 Comdty",
+      "price": 386.1833,
+      "bid": 386.1061,
+      "ask": 386.2605,
+      "volume": 1206113,
+      "timestamp": "2026-05-17T08:35:18.968832+00:00",
+      "currency": "USD",
+      "exchange": "XNYS",
+      "record_type": "tick",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "AAPL US Equity",
+      "date": "2026-05-11",
+      "open": 232.4948,
+      "high": 235.2868,
+      "low": 230.2847,
+      "close": 234.0237,
+      "volume": 14340858,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "AAPL US Equity",
+      "date": "2026-05-12",
+      "open": 234.0237,
+      "high": 240.0614,
+      "low": 231.7965,
+      "close": 238.7656,
+      "volume": 24176880,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "AAPL US Equity",
+      "date": "2026-05-13",
+      "open": 238.7656,
+      "high": 240.2359,
+      "low": 237.1994,
+      "close": 237.8279,
+      "volume": 36815647,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "AAPL US Equity",
+      "date": "2026-05-14",
+      "open": 237.8279,
+      "high": 245.8712,
+      "low": 236.8779,
+      "close": 244.6998,
+      "volume": 10356720,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "AAPL US Equity",
+      "date": "2026-05-15",
+      "open": 244.6998,
+      "high": 245.1491,
+      "low": 237.5587,
+      "close": 237.6236,
+      "volume": 2115349,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "AAPL US Equity",
+      "date": "2026-05-16",
+      "open": 237.6236,
+      "high": 239.7892,
+      "low": 232.5207,
+      "close": 233.6804,
+      "volume": 7743313,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "AAPL US Equity",
+      "date": "2026-05-17",
+      "open": 233.6804,
+      "high": 235.965,
+      "low": 231.9705,
+      "close": 233.0481,
+      "volume": 4961737,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "MSFT US Equity",
+      "date": "2026-05-11",
+      "open": 264.4258,
+      "high": 266.9445,
+      "low": 264.3051,
+      "close": 265.8924,
+      "volume": 3000834,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "MSFT US Equity",
+      "date": "2026-05-12",
+      "open": 265.8924,
+      "high": 267.594,
+      "low": 264.7885,
+      "close": 266.7026,
+      "volume": 27473368,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "MSFT US Equity",
+      "date": "2026-05-13",
+      "open": 266.7026,
+      "high": 271.0073,
+      "low": 264.1367,
+      "close": 269.0908,
+      "volume": 1339101,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "MSFT US Equity",
+      "date": "2026-05-14",
+      "open": 269.0908,
+      "high": 272.0193,
+      "low": 266.4324,
+      "close": 271.3194,
+      "volume": 48925143,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "MSFT US Equity",
+      "date": "2026-05-15",
+      "open": 271.3194,
+      "high": 276.5717,
+      "low": 269.3615,
+      "close": 274.2847,
+      "volume": 45399723,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "MSFT US Equity",
+      "date": "2026-05-16",
+      "open": 274.2847,
+      "high": 278.8521,
+      "low": 273.4935,
+      "close": 277.8052,
+      "volume": 49027932,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "MSFT US Equity",
+      "date": "2026-05-17",
+      "open": 277.8052,
+      "high": 280.8326,
+      "low": 275.8493,
+      "close": 278.5665,
+      "volume": 33898424,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "GOOGL US Equity",
+      "date": "2026-05-11",
+      "open": 434.0706,
+      "high": 436.8886,
+      "low": 432.6391,
+      "close": 434.2531,
+      "volume": 13891965,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "GOOGL US Equity",
+      "date": "2026-05-12",
+      "open": 434.2531,
+      "high": 437.377,
+      "low": 428.5119,
+      "close": 429.564,
+      "volume": 39747413,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "GOOGL US Equity",
+      "date": "2026-05-13",
+      "open": 429.564,
+      "high": 433.381,
+      "low": 420.5407,
+      "close": 423.1372,
+      "volume": 33039585,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "GOOGL US Equity",
+      "date": "2026-05-14",
+      "open": 423.1372,
+      "high": 438.8199,
+      "low": 421.0084,
+      "close": 435.7329,
+      "volume": 15101248,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "GOOGL US Equity",
+      "date": "2026-05-15",
+      "open": 435.7329,
+      "high": 436.6422,
+      "low": 426.7616,
+      "close": 429.1744,
+      "volume": 24067473,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "GOOGL US Equity",
+      "date": "2026-05-16",
+      "open": 429.1744,
+      "high": 442.316,
+      "low": 429.1228,
+      "close": 441.8766,
+      "volume": 39340465,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "GOOGL US Equity",
+      "date": "2026-05-17",
+      "open": 441.8766,
+      "high": 446.2151,
+      "low": 439.0387,
+      "close": 439.5818,
+      "volume": 14573616,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "TSLA US Equity",
+      "date": "2026-05-11",
+      "open": 499.4616,
+      "high": 499.481,
+      "low": 494.4399,
+      "close": 497.5065,
+      "volume": 48479087,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "TSLA US Equity",
+      "date": "2026-05-12",
+      "open": 497.5065,
+      "high": 504.099,
+      "low": 494.4961,
+      "close": 500.6589,
+      "volume": 34509245,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "TSLA US Equity",
+      "date": "2026-05-13",
+      "open": 500.6589,
+      "high": 513.2602,
+      "low": 497.6307,
+      "close": 509.2482,
+      "volume": 33865193,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "TSLA US Equity",
+      "date": "2026-05-14",
+      "open": 509.2482,
+      "high": 514.0966,
+      "low": 507.1777,
+      "close": 513.7928,
+      "volume": 16471116,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "TSLA US Equity",
+      "date": "2026-05-15",
+      "open": 513.7928,
+      "high": 513.9694,
+      "low": 501.0336,
+      "close": 501.5428,
+      "volume": 34759847,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "TSLA US Equity",
+      "date": "2026-05-16",
+      "open": 501.5428,
+      "high": 513.6316,
+      "low": 498.0291,
+      "close": 509.2079,
+      "volume": 4226126,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "TSLA US Equity",
+      "date": "2026-05-17",
+      "open": 509.2079,
+      "high": 513.346,
+      "low": 499.2009,
+      "close": 502.763,
+      "volume": 11214230,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "SPY US Equity",
+      "date": "2026-05-11",
+      "open": 349.5923,
+      "high": 357.7431,
+      "low": 348.4694,
+      "close": 354.2492,
+      "volume": 28971977,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "SPY US Equity",
+      "date": "2026-05-12",
+      "open": 354.2492,
+      "high": 356.7309,
+      "low": 345.4354,
+      "close": 348.3156,
+      "volume": 36578874,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "SPY US Equity",
+      "date": "2026-05-13",
+      "open": 348.3156,
+      "high": 348.96,
+      "low": 338.2978,
+      "close": 341.1781,
+      "volume": 35805169,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "SPY US Equity",
+      "date": "2026-05-14",
+      "open": 341.1781,
+      "high": 341.6844,
+      "low": 339.656,
+      "close": 340.5651,
+      "volume": 46700980,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "SPY US Equity",
+      "date": "2026-05-15",
+      "open": 340.5651,
+      "high": 342.004,
+      "low": 338.6058,
+      "close": 340.2054,
+      "volume": 33456888,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "SPY US Equity",
+      "date": "2026-05-16",
+      "open": 340.2054,
+      "high": 341.2414,
+      "low": 335.6625,
+      "close": 338.2539,
+      "volume": 7786909,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "SPY US Equity",
+      "date": "2026-05-17",
+      "open": 338.2539,
+      "high": 340.4433,
+      "low": 335.852,
+      "close": 339.7289,
+      "volume": 13636989,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "EURUSD Curncy",
+      "date": "2026-05-11",
+      "open": 355.2884,
+      "high": 355.919,
+      "low": 352.7905,
+      "close": 354.4685,
+      "volume": 23091629,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "EURUSD Curncy",
+      "date": "2026-05-12",
+      "open": 354.4685,
+      "high": 370.9259,
+      "low": 352.2357,
+      "close": 367.8281,
+      "volume": 13808787,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "EURUSD Curncy",
+      "date": "2026-05-13",
+      "open": 367.8281,
+      "high": 375.7062,
+      "low": 365.4805,
+      "close": 373.0999,
+      "volume": 11860705,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "EURUSD Curncy",
+      "date": "2026-05-14",
+      "open": 373.0999,
+      "high": 383.2594,
+      "low": 369.8895,
+      "close": 379.8766,
+      "volume": 31490464,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "EURUSD Curncy",
+      "date": "2026-05-15",
+      "open": 379.8766,
+      "high": 385.749,
+      "low": 379.0319,
+      "close": 382.8367,
+      "volume": 9030283,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "EURUSD Curncy",
+      "date": "2026-05-16",
+      "open": 382.8367,
+      "high": 383.6771,
+      "low": 382.4255,
+      "close": 383.6115,
+      "volume": 46963198,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "EURUSD Curncy",
+      "date": "2026-05-17",
+      "open": 383.6115,
+      "high": 391.2916,
+      "low": 380.2717,
+      "close": 388.0914,
+      "volume": 32639372,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "GC1 Comdty",
+      "date": "2026-05-11",
+      "open": 386.1833,
+      "high": 390.1566,
+      "low": 383.0193,
+      "close": 386.9842,
+      "volume": 41606412,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "GC1 Comdty",
+      "date": "2026-05-12",
+      "open": 386.9842,
+      "high": 387.2776,
+      "low": 378.3209,
+      "close": 381.4703,
+      "volume": 24000988,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "GC1 Comdty",
+      "date": "2026-05-13",
+      "open": 381.4703,
+      "high": 383.2112,
+      "low": 373.1474,
+      "close": 373.7661,
+      "volume": 40913716,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "GC1 Comdty",
+      "date": "2026-05-14",
+      "open": 373.7661,
+      "high": 385.3704,
+      "low": 372.8416,
+      "close": 382.521,
+      "volume": 26705878,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "GC1 Comdty",
+      "date": "2026-05-15",
+      "open": 382.521,
+      "high": 392.6599,
+      "low": 382.2593,
+      "close": 389.3035,
+      "volume": 38259718,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "GC1 Comdty",
+      "date": "2026-05-16",
+      "open": 389.3035,
+      "high": 403.8137,
+      "low": 388.0308,
+      "close": 401.7502,
+      "volume": 14070606,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    },
+    {
+      "symbol": "GC1 Comdty",
+      "date": "2026-05-17",
+      "open": 401.7502,
+      "high": 404.1319,
+      "low": 395.7568,
+      "close": 398.6911,
+      "volume": 3031621,
+      "record_type": "ohlcv",
+      "batch_id": "ee56a491-479d-4327-9cdc-74bee5962fef"
+    }
+  ]
+}

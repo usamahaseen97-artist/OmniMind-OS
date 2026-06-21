@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>ThemeHub Ultra Customizer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary-bg: #060212;
+            --card-bg: rgba(19, 11, 43, 0.6);
+            --accent-glow: rgba(139, 92, 246, 0.25);
+            --text-accent: #00ffcc;
+        }
+        body {
+            background-color: var(--primary-bg);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.4s ease-in-out;
+        }
+        .cyber-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--accent-glow);
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="text-slate-200 min-h-screen p-4 sm:p-6">
+
+    <div class="max-w-4xl mx-auto space-y-6">
+
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 border-b border-purple-900/40 pb-4">
+            <div>
+                <h1 id="main-headline" class="text-xl sm:text-2xl font-extrabold tracking-wide" style="color: var(--text-accent);">🎨 ThemeHub Independent Panel</h1>
+                <p class="text-xs text-purple-400">Usama, yahan se aap poore system ka roop apne mutabiq customize kar sakte hain.</p>
+            </div>
+            <input
+                id="backendUrl"
+                type="url"
+                value="http://127.0.0.1:8000"
+                class="bg-black/40 border border-purple-900/60 rounded-full px-3 py-1.5 text-[10px] text-white w-full sm:w-44"
+                title="Backend URL"
+            />
+        </div>
+
+        <div class="cyber-card rounded-2xl p-4 sm:p-6 shadow-2xl space-y-6">
+            <div>
+                <h2 class="text-base font-extrabold text-white flex items-center gap-2">✨ Custom Color Palette Selector</h2>
+                <p class="text-xs text-slate-400 mt-1">Niche diye gaye presets choose karein ya right side par diye gaye tool se apna custom color select karein!</p>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <button type="button" onclick="applySystemTheme('#060212', '#130b2b', '#8b5cf6', '#00ffcc', 'Neon Matrix')" class="flex items-center gap-2 bg-black/40 p-3 rounded-xl border border-purple-500/30 hover:scale-105 transition-all text-left">
+                    <span class="w-4 h-4 rounded-full bg-[#00ffcc] block shrink-0"></span>
+                    <div class="text-xs font-bold text-slate-200">Neon Matrix</div>
+                </button>
+                <button type="button" onclick="applySystemTheme('#1a0505', '#2d0d0d', '#ef4444', '#f97316', 'Netflix Crimson')" class="flex items-center gap-2 bg-black/40 p-3 rounded-xl border border-red-500/30 hover:scale-105 transition-all text-left">
+                    <span class="w-4 h-4 rounded-full bg-[#ef4444] block shrink-0"></span>
+                    <div class="text-xs font-bold text-slate-200">Netflix Red</div>
+                </button>
+                <button type="button" onclick="applySystemTheme('#022c22', '#064e3b', '#10b981', '#6ee7b7', 'Cyber Mint')" class="flex items-center gap-2 bg-black/40 p-3 rounded-xl border border-emerald-500/30 hover:scale-105 transition-all text-left">
+                    <span class="w-4 h-4 rounded-full bg-[#10b981] block shrink-0"></span>
+                    <div class="text-xs font-bold text-slate-200">Cyber Mint</div>
+                </button>
+                <button type="button" onclick="applySystemTheme('#0b1329', '#1c2541', '#3a506b', '#60a5fa', 'Ocean Deep')" class="flex items-center gap-2 bg-black/40 p-3 rounded-xl border border-blue-500/30 hover:scale-105 transition-all text-left">
+                    <span class="w-4 h-4 rounded-full bg-[#60a5fa] block shrink-0"></span>
+                    <div class="text-xs font-bold text-slate-200">Ocean Blue</div>
+                </button>
+            </div>
+
+            <div class="border-t border-purple-900/30 pt-4 grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+                <div class="space-y-1">
+                    <label class="text-xs font-bold text-purple-300" for="main-color-picker">Apni Marzi ka Color Pick Karein:</label>
+                    <p class="text-[11px] text-slate-400">Yahan click karke aap koi bhi custom color choose karenge, system automatically pure layout ko adjust kar dega.</p>
+                </div>
+                <div class="flex items-center gap-4 bg-black/30 p-3 rounded-xl border border-slate-800">
+                    <input type="color" id="main-color-picker" value="#00ffcc" oninput="triggerCustomHexInjection(this.value)" class="w-12 h-12 bg-transparent border-0 rounded-lg cursor-pointer">
+                    <div>
+                        <div class="text-xs font-mono font-bold text-slate-200" id="selected-hex-text">Current Color: #00ffcc</div>
+                        <div class="text-[10px] text-emerald-400">Pure System's skin will adapt automatically</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cyber-card rounded-2xl p-5 space-y-4">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">🎯 Interface Live Preview Node</h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="bg-black/40 p-4 rounded-xl border border-purple-900/20">
+                    <h4 class="text-sm font-bold mb-1" style="color: var(--text-accent);">Example Sample Block</h4>
+                    <p class="text-xs text-slate-400">Notice how the card borders, highlight texts, and layout backgrounds change dynamically.</p>
+                </div>
+                <div class="bg-black/40 p-4 rounded-xl border border-purple-900/20 flex items-center justify-center">
+                    <button type="button" class="px-6 py-2 rounded-xl text-xs font-bold text-black transition-all" style="background-color: var(--text-accent);">Sample Interactive Action</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-black/80 border border-slate-900 rounded-xl p-4 h-32 overflow-y-auto text-xs font-mono text-slate-300" id="theme-logs">
+            <p class="text-purple-400">$ ThemeHub Sovereign Matrix initialized. Awaiting custom input overrides...</p>
+        </div>
+
+    </div>
+
+    <script>
+        const logsContainer = document.getElementById("theme-logs");
+
+        function baseUrl() {
+            return document.getElementById("backendUrl").value.replace(/\/$/, "");
+        }
+
+        function log(msg, color = "text-slate-300") {
+            const line = document.createElement("p");
+            line.className = color;
+            line.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+            logsContainer.appendChild(line);
+            logsContainer.scrollTop = logsContainer.scrollHeight;
+        }
+
+        async function syncBackendTheme(schemeName, primaryBg) {
+            try {
+                const res = await fetch(`${baseUrl()}/api/v1/theme/customize`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        mode: "ai_emotional_auto",
+                        context_vector: schemeName.toLowerCase(),
+                        primary_color: primaryBg,
+                    }),
+                });
+                const data = await res.json();
+                if (data.success) {
+                    log(`☁ Backend synced: ${data.resolved_palette_tokens.mood_state}`, "text-emerald-400");
+                }
+            } catch {
+                /* local-only theme still works */
+            }
+        }
+
+        function applySystemTheme(bg, card, accent, textAccent, schemeName) {
+            document.documentElement.style.setProperty("--primary-bg", bg);
+            document.documentElement.style.setProperty("--card-bg", card);
+            document.documentElement.style.setProperty(
+                "--accent-glow",
+                `rgba(${hexToRgb(accent)}, 0.25)`
+            );
+            document.documentElement.style.setProperty("--text-accent", textAccent);
+
+            if (textAccent.startsWith("#")) {
+                document.getElementById("main-color-picker").value = textAccent;
+            }
+            document.getElementById("selected-hex-text").innerText = `Current Color: ${textAccent}`;
+            log(`✓ Theme Change Triggered: [${schemeName}] -> Applied Successfully`, "text-cyan-400");
+            syncBackendTheme(schemeName, bg);
+        }
+
+        function triggerCustomHexInjection(hexValue) {
+            let darkBg = lightenDarkenColor(hexValue, -150);
+            let darkCard = lightenDarkenColor(hexValue, -120);
+            if (darkBg === "#000000") darkBg = "#0b0813";
+            applySystemTheme(darkBg, darkCard, hexValue, hexValue, "Custom User Selection");
+        }
+
+        function hexToRgb(hex) {
+            if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+                let c = hex.substring(1).split("");
+                if (c.length === 3) c = [c[0], c[0], c[1], c[1], c[2], c[2]];
+                const n = parseInt("0x" + c.join(""), 16);
+                return [(n >> 16) & 255, (n >> 8) & 255, n & 255].join(",");
+            }
+            return "139, 92, 246";
+        }
+
+        function lightenDarkenColor(col, amt) {
+            let usePound = true;
+            if (col[0] === "#") {
+                col = col.slice(1);
+                usePound = true;
+            }
+            const num = parseInt(col, 16);
+            let r = (num >> 16) + amt;
+            if (r > 255) r = 255;
+            else if (r < 0) r = 0;
+            let b = ((num >> 8) & 0x00ff) + amt;
+            if (b > 255) b = 255;
+            else if (b < 0) b = 0;
+            let g = (num & 0x0000ff) + amt;
+            if (g > 255) g = 255;
+            else if (g < 0) g = 0;
+            return (usePound ? "#" : "") + (g | (b << 8) | (r << 16)).toString(16).padStart(6, "0");
+        }
+    </script>
+</body>
+</html>

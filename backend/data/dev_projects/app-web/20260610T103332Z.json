@@ -1,0 +1,11 @@
+{
+  "tool_type": "app-web",
+  "label": "app-web-20260610T103332Z",
+  "saved_at": "2026-06-10T10:33:32.210208+00:00",
+  "files": {
+    "backend/main.py": "from fastapi import FastAPI\nfrom routers.api import router as api_router\n\napp = FastAPI(title=\"OmniMind App API\")\napp.include_router(api_router)\n",
+    "backend/routers/api.py": "from fastapi import APIRouter\n\nrouter = APIRouter(prefix=\"/api\", tags=[\"api\"])\n\n\n@router.get(\"/health\")\nasync def health():\n    return {\"ok\": True, \"service\": \"app-web\"}\n",
+    "src/app/page.tsx": "export default function Page() {\n  return (\n    <main className=\"omni-app-shell\">\n      <h1>OmniMind App</h1>\n      <p>Full-stack Next.js \u00b7 reactive routes</p>\n    </main>\n  );\n}\n",
+    "src/hooks/useAuth.ts": "import { useState } from \"react\";\n\nexport function useAuth() {\n  const [user, setUser] = useState<{ id: string; email: string } | null>(null);\n  return { user, setUser, isAuthenticated: Boolean(user) };\n}\n"
+  }
+}

@@ -1,0 +1,4 @@
+# CrewAI agent stack — install only on Python 3.10, 3.11, 3.12, or 3.13
+# (CrewAI does not support Python 3.14 yet.)
+-r requirements.txt
+crewai>=0.95.0

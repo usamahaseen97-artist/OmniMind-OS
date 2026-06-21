@@ -1,0 +1,21 @@
+# Next.js aur Node build folders ko ignore karo
+.next/
+node_modules/
+out/
+build/
+
+# Python virtual environment aur caches ko ignore karo
+.venv/
+venv/
+_pycache_/
+*.pyc
+.pytest_cache/
+
+# Docker aur system logs ko ignore karo
+.docker/
+logs/
+*.log
+
+# Git aur environment files
+.git/
+.env

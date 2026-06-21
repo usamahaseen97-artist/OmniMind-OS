@@ -1,0 +1,340 @@
+{
+  "synced_at": "2026-06-19T21:22:56.478844+00:00",
+  "nodes": [
+    {
+      "id": "github_models",
+      "name": "GitHub Models",
+      "type": "github_models",
+      "priority": 1,
+      "tags": [
+        "llm",
+        "open-source",
+        "free-tier"
+      ]
+    },
+    {
+      "id": "pollinations_openai",
+      "name": "Pollinations OpenAI-compat",
+      "type": "openai_compat",
+      "url": "https://gen.pollinations.ai/v1/chat/completions",
+      "model": "openai",
+      "priority": 2,
+      "tags": [
+        "llm",
+        "free",
+        "community"
+      ]
+    },
+    {
+      "id": "pollinations_text",
+      "name": "Pollinations Text",
+      "type": "text_get",
+      "url": "https://text.pollinations.ai",
+      "priority": 3,
+      "tags": [
+        "llm",
+        "free",
+        "community"
+      ]
+    },
+    {
+      "id": "community_https_developer_yahoo_com_gemini",
+      "name": "Community API (https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md)",
+      "type": "openai_compat",
+      "url": "https://developer.yahoo.com/gemini/v1/chat/completions",
+      "model": "auto",
+      "priority": 50,
+      "tags": [
+        "community",
+        "synced"
+      ],
+      "source": "https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md"
+    },
+    {
+      "id": "community_http_www_wikitude_com_download",
+      "name": "Community API (https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md)",
+      "type": "openai_compat",
+      "url": "http://www.wikitude.com/download/v1/chat/completions",
+      "model": "auto",
+      "priority": 50,
+      "tags": [
+        "community",
+        "synced"
+      ],
+      "source": "https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md"
+    },
+    {
+      "id": "community_http_docs_aws_amazon_com_machine_learning_latest",
+      "name": "Community API (https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md)",
+      "type": "openai_compat",
+      "url": "http://docs.aws.amazon.com/machine-learning/latest/APIReference/Welcome.html/v1/chat/completions",
+      "model": "auto",
+      "priority": 50,
+      "tags": [
+        "community",
+        "synced"
+      ],
+      "source": "https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md"
+    },
+    {
+      "id": "community_http_aylien_com",
+      "name": "Community API (https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md)",
+      "type": "openai_compat",
+      "url": "http://aylien.com/v1/chat/completions",
+      "model": "auto",
+      "priority": 50,
+      "tags": [
+        "community",
+        "synced"
+      ],
+      "source": "https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md"
+    },
+    {
+      "id": "community_http_bigml_com_api",
+      "name": "Community API (https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md)",
+      "type": "openai_compat",
+      "url": "http://bigml.com/api/v1/chat/completions",
+      "model": "auto",
+      "priority": 50,
+      "tags": [
+        "community",
+        "synced"
+      ],
+      "source": "https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md"
+    },
+    {
+      "id": "community_https_cloud_google_com_ml_engine_docs",
+      "name": "Community API (https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md)",
+      "type": "openai_compat",
+      "url": "https://cloud.google.com/ml-engine/docs/v1/chat/completions",
+      "model": "auto",
+      "priority": 50,
+      "tags": [
+        "community",
+        "synced"
+      ],
+      "source": "https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md"
+    },
+    {
+      "id": "community_https_azure_microsoft_com_en_us_services_cogniti",
+      "name": "Community API (https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md)",
+      "type": "openai_compat",
+      "url": "https://azure.microsoft.com/en-us/services/cognitive-services/v1/chat/completions",
+      "model": "auto",
+      "priority": 50,
+      "tags": [
+        "community",
+        "synced"
+      ],
+      "source": "https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md"
+    },
+    {
+      "id": "community_https_objectcut_com",
+      "name": "Community API (https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md)",
+      "type": "openai_compat",
+      "url": "https://objectcut.com/v1/chat/completions",
+      "model": "auto",
+      "priority": 50,
+      "tags": [
+        "community",
+        "synced"
+      ],
+      "source": "https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md"
+    },
+    {
+      "id": "community_https_endpoints_ai_cloud_ovh_net",
+      "name": "Community API (https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md)",
+      "type": "openai_compat",
+      "url": "https://endpoints.ai.cloud.ovh.net/v1/chat/completions",
+      "model": "auto",
+      "priority": 50,
+      "tags": [
+        "community",
+        "synced"
+      ],
+      "source": "https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md"
+    },
+    {
+      "id": "community_https_developer_infermedica_com_docs_introductio",
+      "name": "Community API (https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md)",
+      "type": "openai_compat",
+      "url": "https://developer.infermedica.com/docs/introduction/v1/chat/completions",
+      "model": "auto",
+      "priority": 50,
+      "tags": [
+        "community",
+        "synced"
+      ],
+      "source": "https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md"
+    },
+    {
+      "id": "community_https_www_browsercat_com_docs",
+      "name": "Community API (https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md)",
+      "type": "openai_compat",
+      "url": "https://www.browsercat.com/docs/v1/chat/completions",
+      "model": "auto",
+      "priority": 50,
+      "tags": [
+        "community",
+        "synced"
+      ],
+      "source": "https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md"
+    },
+    {
+      "id": "community_https_developers_livechatinc_com",
+      "name": "Community API (https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md)",
+      "type": "openai_compat",
+      "url": "https://developers.livechatinc.com/v1/chat/completions",
+      "model": "auto",
+      "priority": 50,
+      "tags": [
+        "community",
+        "synced"
+      ],
+      "source": "https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md"
+    },
+    {
+      "id": "community_https_aimastering_com_api_docs",
+      "name": "Community API (https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md)",
+      "type": "openai_compat",
+      "url": "https://aimastering.com/api_docs/v1/chat/completions",
+      "model": "auto",
+      "priority": 50,
+      "tags": [
+        "community",
+        "synced"
+      ],
+      "source": "https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md"
+    },
+    {
+      "id": "community_https_cloudmersive_com_nlp_api",
+      "name": "Community API (https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md)",
+      "type": "openai_compat",
+      "url": "https://cloudmersive.com/nlp-api/v1/chat/completions",
+      "model": "auto",
+      "priority": 50,
+      "tags": [
+        "community",
+        "synced"
+      ],
+      "source": "https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md"
+    },
+    {
+      "id": "community_http_www_datumbox_com_machine_learning_api",
+      "name": "Community API (https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md)",
+      "type": "openai_compat",
+      "url": "http://www.datumbox.com/machine-learning-api/v1/chat/completions",
+      "model": "auto",
+      "priority": 50,
+      "tags": [
+        "community",
+        "synced"
+      ],
+      "source": "https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md"
+    },
+    {
+      "id": "community_https_www_lemonfox_ai_apis_speech_to_text",
+      "name": "Community API (https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md)",
+      "type": "openai_compat",
+      "url": "https://www.lemonfox.ai/apis/speech-to-text/v1/chat/completions",
+      "model": "auto",
+      "priority": 50,
+      "tags": [
+        "community",
+        "synced"
+      ],
+      "source": "https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md"
+    },
+    {
+      "id": "community_https_www_luis_ai",
+      "name": "Community API (https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md)",
+      "type": "openai_compat",
+      "url": "https://www.luis.ai/v1/chat/completions",
+      "model": "auto",
+      "priority": 50,
+      "tags": [
+        "community",
+        "synced"
+      ],
+      "source": "https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md"
+    },
+    {
+      "id": "community_https_platform_openai_com_docs_introduction",
+      "name": "Community API (https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md)",
+      "type": "openai_compat",
+      "url": "https://platform.openai.com/docs/introduction/v1/chat/completions",
+      "model": "auto",
+      "priority": 50,
+      "tags": [
+        "community",
+        "synced"
+      ],
+      "source": "https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md"
+    },
+    {
+      "id": "community_https_www_paralleldots_com_text_analysis_apis",
+      "name": "Community API (https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md)",
+      "type": "openai_compat",
+      "url": "https://www.paralleldots.com/text-analysis-apis/v1/chat/completions",
+      "model": "auto",
+      "priority": 50,
+      "tags": [
+        "community",
+        "synced"
+      ],
+      "source": "https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md"
+    },
+    {
+      "id": "community_https_speechtext_ai_speech_recognition_api",
+      "name": "Community API (https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md)",
+      "type": "openai_compat",
+      "url": "https://speechtext.ai/speech-recognition-api/v1/chat/completions",
+      "model": "auto",
+      "priority": 50,
+      "tags": [
+        "community",
+        "synced"
+      ],
+      "source": "https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md"
+    },
+    {
+      "id": "community_https_www_summarizebot_com_summarization_busines",
+      "name": "Community API (https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md)",
+      "type": "openai_compat",
+      "url": "https://www.summarizebot.com/summarization_business.html/v1/chat/completions",
+      "model": "auto",
+      "priority": 50,
+      "tags": [
+        "community",
+        "synced"
+      ],
+      "source": "https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md"
+    },
+    {
+      "id": "community_https_wit_ai",
+      "name": "Community API (https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md)",
+      "type": "openai_compat",
+      "url": "https://wit.ai/v1/chat/completions",
+      "model": "auto",
+      "priority": 50,
+      "tags": [
+        "community",
+        "synced"
+      ],
+      "source": "https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md"
+    },
+    {
+      "id": "community_http_www_louisdorard_com_blog_machine_learning_a",
+      "name": "Community API (https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md)",
+      "type": "openai_compat",
+      "url": "http://www.louisdorard.com/blog/machine-learning-apis-comparison/v1/chat/completions",
+      "model": "auto",
+      "priority": 50,
+      "tags": [
+        "community",
+        "synced"
+      ],
+      "source": "https://raw.githubusercontent.com/abhishekbanthia/Public-APIs/master/README.md"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+fastapi
+# LangChain + Google GenAI (agents.py multimodal / Gemini)
+langchain-google-genai>=2.1.0
+langchain-core>=0.3.0
+google-generativeai>=0.8.3
+# CrewAI: requires Python 3.10–3.13 — see requirements-agents.txt
+uvicorn[standard]
+pydantic
+pydantic-settings
+sqlmodel>=0.0.22
+python-dotenv
+httpx
+pymongo
+motor>=3.3.0
+slowapi
+tavily-python
+openai>=1.0.0
+requests>=2.31.0
+opencv-python-headless>=4.8.0
+numpy>=1.24.0
+Pillow>=10.0.0
+imageio-ffmpeg>=0.5.0
+gradio_client>=1.4.0
+aiokafka>=0.10.0
+spotipy>=2.24.0
+yt-dlp>=2024.12.0
+elasticsearch[async]>=8.12.0,<9
+PyJWT>=2.8.0
+passlib[bcrypt]>=1.7.4
+bcrypt>=4.0.0
+redis>=5.0.0
+pypdf>=4.0.0
+ccxt>=4.0.0
