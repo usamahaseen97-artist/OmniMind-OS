@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import type { ReactNode } from "react";
 import type { SovereignToolSlug } from "../../../lib/sovereign-tool-registry";
 import { DynamicOmniChatShell } from "../dynamic-workbench-widgets";
-import { GUEST } from "../layouts/layout-shared";
+import { GUEST } from "../layouts/layout-constants";
 import { WorkbenchAgentBranding } from "./WorkbenchAgentBranding";
 
 interface AgentChatConsoleProps {

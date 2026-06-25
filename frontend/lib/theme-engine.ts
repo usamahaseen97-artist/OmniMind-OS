@@ -1,4 +1,7 @@
-export type ThemePresetId = "deep-purple" | "gold-accent" | "auto" | "custom";
+import { applyDesignSystemTheme } from "../design-system/themes/apply";
+import { ENTERPRISE_THEMES, type EnterpriseThemeId } from "../design-system/themes/presets";
+
+export type ThemePresetId = EnterpriseThemeId | "auto" | "custom";
 
 export type OmniThemeTokens = {
   id: ThemePresetId;
@@ -13,34 +16,32 @@ export type OmniThemeTokens = {
   textMuted: string;
 };
 
-export const PRESET_THEMES: Record<Exclude<ThemePresetId, "custom" | "auto">, OmniThemeTokens> = {
-  "deep-purple": {
-    id: "deep-purple",
-    label: "Matte Slate Premium",
-    bg: "#0B0F19",
-    panel: "#111827",
-    panelAlt: "#0F172A",
-    accent: "#94A3B8",
-    accentGlow: "rgba(148, 163, 184, 0.35)",
-    border: "#1E293B",
-    text: "#F1F5F9",
-    textMuted: "#94A3B8",
-  },
-  "gold-accent": {
-    id: "gold-accent",
-    label: "Gold Accent",
-    bg: "#0d0d0d",
-    panel: "#141414",
-    panelAlt: "#1a1a1a",
-    accent: "#eab308",
-    accentGlow: "rgba(234, 179, 8, 0.45)",
-    border: "rgba(234, 179, 8, 0.28)",
-    text: "#fafafa",
-    textMuted: "#a3a3a3",
-  },
+function toLegacyTokens(id: EnterpriseThemeId): OmniThemeTokens {
+  const t = ENTERPRISE_THEMES[id];
+  return {
+    id,
+    label: t.label,
+    bg: t.bg,
+    panel: t.panel,
+    panelAlt: t.panelAlt,
+    accent: t.accent,
+    accentGlow: t.accentGlow,
+    border: t.border,
+    text: t.text,
+    textMuted: t.textMuted,
+  };
+}
+
+export const PRESET_THEMES: Record<EnterpriseThemeId, OmniThemeTokens> = {
+  "deep-purple": toLegacyTokens("deep-purple"),
+  "gold-accent": toLegacyTokens("gold-accent"),
+  light: toLegacyTokens("light"),
+  "oled-black": toLegacyTokens("oled-black"),
+  "grey-professional": toLegacyTokens("grey-professional"),
+  "high-contrast": toLegacyTokens("high-contrast"),
 };
 
-const STORAGE_KEY = "omnimind-v11-theme";
+const STORAGE_KEY = "omnimind-v12-theme";
 
 function hexToRgb(hex: string): [number, number, number] {
   const h = hex.replace("#", "");
@@ -70,7 +71,7 @@ export function generateRandomTheme(): OmniThemeTokens {
   const panel = rgbToHex(r * 0.07 + 8, g * 0.06 + 7, b * 0.09 + 10);
   const panelAlt = rgbToHex(r * 0.1 + 12, g * 0.09 + 10, b * 0.12 + 14);
 
-  return {
+  const tokens: OmniThemeTokens = {
     id: "auto",
     label: "Auto-Theme Matrix",
     bg,
@@ -82,6 +83,8 @@ export function generateRandomTheme(): OmniThemeTokens {
     text: "#f8fafc",
     textMuted: "#94a3b8",
   };
+  applyThemeTokens(tokens);
+  return tokens;
 }
 
 export function themeFromCustomColor(hex: string): OmniThemeTokens {
@@ -91,7 +94,7 @@ export function themeFromCustomColor(hex: string): OmniThemeTokens {
   const panel = rgbToHex(r * 0.09 + 8, g * 0.08 + 6, b * 0.11 + 12);
   const panelAlt = rgbToHex(r * 0.12 + 12, g * 0.11 + 10, b * 0.15 + 16);
 
-  return {
+  const tokens: OmniThemeTokens = {
     id: "custom",
     label: "Custom Color",
     bg,
@@ -103,10 +106,19 @@ export function themeFromCustomColor(hex: string): OmniThemeTokens {
     text: "#f8fafc",
     textMuted: "#94a3b8",
   };
+  applyThemeTokens(tokens);
+  return tokens;
 }
 
+/** Apply theme — full design-system CSS variables + legacy vars. */
 export function applyThemeTokens(tokens: OmniThemeTokens): void {
   if (typeof document === "undefined") return;
+
+  if (tokens.id in ENTERPRISE_THEMES) {
+    applyDesignSystemTheme(ENTERPRISE_THEMES[tokens.id as EnterpriseThemeId]);
+    return;
+  }
+
   const root = document.documentElement;
   root.style.setProperty("--omni-bg", tokens.bg);
   root.style.setProperty("--omni-panel", tokens.panel);
@@ -118,7 +130,6 @@ export function applyThemeTokens(tokens: OmniThemeTokens): void {
   root.style.setProperty("--omni-text-muted", tokens.textMuted);
   root.style.setProperty("--omni-card", tokens.panelAlt);
   root.style.setProperty("--neon-green", tokens.accent);
-  root.style.setProperty("--neon-green-dim", tokens.accent);
   root.style.setProperty("--neon-cyan", tokens.accent);
 }
 
@@ -128,24 +139,33 @@ export type PersistedThemeState = {
   autoOnInit?: boolean;
 };
 
+const VALID_PRESETS: ThemePresetId[] = [
+  "deep-purple",
+  "gold-accent",
+  "light",
+  "oled-black",
+  "grey-professional",
+  "high-contrast",
+  "auto",
+  "custom",
+];
+
 export function loadPersistedTheme(): PersistedThemeState {
   if (typeof window === "undefined") {
     return { presetId: "deep-purple", autoOnInit: false };
   }
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return { presetId: "deep-purple", autoOnInit: false };
-    const parsed = JSON.parse(raw) as { presetId?: string; customColor?: string; autoOnInit?: boolean };
-    if (parsed.presetId === "sovereign-tech" || parsed.presetId === "cyberpunk") {
-      return { presetId: "deep-purple", customColor: parsed.customColor, autoOnInit: parsed.autoOnInit };
-    }
-    if (
-      parsed.presetId === "deep-purple" ||
-      parsed.presetId === "gold-accent" ||
-      parsed.presetId === "auto" ||
-      parsed.presetId === "custom"
-    ) {
-      return parsed as PersistedThemeState;
+    const keys = [STORAGE_KEY, "omnimind-v11-theme"];
+    for (const key of keys) {
+      const raw = localStorage.getItem(key);
+      if (!raw) continue;
+      const parsed = JSON.parse(raw) as { presetId?: string; customColor?: string; autoOnInit?: boolean };
+      if (parsed.presetId === "sovereign-tech" || parsed.presetId === "cyberpunk") {
+        return { presetId: "deep-purple", customColor: parsed.customColor, autoOnInit: parsed.autoOnInit };
+      }
+      if (parsed.presetId && VALID_PRESETS.includes(parsed.presetId as ThemePresetId)) {
+        return parsed as PersistedThemeState;
+      }
     }
     return { presetId: "deep-purple", autoOnInit: false };
   } catch {
@@ -156,13 +176,16 @@ export function loadPersistedTheme(): PersistedThemeState {
 export function persistTheme(state: PersistedThemeState): void {
   if (typeof window === "undefined") return;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  localStorage.setItem("omnimind-v11-theme", JSON.stringify(state));
 }
 
 export function resolveTheme(state: PersistedThemeState): OmniThemeTokens {
   if (state.presetId === "auto") return generateRandomTheme();
   if (state.presetId === "custom" && state.customColor) return themeFromCustomColor(state.customColor);
   if (state.presetId in PRESET_THEMES) {
-    return PRESET_THEMES[state.presetId as keyof typeof PRESET_THEMES];
+    return PRESET_THEMES[state.presetId as EnterpriseThemeId];
   }
   return PRESET_THEMES["deep-purple"];
 }
+
+export { ENTERPRISE_THEMES, THEME_HUB_ORDER } from "../design-system/themes/presets";

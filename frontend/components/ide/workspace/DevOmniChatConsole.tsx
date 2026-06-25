@@ -7,7 +7,7 @@ import { assertDevTrioSlug } from "../../../lib/dev-trio";
 import { useOmniForgeWorkspaceOptional } from "../../../lib/omniforge-workspace";
 import { useOmniForgeShellOptional } from "../../../lib/omniforge-shell-context";
 import { DynamicOmniChatShell } from "../dynamic-workbench-widgets";
-import { GUEST } from "../layouts/layout-shared";
+import { GUEST } from "../layouts/layout-constants";
 import { useIDE } from "../IDEProvider";
 
 const panelSpring = { type: "spring" as const, stiffness: 440, damping: 38, mass: 0.82 };

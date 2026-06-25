@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { GeminiCoreChat } from "./GeminiCoreChat";
 import { OmniMindMultiAgentChassis } from "./OmniMindMultiAgentChassis";
 import { AgentSandboxSplit } from "../layout/AgentSandboxSplit";
@@ -11,7 +11,8 @@ import type { AppViewId } from "../../lib/app-views";
 import { getOmniTool, isWorkbenchTool, type OmniRouteId } from "../../lib/omni-tools";
 import { sovereignToolByOmniRoute } from "../../lib/sovereign-tool-registry";
 import { setCodePanelOpen, setChatPanelOpen } from "../../lib/workbench-zone-store";
-import { useEffect } from "react";
+import { OmniMindHomeDashboard } from "../ecosystem/os/OmniMindHomeDashboard";
+import { useEcosystemOSOptional } from "../../lib/ecosystem-os-context";
 
 interface SovereignCoreWorkspaceProps {
   routeId: OmniRouteId | string;
@@ -49,6 +50,12 @@ export function SovereignCoreWorkspace({
   const activeAgent = getAgentArchitectureOption(routeId);
   const isPureChat = routeId === "dashboard" || tool.kind === "dashboard";
   const sovereignTool = sovereignToolByOmniRoute(routeId);
+  const [homeMode, setHomeMode] = useState(true);
+  const ecosystemOS = useEcosystemOSOptional();
+
+  useEffect(() => {
+    if (routeId === "dashboard") setHomeMode(true);
+  }, [routeId]);
 
   useEffect(() => {
     if (isPureChat) {
@@ -67,6 +74,15 @@ export function SovereignCoreWorkspace({
     }
 
     if (isPureChat) {
+      if (homeMode) {
+        return (
+          <OmniMindHomeDashboard
+            onContinueChat={() => setHomeMode(false)}
+            onOpenHub={() => ecosystemOS?.openPanel("hub")}
+            className="h-full"
+          />
+        );
+      }
       return (
         <GeminiCoreChat
           routeId={routeId}

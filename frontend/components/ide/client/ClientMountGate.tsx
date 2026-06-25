@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
-import { WidgetLoading } from "../dynamic-workbench-widgets";
+import { WidgetLoading } from "../WidgetLoading";
 
 interface ClientMountGateProps {
   children: ReactNode;

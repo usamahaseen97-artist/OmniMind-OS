@@ -1,5 +1,7 @@
 import { getBackendUrl } from "./backend-url";
-import type { SpatialRenderMode } from "./spatial-render-store";
+import type { SpatialRenderDialogState, SpatialRenderMode } from "./spatial-types";
+
+export type { SpatialRenderDialogState, SpatialRenderMode } from "./spatial-types";
 
 export type SpatialModule = "external" | "interior";
 
@@ -118,12 +120,6 @@ export async function exportSpatialRender(body: {
   return res.json();
 }
 
-export type SpatialRenderDialogState = {
-  duration: number;
-  transition: number;
-  resolution: string;
-  quality_samples: number;
-};
 
 export type SpatialHybridSyncPayload = {
   ok: boolean;

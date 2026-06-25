@@ -23,7 +23,11 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@omnimind/sdk": ["./sdk/browser/index.ts"],
+      "@omnimind/sdk/browser": ["./sdk/browser/index.ts"],
+      "@omnimind/sdk/node": ["./sdk/node/index.ts"],
+      "@omnimind/sdk/shared": ["./sdk/shared/index.ts"]
     }
   },
   "include": [

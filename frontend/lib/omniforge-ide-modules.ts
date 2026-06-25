@@ -13,7 +13,11 @@ export type IdeModuleId =
   | "emulator"
   | "ui_builder"
   | "schema_designer"
-  | "game_scene";
+  | "game_scene"
+  | "enterprise_dashboard"
+  | "project_health"
+  | "deployment_center"
+  | "testing_center";
 
 export type CopilotActionId =
   | "autocomplete"
@@ -38,6 +42,10 @@ export const IDE_MODULE_LABELS: Record<IdeModuleId, string> = {
   ui_builder: "UI Builder",
   schema_designer: "Schema Designer",
   game_scene: "Game Scene",
+  enterprise_dashboard: "Project Dashboard",
+  project_health: "Project Health",
+  deployment_center: "Deployment",
+  testing_center: "Testing",
 };
 
 export const COPILOT_ACTIONS: { id: CopilotActionId; label: string; prompt: string }[] = [

@@ -9,18 +9,9 @@ import {
   parseMobileLayoutFromFiles,
 } from "./omniforge-preview-data";
 
-export type MobileBlockType =
-  | "product-image"
-  | "title-price"
-  | "description"
-  | "color-options"
-  | "add-to-cart";
+import type { MobileUiBlock } from "./omniforge-mobile-types";
 
-export type MobileUiBlock = {
-  id: string;
-  type: MobileBlockType;
-};
-
+export type { MobileBlockType, MobileUiBlock } from "./omniforge-mobile-types";
 export function useOmniForgeMobileLayout() {
   const { projectFiles, updateFileContent } = useIDE();
   const omniforge = useOmniForgeWorkspaceOptional();

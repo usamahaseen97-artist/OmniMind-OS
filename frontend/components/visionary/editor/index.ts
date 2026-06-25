@@ -1,0 +1,17 @@
+export { VideoEditorWorkspace } from "./VideoEditorWorkspace";
+export { TimelineEngine } from "./TimelineEngine";
+export { TrackManager, ClipManager } from "./TrackManager";
+export { MediaPool } from "./MediaPool";
+export { InspectorPanel } from "./InspectorPanel";
+export { EffectsBrowser } from "./EffectsBrowser";
+export { TransitionsBrowser } from "./TransitionsBrowser";
+export { TextEditor } from "./TextEditor";
+export { SubtitleEditor } from "./SubtitleEditor";
+export { AudioMixer } from "./AudioMixer";
+export { ColorWorkspace } from "./ColorWorkspace";
+export { PlaybackControls } from "./PlaybackControls";
+export { PreviewMonitor } from "./PreviewMonitor";
+export { KeyframeEditor } from "./KeyframeEditor";
+export { HistoryPanel } from "./HistoryPanel";
+export { ExportQueue } from "./ExportQueue";
+export { AutoSaveManager } from "./AutoSaveManager";

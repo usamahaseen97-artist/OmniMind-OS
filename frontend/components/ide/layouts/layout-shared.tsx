@@ -6,7 +6,7 @@ import { useWorkbenchLive, type WorkbenchMarketingSlot } from "../../../lib/work
 import { AgentChatConsole } from "../workspace/AgentChatConsole";
 import { cn } from "../../../lib/utils";
 
-export const GUEST = "guest-founder";
+export { GUEST } from "./layout-constants";
 
 export function MarketingLiveSlots() {
   const live = useWorkbenchLive();

@@ -1,0 +1,1 @@
+export { ChoirGenerator } from "./VocalProcessors";

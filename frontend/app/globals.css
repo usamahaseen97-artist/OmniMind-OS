@@ -2,7 +2,51 @@
 
 :root {
   color-scheme: dark;
-  /* Cyber Purple · Cosmic Violet identity */
+  /* OmniMind Design System — semantic tokens (overridden by ThemeProvider) */
+  --omni-ds-bg-canvas: #0B0F19;
+  --omni-ds-bg-shell: #0a0b10;
+  --omni-ds-bg-workspace: #0b1018;
+  --omni-ds-bg-panel: #111827;
+  --omni-ds-bg-panel-elevated: #0F172A;
+  --omni-ds-bg-sidebar: #0d1018;
+  --omni-ds-bg-header: rgba(12, 14, 20, 0.98);
+  --omni-ds-bg-status: #0a0b10;
+  --omni-ds-bg-overlay: rgba(0, 0, 0, 0.65);
+  --omni-ds-bg-input: rgba(0, 0, 0, 0.3);
+  --omni-ds-text-primary: #F1F5F9;
+  --omni-ds-text-secondary: #94A3B8;
+  --omni-ds-text-muted: #94A3B8;
+  --omni-ds-text-accent: #67e8f9;
+  --omni-ds-text-inverse: #0a0b10;
+  --omni-ds-text-link: #67e8f9;
+  --omni-ds-border-subtle: rgba(255, 255, 255, 0.06);
+  --omni-ds-border-default: rgba(255, 255, 255, 0.08);
+  --omni-ds-border-strong: rgba(255, 255, 255, 0.12);
+  --omni-ds-border-accent: rgba(34, 211, 238, 0.25);
+  --omni-ds-border-focus: #67e8f9;
+  --omni-ds-accent-primary: #67e8f9;
+  --omni-ds-accent-glow: rgba(103, 232, 249, 0.35);
+  --omni-ds-accent-secondary: #a78bfa;
+  --omni-ds-gradient-from: #0a0416;
+  --omni-ds-gradient-to: #160b33;
+  --omni-ds-status-success: #34d399;
+  --omni-ds-status-success-bg: rgba(52, 211, 153, 0.12);
+  --omni-ds-status-warning: #fbbf24;
+  --omni-ds-status-warning-bg: rgba(251, 191, 36, 0.12);
+  --omni-ds-status-error: #f87171;
+  --omni-ds-status-error-bg: rgba(248, 113, 113, 0.12);
+  --omni-ds-status-info: #67e8f9;
+  --omni-ds-status-info-bg: rgba(103, 232, 249, 0.12);
+  --omni-ds-status-live: #34d399;
+  --omni-ds-status-idle: #6b7280;
+  --omni-ds-a11y-focus-ring: #67e8f9;
+  --omni-ds-a11y-hc-text: #ffffff;
+  --omni-ds-a11y-hc-bg: #000000;
+  --omni-ds-elevation-md: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --omni-ds-elevation-lg: 0 8px 32px rgba(0, 0, 0, 0.35);
+  --omni-ds-elevation-xl: 0 16px 48px rgba(0, 0, 0, 0.45);
+  --omni-ds-elevation-glow: 0 0 24px var(--omni-ds-accent-glow);
+  /* Legacy cyber purple identity (mapped from design system) */
   --omni-violet-obsidian: #0a0416;
   --omni-violet-mid: #0f0724;
   --omni-violet-deep: #160b33;
@@ -599,7 +643,8 @@
   .omni-medical-studio,
   .omni-spatial-studio,
   .omni-dev-trio-shell,
-  .omni-workbench-shell {
+  .omni-workbench-shell,
+  .omni-os-shell {
     contain: layout style;
     background: transparent;
   }
@@ -989,4 +1034,102 @@
 
 .omniforge-ai-ide [data-panel] {
   transition: flex-basis 0.2s ease;
+}
+
+/* Medical Diagnostic Enterprise Suite — theme modes */
+.medical-enterprise-layout {
+  --medical-accent: #34d399;
+  --medical-panel: #0a0f18;
+  --medical-canvas: #0c111a;
+}
+
+html[data-medical-theme="light"] .medical-enterprise-layout,
+.medical-enterprise-layout.medical-theme-light {
+  --medical-panel: #f8fafc;
+  --medical-canvas: #ffffff;
+  color-scheme: light;
+}
+
+html[data-medical-theme="high-contrast"] .medical-enterprise-layout,
+.medical-enterprise-layout.medical-theme-hc {
+  --medical-accent: #00ff88;
+  --medical-panel: #000000;
+  --medical-canvas: #0a0a0a;
+  color-scheme: dark;
+}
+
+.medical-enterprise-layout.medical-theme-hc .medical-enterprise-left button,
+.medical-enterprise-layout.medical-theme-hc .medical-enterprise-header input {
+  border-width: 1px;
+  border-color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .medical-enterprise-right {
+    display: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  .medical-enterprise-left {
+    min-width: 160px;
+  }
+}
+
+/* Visionary Studio — creative OS workspace chrome */
+.visionary-studio-layout {
+  --visionary-accent: #67e8f9;
+  --visionary-panel: #080c14;
+  --visionary-canvas: #0b0f19;
+}
+
+.visionary-toolbar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 0.375rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 10px;
+  color: rgb(148 163 184);
+  transition: color 150ms, background-color 150ms;
+}
+
+.visionary-toolbar-btn:hover {
+  background: rgb(255 255 255 / 0.06);
+  color: rgb(226 232 240);
+}
+
+.visionary-toolbar-btn:disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.visionary-toolbar-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  padding: 0.375rem;
+  color: rgb(148 163 184);
+  transition: color 150ms, background-color 150ms;
+}
+
+.visionary-toolbar-icon:hover {
+  background: rgb(255 255 255 / 0.06);
+  color: rgb(226 232 240);
+}
+
+.visionary-timeline-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.25rem;
+  padding: 0.25rem;
+  color: rgb(100 116 139);
+  transition: color 150ms, background-color 150ms;
+}
+
+.visionary-timeline-btn:hover {
+  background: rgb(255 255 255 / 0.06);
+  color: rgb(203 213 225);
 }

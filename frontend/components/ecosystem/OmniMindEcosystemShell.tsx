@@ -2,15 +2,11 @@
 
 import type { ReactNode } from "react";
 import { OmniMindAgentPanelExtensions } from "./OmniMindAgentPanelExtensions";
-import { OmniMindCommandPalette } from "./OmniMindCommandPalette";
 import { OmniMindDatabaseConfirmHost } from "./OmniMindDatabaseConfirmPrompt";
 import { OmniMindDiagnosticPanel } from "./OmniMindDiagnosticPanel";
 import { OmniMindDropZone } from "./OmniMindDropZone";
 import { OmniMindEcosystemTopBar } from "./OmniMindEcosystemTopBar";
 import { OmniMindFloatingEditorMenu } from "./OmniMindFloatingEditorMenu";
-import { OmniMindKeyboardBindings } from "./OmniMindKeyboardBindings";
-import { OmniMindNotificationStream } from "./OmniMindNotificationStream";
-import { OmniMindQuickSearch } from "./OmniMindQuickSearch";
 import { OmniMindStatusBar } from "./OmniMindStatusBar";
 
 export { OmniMindAgentPanelExtensions };
@@ -19,11 +15,7 @@ export { OmniMindAgentPanelExtensions };
 export function OmniMindEcosystemShell({ children }: { children: ReactNode }) {
   return (
     <>
-      <OmniMindKeyboardBindings />
-      <OmniMindCommandPalette />
-      <OmniMindQuickSearch />
       <OmniMindFloatingEditorMenu />
-      <OmniMindNotificationStream />
       <OmniMindDatabaseConfirmHost
         onFiles={(files) => {
           if (typeof window !== "undefined") {

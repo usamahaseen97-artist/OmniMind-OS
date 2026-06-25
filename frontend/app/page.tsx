@@ -9,7 +9,12 @@ import { FounderCredit } from "../components/layout/FounderCredit";
 import { GlobalMenuDrawer } from "../components/layout/GlobalMenuDrawer";
 import { MacroEngineTabs } from "../components/layout/MacroEngineTabs";
 import { AppCommandRail } from "../components/layout/AppCommandRail";
-import { FloatingChatHistoryPanel } from "../components/layout/FloatingChatHistoryPanel";
+import {
+  DynamicEntertainmentWorkspace,
+  DynamicFloatingChatHistoryPanel,
+  DynamicSovereignCoreWorkspace,
+  DynamicVoiceTranslatorModal,
+} from "../components/layout/dynamic-home-shell";
 import {
   appHeaderActions,
   appHeaderBar,
@@ -17,9 +22,6 @@ import {
 } from "../lib/responsive-layout";
 import { UndoBackButton } from "../components/layout/UndoBackButton";
 import { shouldShowUndoBack } from "../lib/navigation-state";
-import { SovereignCoreWorkspace } from "../components/dashboard/SovereignCoreWorkspace";
-import { EntertainmentWorkspace } from "../components/entertainment/EntertainmentWorkspace";
-import { VoiceTranslatorModal } from "../components/translator/VoiceTranslatorModal";
 import { getAppView } from "../lib/app-views";
 import { getOmniTool } from "../lib/omni-tools";
 import { fetchGatewayProviders, summarizeProviders } from "../lib/integration-providers";
@@ -31,6 +33,7 @@ import { NEURAL_CHATBOT_LABEL, NEURAL_CHATBOT_TAGLINE } from "../lib/brand-label
 import { cn } from "../lib/utils";
 import { LiveEngineIndicator } from "../components/layout/LiveEngineIndicator";
 import { ClientErrorBoundary } from "../components/layout/ClientErrorBoundary";
+import { OmniMindHomeAppShell } from "../components/os/OmniMindHomeAppShell";
 
 const GUEST_ID = "guest-founder";
 const BACKEND_HEALTH_TIMEOUT_MS = 8000;
@@ -204,10 +207,27 @@ export default function OmniMindApp() {
     .filter(Boolean)
     .join("\n");
 
+  const useUnifiedHomeShell = isSovereignWorkspace && !isFullScreenSovereignTool;
+
   return (
     <ClientErrorBoundary>
+    {useUnifiedHomeShell ? (
+    <>
+      <OmniMindHomeAppShell />
+      <DynamicVoiceTranslatorModal open={translatorOpen} onClose={() => setTranslatorOpen(false)} />
+      <DynamicFloatingChatHistoryPanel
+        open={isHistoryOpen}
+        onClose={() => setIsHistoryOpen(false)}
+        toggleRef={commandRailRef}
+        userId={userId}
+        activeSessionId={activeSessionId}
+        onSelectSession={handleSelectSession}
+        onNewChat={handleNewChat}
+      />
+    </>
+    ) : (
     <div className="omni-app-shell box-border flex h-screen max-h-[100dvh] w-full flex-col overflow-x-hidden overflow-y-hidden bg-[#07090f] text-zinc-100">
-      <VoiceTranslatorModal open={translatorOpen} onClose={() => setTranslatorOpen(false)} />
+      <DynamicVoiceTranslatorModal open={translatorOpen} onClose={() => setTranslatorOpen(false)} />
 
       <GlobalMenuDrawer
         isMenuOpen={isMenuOpen}
@@ -220,7 +240,7 @@ export default function OmniMindApp() {
 
       <div className="flex min-h-0 min-w-0 w-full max-w-full flex-1 overflow-x-hidden overflow-y-hidden">
         <main className="dashboard-viewport relative flex min-h-0 min-w-0 w-full max-w-full flex-1 flex-col overflow-x-hidden overflow-y-hidden">
-          <FloatingChatHistoryPanel
+          <DynamicFloatingChatHistoryPanel
             open={isHistoryOpen}
             onClose={() => setIsHistoryOpen(false)}
             toggleRef={commandRailRef}
@@ -296,7 +316,7 @@ export default function OmniMindApp() {
 
           <div className="min-h-0 min-w-0 flex-1 overflow-hidden">
             {isSovereignWorkspace ? (
-              <SovereignCoreWorkspace
+              <DynamicSovereignCoreWorkspace
                 key={sovereignRouteId}
                 routeId={sovereignRouteId}
                 onSelectRoute={handleSelectRoute}
@@ -315,7 +335,7 @@ export default function OmniMindApp() {
                 onLibrary={() => setIsHistoryOpen(true)}
               />
             ) : (
-              <EntertainmentWorkspace key={activeView} viewId={activeView} userId={userId} />
+              <DynamicEntertainmentWorkspace key={activeView} viewId={activeView} userId={userId} />
             )}
           </div>
         </main>
@@ -323,6 +343,7 @@ export default function OmniMindApp() {
 
       {!isPureDashboardChat && !isFullScreenSovereignTool ? <FounderCredit /> : null}
     </div>
+    )}
     </ClientErrorBoundary>
   );
 }

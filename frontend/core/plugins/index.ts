@@ -1,0 +1,18 @@
+export * from "./types";
+export { EventBus, getPluginEventBus } from "./EventBus";
+export { CapabilityRegistry, getCapabilityRegistry } from "./CapabilityRegistry";
+export { ActionRegistry, getActionRegistry } from "./ActionRegistry";
+export type { ActionExecutor } from "./ActionRegistry";
+export { PermissionRegistry, getPermissionRegistry } from "./PermissionRegistry";
+export { FeatureFlags, getFeatureFlags } from "./FeatureFlags";
+export type { OmniMindRuntimeMode } from "./FeatureFlags";
+export { VersionManager, getVersionManager, OMNI_MIND_PLATFORM_VERSION } from "./VersionManager";
+export { DependencyResolver } from "./DependencyResolver";
+export type { DependencyResolution } from "./DependencyResolver";
+export { PluginRegistry, getPluginRegistry } from "./PluginRegistry";
+export { LifecycleManager } from "./LifecycleManager";
+export type { LifecycleHooks } from "./LifecycleManager";
+export { OmniPluginManager, getOmniPluginManager } from "./PluginManager";
+export { pluginToAgentTool, pluginToUniversalTool, syncPluginToRegistries } from "./adapters";
+export { sovereignToolToPluginManifest, buildSovereignPluginManifests } from "./manifests/sovereign-plugins";
+export { registerCorePlugins, isCorePluginsRegistered } from "./register";

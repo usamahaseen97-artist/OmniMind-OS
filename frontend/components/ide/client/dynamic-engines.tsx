@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import type { SceneAsset } from "../matrix/live/scene-asset-types";
 import type { SpatialRenderMode } from "../../../lib/spatial-render-store";
-import { WidgetLoading } from "../dynamic-workbench-widgets";
+import { WidgetLoading } from "../WidgetLoading";
 
 export type { SceneAsset };
 

@@ -41,6 +41,14 @@ import { OmniMindDeployStrip } from "../ecosystem/OmniMindDeployStrip";
 import { OmniMindDiagnosticPanel } from "../ecosystem/OmniMindDiagnosticPanel";
 import { OmniMindRecentProjectsPane } from "../ecosystem/OmniMindRecentProjectsPane";
 import { useOmniMindEcosystemOptional } from "../../lib/omnimind-ecosystem-context";
+import { OmniForgeEngineeringSuite } from "../omniforge/engineering/OmniForgeEngineeringSuite";
+import { useOmniForgeEngineeringOptional } from "../../lib/omniforge-engineering-context";
+import { useOmniForgeEnterpriseOptional } from "../../lib/omniforge-enterprise-context";
+import { OmniForgeProjectBlueprintPanel } from "../omniforge/enterprise/OmniForgeProjectBlueprintPanel";
+import { OmniForgeProjectHealthPanel } from "../omniforge/enterprise/OmniForgeProjectHealthPanel";
+import { OmniForgeDeploymentPanel } from "../omniforge/enterprise/OmniForgeDeploymentPanel";
+import { OmniForgeTestingPanel } from "../omniforge/enterprise/OmniForgeTestingPanel";
+import { OmniForgeGitExplorerPanel } from "../omniforge/enterprise/OmniForgeGitExplorerPanel";
 import { lintSource } from "../../lib/omniforge-syntax-validation";
 
 const MonacoEditor = dynamic(() => import("@monaco-editor/react"), {
@@ -249,6 +257,8 @@ export function OmniWebDevelopmentWorkbench() {
     appendTerminal,
     clearTerminal,
   } = useIDE();
+  const engineering = useOmniForgeEngineeringOptional();
+  const enterprise = useOmniForgeEnterpriseOptional();
 
   const [previewFrame, setPreviewFrame] = useState<PreviewFrame>("mobile");
   const [workspaceView, setWorkspaceView] = useState<WorkspaceView>("code");
@@ -271,6 +281,16 @@ export function OmniWebDevelopmentWorkbench() {
     () => projectFiles.filter((f) => !f.isFolder && CODE_EXT.test(f.path) && !f.path.startsWith(".omniforge/")),
     [projectFiles],
   );
+  const fileSnapshots = useMemo(
+    () => codeFiles.map((f) => ({ path: f.path, content: f.content ?? "" })),
+    [codeFiles],
+  );
+
+  useEffect(() => {
+    if (!enterprise || !fileSnapshots.length) return;
+    enterprise.refreshHealth(fileSnapshots);
+    enterprise.runAutoFixScan(fileSnapshots);
+  }, [enterprise, fileSnapshots]);
   const explorerRows = useMemo(() => buildExplorerRows(projectFiles), [projectFiles]);
   const previewUrl = useMemo(() => {
     if (blobRef.current) URL.revokeObjectURL(blobRef.current);
@@ -483,6 +503,9 @@ export function OmniWebDevelopmentWorkbench() {
       }
       ecosystem?.upsertProgressTask({ id: "scaffold", label: "Scaffold complete", progress: 100, status: "done" });
       ecosystem?.upsertProgressTask({ id: "backend", label: "Backend ready", progress: 100, status: "done" });
+      window.dispatchEvent(new CustomEvent("omnimind:omniforge-build-complete"));
+      const docFiles = engineering?.injectDocumentation(files) ?? files;
+      if (docFiles.length > files.length) mergeGenerated(docFiles.slice(files.length));
       setMessages((prev) =>
         prev.map((m) =>
           m.id === assistantId
@@ -497,8 +520,46 @@ export function OmniWebDevelopmentWorkbench() {
         ),
       );
     },
-    [appendTerminal, ecosystem, live, mergeGenerated, omniforge, targetStack],
+    [appendTerminal, ecosystem, engineering, live, mergeGenerated, omniforge, targetStack],
   );
+
+  useEffect(() => {
+    const onApproved = (e: Event) => {
+      const detail = (e as CustomEvent<{ prompt?: string }>).detail;
+      if (!detail?.prompt) return;
+      const prompt = detail.prompt ?? "";
+      const assistantId = uid();
+      setMessages((prev) => [
+        ...prev,
+        { id: uid(), role: "user", content: prompt },
+        { id: assistantId, role: "assistant", content: "", streaming: true },
+      ]);
+      setSending(true);
+      void runScaffold(prompt, assistantId).finally(() => setSending(false));
+    };
+    const onReject = (e: Event) => {
+      const path = (e as CustomEvent<{ path?: string }>).detail?.path;
+      if (!path) return;
+      const remaining = projectFiles
+        .filter((f) => f.path !== path)
+        .map((f) => ({ path: f.path, content: f.content ?? "", language: f.language }));
+      window.dispatchEvent(
+        new CustomEvent("omnimind:omniforge-files-loaded", { detail: { files: remaining, mode: "replace" } }),
+      );
+    };
+    const onAutoFix = (e: Event) => {
+      const msg = (e as CustomEvent<{ error?: string }>).detail?.error;
+      if (msg) engineering?.retryAutoFix(msg);
+    };
+    window.addEventListener("omnimind:omniforge-approved-build", onApproved);
+    window.addEventListener("omnimind:omniforge-file-reject", onReject);
+    window.addEventListener("omnimind:omniforge-auto-fix", onAutoFix);
+    return () => {
+      window.removeEventListener("omnimind:omniforge-approved-build", onApproved);
+      window.removeEventListener("omnimind:omniforge-file-reject", onReject);
+      window.removeEventListener("omnimind:omniforge-auto-fix", onAutoFix);
+    };
+  }, [engineering, projectFiles, runScaffold]);
 
   const runChat = useCallback(
     async (text: string, assistantId: string) => {
@@ -597,23 +658,28 @@ export function OmniWebDevelopmentWorkbench() {
     }
     if (activeIdeModule === "api_tester") return <OmniForgeApiTesterPanel />;
     if (activeIdeModule === "extensions") return <OmniForgeExtensionsPanel />;
-    if (explorerView === "recent") return <OmniMindRecentProjectsPane />;
-    if (explorerView === "git") {
-      return (
-        <div className="p-3 text-[10px] text-zinc-500">
-          <p className="font-semibold text-zinc-400">Git</p>
-          <p className="mt-2">Branch: main</p>
-          <p>Status: clean working tree</p>
-        </div>
-      );
+    if (activeIdeModule === "enterprise_dashboard") {
+      enterprise?.openDashboard();
+      return <p className="p-3 text-[10px] text-zinc-500">Enterprise dashboard opened.</p>;
     }
+    if (activeIdeModule === "project_health") return <OmniForgeProjectHealthPanel />;
+    if (activeIdeModule === "deployment_center") return <OmniForgeDeploymentPanel />;
+    if (activeIdeModule === "testing_center") return <OmniForgeTestingPanel files={fileSnapshots} />;
+    if (activeIdeModule === "project_explorer" || activeIdeModule === "solution_explorer") {
+      return <OmniForgeProjectBlueprintPanel />;
+    }
+    if (explorerView === "recent") return <OmniMindRecentProjectsPane />;
+    if (explorerView === "git") return <OmniForgeGitExplorerPanel />;
     return null;
   };
 
   const showExplorer = ecosystem?.sidebarOpen !== false;
 
   return (
-    <div className="flex h-full min-h-0 w-full flex-col overflow-hidden bg-[#12141c] text-zinc-100">
+    <div className="relative flex h-full min-h-0 w-full flex-col overflow-hidden bg-[#12141c] text-zinc-100">
+      <OmniForgeEngineeringSuite
+        projectFiles={codeFiles.map((f) => ({ path: f.path, content: f.content ?? "", language: f.language }))}
+      />
       <header className="flex h-9 shrink-0 items-center justify-between border-b border-white/[0.06] bg-[rgba(14,16,24,0.98)] px-4">
         <div className="flex items-center gap-2">
           <div className={`h-2 w-2 rounded-full ${live ? "animate-pulse bg-emerald-400" : "bg-amber-500"}`} />

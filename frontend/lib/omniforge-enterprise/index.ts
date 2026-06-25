@@ -1,0 +1,10 @@
+export * from "./project-types";
+export { analyzeProject, type ProjectBlueprint, type AnalyzerInput } from "./project-analyzer";
+export { computeProjectHealth, type ProjectHealthReport, type HealthMetric } from "./project-health";
+export { generateTestSuites, type GeneratedTestSuite, type TestSuiteKind } from "./testing-engine";
+export { generateDeploymentPipeline, listDeploymentTargets, type DeploymentPipeline, type DeploymentTarget } from "./deployment-engine";
+export { scanAndFixWorkspace, applyAutoFix, type AutoFixItem, type AutoFixCategory } from "./auto-fix-enterprise";
+export { generateEnterpriseDocs, type GeneratedDoc, type DocKind } from "./documentation-enterprise";
+export { getWorkspaceManager, type OmniForgeWorkspace } from "./workspace-manager";
+export { emitLiveDev, architectureMermaid, type LiveDevEvent } from "./live-development";
+export { getPerformanceEngine, DEFAULT_PERFORMANCE_CONFIG, type PerformanceConfig } from "./performance-engine";

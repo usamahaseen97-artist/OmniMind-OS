@@ -1,5 +1,5 @@
 import type { IDEProjectFile } from "./omnimind-ide-config";
-import type { MobileUiBlock } from "./omniforge-mobile-layout-store";
+import type { MobileUiBlock } from "./omniforge-mobile-types";
 
 export const MOBILE_LAYOUT_PATH = ".omniforge/mobile-layout.json";
 

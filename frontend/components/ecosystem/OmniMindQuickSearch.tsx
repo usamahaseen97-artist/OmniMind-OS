@@ -1,36 +1,57 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { FileCode2, Folder, Search, X } from "lucide-react";
+import { FileCode2, Folder, Search, Sparkles, X } from "lucide-react";
 import { useIDE } from "../ide/IDEProvider";
 import { useOmniMindEcosystem } from "../../lib/omnimind-ecosystem-context";
 import { ECOSYSTEM_TOOLS } from "../../lib/omnimind-ecosystem-registry";
+import type { EcosystemToolId } from "../../lib/omnimind-ecosystem-registry";
+import { omniCore } from "../../core/omnicore";
 
 export function OmniMindQuickSearch() {
-  const { quickSearchOpen, setQuickSearchOpen, projectTabs, navigateToTool } = useOmniMindEcosystem();
+  const { quickSearchOpen, setQuickSearchOpen, projectTabs, navigateToTool, setActiveProjectTabId } = useOmniMindEcosystem();
   const { projectFiles, openFile } = useIDE();
   const [query, setQuery] = useState("");
+
+  type FileEntry = (typeof projectFiles)[number];
+  type QuickResult =
+    | { kind: "file"; label: string; file: FileEntry }
+    | { kind: "project"; label: string; projectTabId: string }
+    | { kind: "tool"; label: string; toolId: string }
+    | { kind: "os"; label: string; subtitle: string; toolSlug: string | null; osId: string };
 
   useEffect(() => {
     if (!quickSearchOpen) setQuery("");
   }, [quickSearchOpen]);
 
-  const results = useMemo(() => {
+  const results = useMemo((): QuickResult[] => {
     const q = query.trim().toLowerCase();
     if (!q) return [];
-    const files = projectFiles
-      .filter((f) => !f.isFolder && f.path.toLowerCase().includes(q))
-      .slice(0, 12)
-      .map((f) => ({ kind: "file" as const, label: f.path, file: f }));
-    const projects = projectTabs
-      .filter((p) => p.name.toLowerCase().includes(q))
-      .map((p) => ({ kind: "project" as const, label: p.name, id: p.id }));
-    const tools = ECOSYSTEM_TOOLS.filter((t) => t.label.toLowerCase().includes(q)).map((t) => ({
-      kind: "tool" as const,
-      label: t.label,
-      id: t.id,
+
+    const osResults: QuickResult[] = omniCore.ecosystem.searchAll(q).map((r) => ({
+      kind: "os" as const,
+      label: r.title,
+      subtitle: r.subtitle,
+      toolSlug: r.toolSlug,
+      osId: r.id,
     }));
-    return [...files, ...projects, ...tools].slice(0, 16);
+
+    const files: QuickResult[] = projectFiles
+      .filter((f) => !f.isFolder && f.path.toLowerCase().includes(q))
+      .slice(0, 8)
+      .map((f) => ({ kind: "file", label: f.path, file: f }));
+
+    const projects: QuickResult[] = projectTabs
+      .filter((p) => p.name.toLowerCase().includes(q))
+      .map((p) => ({ kind: "project", label: p.name, projectTabId: p.id }));
+
+    const tools: QuickResult[] = ECOSYSTEM_TOOLS.filter((t) => t.label.toLowerCase().includes(q)).map((t) => ({
+      kind: "tool",
+      label: t.label,
+      toolId: t.id,
+    }));
+
+    return [...files, ...projects, ...tools, ...osResults].slice(0, 24);
   }, [projectFiles, projectTabs, query]);
 
   if (!quickSearchOpen) return null;
@@ -43,8 +64,11 @@ export function OmniMindQuickSearch() {
           <input
             autoFocus
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search files, projects, tools, agents…"
+            onChange={(e) => {
+              setQuery(e.target.value);
+              omniCore.search.setQuery(e.target.value);
+            }}
+            placeholder="Search everywhere — files, chats, projects, music, plugins…"
             className="min-w-0 flex-1 bg-transparent text-[12px] text-zinc-200 outline-none"
             onKeyDown={(e) => e.key === "Escape" && setQuickSearchOpen(false)}
           />
@@ -54,15 +78,17 @@ export function OmniMindQuickSearch() {
         </div>
         <div className="max-h-[45vh] overflow-y-auto py-1">
           {!query ? (
-            <p className="px-3 py-4 text-[10px] text-zinc-600">Type to search across OmniMind drive…</p>
+            <p className="px-3 py-4 text-[10px] text-zinc-600">Ctrl+P · Search files, chats, projects, tools, settings, APIs…</p>
           ) : results.length ? (
             results.map((r, i) => (
               <button
-                key={`${r.kind}-${i}`}
+                key={`${r.kind}-${i}-${r.label}`}
                 type="button"
                 onClick={() => {
                   if (r.kind === "file") openFile(r.file);
-                  if (r.kind === "tool") navigateToTool(r.id);
+                  else if (r.kind === "project") setActiveProjectTabId(r.projectTabId);
+                  else if (r.kind === "tool") navigateToTool(r.toolId as EcosystemToolId);
+                  else if (r.kind === "os" && r.toolSlug) navigateToTool(r.toolSlug as EcosystemToolId);
                   setQuickSearchOpen(false);
                 }}
                 className="flex w-full items-center gap-2 px-3 py-2 text-left hover:bg-white/[0.04]"
@@ -71,11 +97,15 @@ export function OmniMindQuickSearch() {
                   <FileCode2 className="h-3.5 w-3.5 text-amber-400/80" />
                 ) : r.kind === "project" ? (
                   <Folder className="h-3.5 w-3.5 text-cyan-400/80" />
+                ) : r.kind === "os" && r.subtitle.includes("chat") ? (
+                  <Sparkles className="h-3.5 w-3.5 text-violet-400/80" />
                 ) : (
                   <Search className="h-3.5 w-3.5 text-indigo-400/80" />
                 )}
                 <span className="truncate font-mono text-[10px] text-zinc-300">{r.label}</span>
-                <span className="ml-auto text-[8px] uppercase text-zinc-600">{r.kind}</span>
+                <span className="ml-auto text-[8px] uppercase text-zinc-600">
+                  {r.kind === "os" ? r.subtitle : r.kind}
+                </span>
               </button>
             ))
           ) : (

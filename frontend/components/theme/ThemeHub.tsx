@@ -2,11 +2,17 @@
 
 import { useRef, useState } from "react";
 import { ChevronDown, Palette, Shuffle, Sparkles } from "lucide-react";
-import { PRESET_THEMES, applyThemeTokens, themeFromCustomColor } from "../../lib/theme-engine";
+import {
+  PRESET_THEMES,
+  THEME_HUB_ORDER,
+  applyThemeTokens,
+  themeFromCustomColor,
+} from "../../lib/theme-engine";
+import { ENTERPRISE_THEMES } from "../../design-system/themes/presets";
+import type { EnterpriseThemeId } from "../../design-system/themes/presets";
+import { applyDesignSystemTheme } from "../../design-system/themes/apply";
 import { useOmniTheme } from "./ThemeProvider";
 import { cn } from "../../lib/utils";
-
-const PRESET_ORDER = ["deep-purple", "gold-accent"] as const;
 
 export function ThemeHub() {
   const { tokens, presetId, customColor, setPreset, setCustomColor, triggerAutoTheme } = useOmniTheme();
@@ -14,13 +20,12 @@ export function ThemeHub() {
   const [picker, setPicker] = useState(customColor);
   const ref = useRef<HTMLDivElement>(null);
 
-  const applyThemeFast = (mode: "preset" | "custom", value: string) => {
-    // Direct CSS variable mutation for instant visual updates (bypasses UI re-render lag).
-    if (mode === "preset" && value in PRESET_THEMES) {
-      applyThemeTokens(PRESET_THEMES[value as keyof typeof PRESET_THEMES]);
+  const applyThemeFast = (id: EnterpriseThemeId | "custom", value?: string) => {
+    if (id !== "custom" && id in ENTERPRISE_THEMES) {
+      applyDesignSystemTheme(ENTERPRISE_THEMES[id]);
       return;
     }
-    if (mode === "custom") {
+    if (id === "custom" && value) {
       applyThemeTokens(themeFromCustomColor(value));
     }
   };
@@ -30,8 +35,8 @@ export function ThemeHub() {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="omni-accent-border omni-glow-sm flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider transition hover:brightness-110"
-        style={{ color: tokens.accent, background: "var(--omni-panel)" }}
+        className="flex items-center gap-1.5 rounded-md border border-[color:var(--omni-ds-border-subtle)] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider transition hover:brightness-110"
+        style={{ color: tokens.accent, background: "var(--omni-ds-bg-panel)" }}
       >
         <Sparkles className="h-3 w-3" />
         Theme Hub
@@ -42,50 +47,56 @@ export function ThemeHub() {
         <>
           <button type="button" aria-label="Close theme hub" className="fixed inset-0 z-[200]" onClick={() => setOpen(false)} />
           <div
-            className="absolute right-0 top-full z-[210] mt-1 w-72 rounded-xl border p-3 shadow-2xl"
+            className="absolute right-0 top-full z-[210] mt-1 w-80 rounded-xl border p-3 shadow-2xl"
             style={{
-              background: tokens.panelAlt,
-              borderColor: tokens.border,
-              boxShadow: `0 16px 48px ${tokens.accentGlow}`,
+              background: "var(--omni-ds-bg-panel-elevated)",
+              borderColor: "var(--omni-ds-border-subtle)",
+              boxShadow: "var(--omni-ds-elevation-xl)",
             }}
           >
-            <p className="mb-2 text-[9px] font-bold uppercase tracking-wider" style={{ color: tokens.textMuted }}>
-              Preset Themes
+            <p className="mb-2 text-[9px] font-bold uppercase tracking-wider text-[color:var(--omni-ds-text-muted)]">
+              Enterprise Themes
             </p>
-            <div className="space-y-1.5">
-              {PRESET_ORDER.map((key) => {
+            <div className="grid grid-cols-2 gap-1.5">
+              {THEME_HUB_ORDER.map((key) => {
                 const preset = PRESET_THEMES[key];
+                const ds = ENTERPRISE_THEMES[key];
                 return (
                   <button
                     key={preset.id}
                     type="button"
                     onClick={() => {
-                      applyThemeFast("preset", key);
+                      applyThemeFast(key);
                       setPreset(key);
                       setOpen(false);
                     }}
                     className={cn(
-                      "flex w-full items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-[11px] transition hover:brightness-110",
-                      presetId === preset.id && "ring-1",
+                      "flex items-center gap-2 rounded-lg border px-2 py-2 text-left text-[10px] transition hover:brightness-110",
+                      presetId === preset.id && "ring-1 ring-[color:var(--omni-ds-accent-primary)]",
                     )}
                     style={{
-                      borderColor: preset.border,
-                      background: preset.panel,
-                      color: preset.text,
-                      ...(presetId === preset.id ? { ringColor: preset.accent } : {}),
+                      borderColor: ds.border,
+                      background: ds.panel,
+                      color: ds.text,
                     }}
                   >
-                    <span className="h-4 w-4 shrink-0 rounded-full border" style={{ background: preset.accent, borderColor: preset.border }} />
-                    {preset.label}
+                    <span
+                      className="h-3.5 w-3.5 shrink-0 rounded-full border"
+                      style={{ background: ds.accent, borderColor: ds.border }}
+                    />
+                    <span className="truncate">{preset.label}</span>
                   </button>
                 );
               })}
             </div>
 
-            <p className="mb-2 mt-3 text-[9px] font-bold uppercase tracking-wider" style={{ color: tokens.textMuted }}>
+            <p className="mb-2 mt-3 text-[9px] font-bold uppercase tracking-wider text-[color:var(--omni-ds-text-muted)]">
               Custom Accent
             </p>
-            <div className="flex items-center gap-2 rounded-lg border p-2" style={{ borderColor: tokens.border }}>
+            <div
+              className="flex items-center gap-2 rounded-lg border p-2"
+              style={{ borderColor: "var(--omni-ds-border-subtle)" }}
+            >
               <Palette className="h-4 w-4 shrink-0" style={{ color: tokens.accent }} />
               <input
                 type="color"
@@ -106,7 +117,7 @@ export function ThemeHub() {
                   setCustomColor(picker);
                 }}
                 className="min-w-0 flex-1 rounded border bg-black/30 px-2 py-1 font-mono text-[10px]"
-                style={{ borderColor: tokens.border, color: tokens.text }}
+                style={{ borderColor: "var(--omni-ds-border-subtle)", color: "var(--omni-ds-text-primary)" }}
               />
             </div>
 
@@ -116,7 +127,7 @@ export function ThemeHub() {
                 triggerAutoTheme();
                 setOpen(false);
               }}
-              className="omni-deploy-btn mt-3 flex w-full items-center justify-center gap-2 rounded-lg py-2.5 text-[11px] font-bold uppercase tracking-wider"
+              className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg bg-[color:var(--omni-ds-accent-primary)]/15 py-2.5 text-[11px] font-bold uppercase tracking-wider text-[color:var(--omni-ds-text-accent)] hover:brightness-110"
             >
               <Shuffle className="h-4 w-4" />
               Auto-Theme Matrix

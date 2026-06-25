@@ -1,0 +1,1 @@
+export { CompressorAssistant } from "./VocalProcessors";

@@ -1,0 +1,1 @@
+export { EQAssistant } from "./VocalProcessors";

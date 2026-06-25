@@ -9,7 +9,13 @@ import { MedicalOmniChatConsole } from "../../medical/MedicalOmniChatConsole";
 import { TriplePanelResizeShell } from "./TriplePanelResizeShell";
 
 /** Medical Diagnostic Intelligence — exclusive Group D studio */
-export function MedicalStudioShell({ tool }: { tool: SovereignToolDef }) {
+export function MedicalStudioShell({
+  tool,
+  embeddedInAppShell,
+}: {
+  tool: SovereignToolDef;
+  embeddedInAppShell?: boolean;
+}) {
   const routeId = tool.omniRouteId ?? tool.slug;
 
   useEffect(() => {
@@ -34,9 +40,13 @@ export function MedicalStudioShell({ tool }: { tool: SovereignToolDef }) {
           </div>
         }
         right={
+          embeddedInAppShell ? (
+            <div className="hidden w-0 overflow-hidden" aria-hidden />
+          ) : (
           <div className="h-full min-h-0 min-w-0 overflow-hidden">
             <MedicalOmniChatConsole routeId={routeId} />
           </div>
+          )
         }
       />
     </div>

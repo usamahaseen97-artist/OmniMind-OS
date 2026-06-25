@@ -43,12 +43,12 @@ export const ECOSYSTEM_TOOLS: {
   { id: "omnimusic", label: "OmniMusic", href: "/omnimusic", breadcrumb: "OmniMusic" },
   { id: "omnivision", label: "OmniVision", href: "/creative-visionary", breadcrumb: "OmniVision" },
   { id: "omnicode", label: "OmniCode", href: "/omniforge-engine?mode=code", breadcrumb: "OmniCode" },
-  { id: "omnichat", label: "OmniChat", href: "/dashboard", breadcrumb: "OmniChat" },
-  { id: "omnidocs", label: "OmniDocs", href: "/dashboard?tab=docs", breadcrumb: "OmniDocs" },
-  { id: "omniai", label: "OmniAI", href: "/dashboard", breadcrumb: "OmniAI" },
-  { id: "omnicloud", label: "OmniCloud", href: "/omniforge-engine?panel=cloud", breadcrumb: "OmniCloud" },
+  { id: "omnichat", label: "OmniChat", href: "/", breadcrumb: "OmniChat" },
+  { id: "omnidocs", label: "OmniDocs", href: "/?tab=docs", breadcrumb: "OmniDocs" },
+  { id: "omniai", label: "OmniAI", href: "/", breadcrumb: "OmniAI" },
+  { id: "omnicloud", label: "OmniCloud", href: "/omnicloud", breadcrumb: "OmniCloud" },
   { id: "omnideploy", label: "OmniDeploy", href: "/omniforge-engine?panel=deploy", breadcrumb: "OmniDeploy" },
-  { id: "settings", label: "Settings", href: "/dashboard?settings=1", breadcrumb: "Settings" },
+  { id: "settings", label: "Settings", href: "/?settings=1", breadcrumb: "Settings" },
 ];
 
 export const WORKSPACE_PROFILES: { id: WorkspaceProfileId; label: string }[] = [
@@ -103,14 +103,48 @@ export const COMMAND_PALETTE_ITEMS: CommandPaletteItem[] = [
 export function ecosystemToolByPath(pathname: string): (typeof ECOSYSTEM_TOOLS)[number] {
   if (pathname.startsWith("/omniforge-engine")) return ECOSYSTEM_TOOLS.find((t) => t.id === "omniforge")!;
   if (pathname.startsWith("/omnimusic")) return ECOSYSTEM_TOOLS.find((t) => t.id === "omnimusic")!;
-  if (pathname.startsWith("/creative-visionary")) return ECOSYSTEM_TOOLS.find((t) => t.id === "omnivision")!;
-  if (pathname.startsWith("/dashboard")) return ECOSYSTEM_TOOLS.find((t) => t.id === "omnichat")!;
+  if (pathname.startsWith("/creative-visionary") || pathname.startsWith("/visionary-studio")) {
+    return ECOSYSTEM_TOOLS.find((t) => t.id === "omnivision")!;
+  }
+  if (pathname.startsWith("/omnicloud")) return ECOSYSTEM_TOOLS.find((t) => t.id === "omnicloud")!;
+  if (pathname === "/" || pathname.startsWith("/dashboard")) return ECOSYSTEM_TOOLS.find((t) => t.id === "omnichat")!;
   return ECOSYSTEM_TOOLS.find((t) => t.id === "omniforge")!;
+}
+
+/** Platform shell routes not in ECOSYSTEM_TOOLS — used for breadcrumbs only. */
+export const SHELL_ROUTE_LABELS: Record<string, string> = {
+  "/mission-control": "Mission Control",
+  "/automation-engine": "Automation Engine",
+  "/marketplace": "Marketplace",
+  "/medical-diagnostic": "Medical Diagnostic",
+  "/architectural-designer": "Architectural Designer",
+  "/interior-landscape": "Interior Landscape",
+  "/quantum-trading": "Quantum Trading",
+  "/business-analytics": "Business Analytics",
+  "/vfx-master": "VFX Master",
+  "/nasa-solver": "NASA Solver",
+  "/digital-marketing-hub": "Marketing Hub",
+  "/omnimap": "OmniMap",
+  "/omnitv": "OmniTV",
+  "/omnimovies": "OmniMovies",
+  "/omnitranslator": "OmniTranslator",
+};
+
+export function shellRouteLabel(pathname: string): string | null {
+  const base = pathname.split("?")[0] ?? pathname;
+  if (SHELL_ROUTE_LABELS[base]) return SHELL_ROUTE_LABELS[base];
+  for (const [route, label] of Object.entries(SHELL_ROUTE_LABELS)) {
+    if (base.startsWith(route)) return label;
+  }
+  return null;
 }
 
 export function buildBreadcrumbs(
   tool: (typeof ECOSYSTEM_TOOLS)[number],
   segments: string[],
+  pathname?: string,
 ): string[] {
+  const shell = pathname ? shellRouteLabel(pathname) : null;
+  if (shell) return ["OmniMind", shell, ...segments.filter(Boolean)];
   return ["OmniMind", tool.breadcrumb, ...segments.filter(Boolean)];
 }

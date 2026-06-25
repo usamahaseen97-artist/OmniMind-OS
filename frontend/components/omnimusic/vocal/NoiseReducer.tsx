@@ -1,0 +1,1 @@
+export { NoiseReducer } from "./VocalProcessors";

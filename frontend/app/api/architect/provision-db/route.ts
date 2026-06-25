@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { requireInternalApiAuth } from "../../../../lib/server/api-route-auth";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -11,6 +12,9 @@ type Body = {
 
 /** Managed DB spin-up hook — connection string stays server-side; client gets success only. */
 export async function POST(req: Request) {
+  const authError = requireInternalApiAuth(req);
+  if (authError) return authError;
+
   let body: Body;
   try {
     body = (await req.json()) as Body;

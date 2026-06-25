@@ -15,6 +15,8 @@ import {
   TrendingUp,
   Tv,
   Wand2,
+  Hospital,
+  Palette,
 } from "lucide-react";
 
 export type SovereignToolSlug =
@@ -22,6 +24,7 @@ export type SovereignToolSlug =
   | "architectural-designer"
   | "interior-landscape"
   | "medical-diagnostic"
+  | "medical-diagnostic-suite"
   | "quantum-trading"
   | "creative-visionary"
   | "business-analytics"
@@ -32,19 +35,23 @@ export type SovereignToolSlug =
   | "omnimusic"
   | "omnitv"
   | "omnimovies"
-  | "omnitranslator";
+  | "omnitranslator"
+  | "visionary-studio";
 
 export type SovereignLayoutKind =
   | "architect-split"
   | "design-split"
   | "medical-split"
+  | "clinical-enterprise"
   | "trading-terminal"
   | "video-suite"
   | "analytics-dashboard"
   | "vfx-timeline"
   | "science-console"
   | "marketing-hub"
+  | "visionary-enterprise"
   | "entertainment-full"
+  | "omnimusic-daw"
   | "map-full"
   | "translator-dual";
 
@@ -108,6 +115,17 @@ export const SOVEREIGN_TOOLS: SovereignToolDef[] = [
     apiProbe: "/api/agents/medical/triage",
   },
   {
+    slug: "medical-diagnostic-suite",
+    href: "/medical-diagnostic",
+    name: "Medical Diagnostic Enterprise Suite",
+    tagline: "Clinical workspace · CDS · enterprise",
+    description: "Hospital-grade clinical decision-support workspace for qualified healthcare professionals",
+    icon: Hospital,
+    layout: "clinical-enterprise",
+    omniRouteId: "medical-diagnostic-suite",
+    apiProbe: "/api/v1/medical-enterprise/patients",
+  },
+  {
     slug: "quantum-trading",
     href: "/quantum-trading",
     name: "Quantum Trading Agent",
@@ -128,6 +146,17 @@ export const SOVEREIGN_TOOLS: SovereignToolDef[] = [
     layout: "video-suite",
     omniRouteId: "creative-visionary",
     apiProbe: "/api/v1/tools/video/generate",
+  },
+  {
+    slug: "visionary-studio",
+    href: "/creative-visionary",
+    name: "Visionary Studio",
+    tagline: "Unified AI Creative OS · Adobe-class workspace",
+    description: "Professional multi-track creative operating system — image, video, VFX, brand, 3D, and social production",
+    icon: Palette,
+    layout: "visionary-enterprise",
+    omniRouteId: "visionary-studio",
+    apiProbe: "/api/v1/visionary/project",
   },
   {
     slug: "business-analytics",
@@ -187,12 +216,12 @@ export const SOVEREIGN_TOOLS: SovereignToolDef[] = [
   {
     slug: "omnimusic",
     href: "/omnimusic",
-    name: "OmniMusic",
-    tagline: "Stream · studio",
-    description: "Music dashboard with recording and vocal tuning",
+    name: "OmniMusic Studio",
+    tagline: "DAW · arrangement · mix",
+    description: "Professional digital audio workstation — timeline, piano roll, mixer, plugins, and export",
     icon: Music,
-    layout: "entertainment-full",
-    apiProbe: "/api/v1/music/trending",
+    layout: "omnimusic-daw",
+    apiProbe: "/api/v1/omnimusic/studio/projects/daw-proj-001",
   },
   {
     slug: "omnitv",
@@ -249,6 +278,8 @@ export function getSovereignTool(slug: string): SovereignToolDef | undefined {
     "game-dev": "omniforge-engine",
     "app-builder": "omniforge-engine",
     "business-site-maker": "omniforge-engine",
+    "visionary-studio": "creative-visionary",
+    "medical-diagnostic-suite": "medical-diagnostic",
   };
   const resolved = aliases[slug] ?? slug;
   return SOVEREIGN_TOOLS.find((t) => t.slug === resolved);

@@ -13,7 +13,7 @@ import type { ArchitectAnalysis, ArchitectPlan } from "./omniforge-architect-api
 import type { IdeModuleId } from "./omniforge-ide-modules";
 
 export type ExplorerView = "tree" | "search" | "assets" | "git" | "recent";
-export type TerminalPanelTab = "terminal" | "output" | "problems" | "debug" | "ports" | "logs";
+export type TerminalPanelTab = "terminal" | "output" | "problems" | "debug" | "ports" | "logs" | "tasks" | "profiler";
 export type PreviewDevice = "mobile" | "tablet" | "desktop" | "browser";
 
 type OmniForgeShellContextValue = {

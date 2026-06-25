@@ -9,11 +9,18 @@ import { MarketingHubWorkspace } from "./MarketingHubWorkspace";
 const panelSpring = { type: "spring" as const, stiffness: 440, damping: 38, mass: 0.82 };
 
 /** Digital Marketing Hub — 32% unified chat · 68% dual equal viewports */
-export function DigitalMarketingHubShell({ tool }: { tool: SovereignToolDef }) {
+export function DigitalMarketingHubShell({
+  tool,
+  embeddedInAppShell,
+}: {
+  tool: SovereignToolDef;
+  embeddedInAppShell?: boolean;
+}) {
   const routeId = tool.omniRouteId ?? tool.slug;
 
   return (
     <div className="flex h-full min-h-0 w-full flex-1 overflow-hidden">
+      {!embeddedInAppShell ? (
       <motion.aside
         layout
         initial={false}
@@ -37,6 +44,7 @@ export function DigitalMarketingHubShell({ tool }: { tool: SovereignToolDef }) {
           }
         />
       </motion.aside>
+      ) : null}
 
       <motion.main
         layout

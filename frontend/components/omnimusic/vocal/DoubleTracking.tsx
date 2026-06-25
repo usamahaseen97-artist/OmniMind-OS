@@ -1,0 +1,1 @@
+export { DoubleTracking } from "./VocalProcessors";

@@ -45,43 +45,5 @@ export async function resolveBackendUrl(_signal?: AbortSignal): Promise<string> 
   return getBackendUrl();
 }
 
-async function probeBackendRoot(base: string, signal?: AbortSignal): Promise<boolean> {
-  try {
-    const r = await fetch(`${base}/`, { signal, cache: "no-store", mode: "cors" });
-    return r.ok;
-  } catch {
-    return false;
-  }
-}
-
-async function probeBackendGateway(base: string, signal?: AbortSignal): Promise<boolean> {
-  try {
-    const r = await fetch(`${base}/api/v1/gateway/providers`, {
-      signal,
-      cache: "no-store",
-      mode: "cors",
-    });
-    return r.ok;
-  } catch {
-    return false;
-  }
-}
-
-export async function probeBackendOnline(signal?: AbortSignal): Promise<boolean> {
-  if (
-    typeof window !== "undefined" &&
-    process.env.NEXT_PUBLIC_USE_API_PROXY === "true"
-  ) {
-    try {
-      const r = await fetch("/omni-api/", { signal, cache: "no-store" });
-      return r.ok;
-    } catch {
-      return false;
-    }
-  }
-
-  const base = resolveApiBaseUrl();
-  return (
-    (await probeBackendGateway(base, signal)) || (await probeBackendRoot(base, signal))
-  );
-}
+/** @deprecated Import `probeBackendOnline` from `./backend-health` — re-exported for compatibility. */
+export { probeBackendOnline } from "./backend-health";

@@ -1,13 +1,14 @@
 "use client";
 
 import type { SovereignToolDef } from "../../lib/sovereign-tool-registry";
+import { usesOmniMindOSShell } from "../../lib/omnimind-os-pilot";
 import { getLayoutFlags } from "../../lib/workbench-layout";
 import { assertDevTrioSlug } from "../../lib/dev-trio";
 import {
   OmniForgeIdeSync,
   OmniForgeWorkspaceProvider,
 } from "../../lib/omniforge-workspace";
-import { IDEProvider } from "./IDEProvider";
+import { OmniMindAppShell } from "../os/OmniMindAppShell";
 import { IDETabBar } from "./IDETabBar";
 import { IDETopMenuBar } from "./IDETopMenuBar";
 import { ToolWorkbenchHeader } from "./ToolWorkbenchHeader";
@@ -22,9 +23,10 @@ interface SovereignWorkbenchShellProps {
 export function SovereignWorkbenchShell({ tool }: SovereignWorkbenchShellProps) {
   const { fullIdeMode } = getLayoutFlags(tool.slug);
   const isOmniForge = tool.slug === "omniforge-engine";
+  const isOsShell = usesOmniMindOSShell(tool.slug);
 
   const shell = (
-    <IDEProvider toolSlug={tool.slug}>
+    <>
       {isOmniForge ? <OmniForgeIdeSync /> : null}
       <div
         className="omni-workbench-shell flex h-screen max-h-screen w-full max-w-[100vw] flex-col overflow-hidden"
@@ -33,12 +35,12 @@ export function SovereignWorkbenchShell({ tool }: SovereignWorkbenchShellProps) 
           color: isOmniForge ? "#FFFFFF" : "#e1dbf5",
         }}
       >
-        {fullIdeMode && !isOmniForge ? (
+        {fullIdeMode && !isOmniForge && !isOsShell ? (
           <>
             <IDETopMenuBar tool={tool} trailing={<ThemeHub />} />
             <IDETabBar />
           </>
-        ) : isOmniForge ? null : tool.slug === "digital-marketing-hub" ? null : (
+        ) : isOmniForge || isOsShell ? null : tool.slug === "digital-marketing-hub" || tool.slug === "visionary-studio" ? null : (
           <ToolWorkbenchHeader tool={tool} trailing={<ThemeHub />} />
         )}
         {tool.slug === "digital-marketing-hub" ? (
@@ -49,7 +51,7 @@ export function SovereignWorkbenchShell({ tool }: SovereignWorkbenchShellProps) 
         ) : null}
         <WorkbenchLayoutRouter tool={tool} />
       </div>
-    </IDEProvider>
+    </>
   );
 
   if (isOmniForge) {
@@ -57,6 +59,12 @@ export function SovereignWorkbenchShell({ tool }: SovereignWorkbenchShellProps) 
       <OmniForgeWorkspaceProvider toolSlug={assertDevTrioSlug(tool.slug)}>
         {shell}
       </OmniForgeWorkspaceProvider>
+    );
+  }
+
+  if (isOsShell) {
+    return (
+      <OmniMindAppShell tool={tool} hideWorkspaceHeader designMode={undefined} />
     );
   }
 

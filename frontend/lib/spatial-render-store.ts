@@ -1,9 +1,10 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import type { SpatialRenderDialogState } from "./spatial-engine-api";
+import type { SpatialRenderDialogState } from "./spatial-types";
+import type { SpatialRenderMode } from "./spatial-types";
 
-export type SpatialRenderMode = "matrix" | "cinematic";
+export type { SpatialRenderMode } from "./spatial-types";
 
 export type SpatialTimelineKeyframe = {
   id: string;

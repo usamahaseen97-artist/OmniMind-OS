@@ -28,7 +28,7 @@ export type ThemeContextValue = {
   accentColor: string;
   currentTheme: ThemePresetId;
   customColor: string;
-  setPreset: (id: Exclude<ThemePresetId, "custom" | "auto">) => void;
+  setPreset: (id: import("../../design-system/themes/presets").EnterpriseThemeId) => void;
   setCustomColor: (hex: string) => void;
   setAccentColor: (hex: string) => void;
   triggerAutoTheme: () => void;
@@ -71,7 +71,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const setPreset = useCallback(
-    (id: Exclude<ThemePresetId, "custom" | "auto">) => {
+    (id: import("../../design-system/themes/presets").EnterpriseThemeId) => {
       const nextTokens = PRESET_THEMES[id];
       commit({ presetId: id, customColor: state.customColor, autoOnInit: false }, nextTokens);
     },

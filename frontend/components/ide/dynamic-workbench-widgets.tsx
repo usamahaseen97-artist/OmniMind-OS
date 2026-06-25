@@ -2,22 +2,9 @@
 
 import dynamic from "next/dynamic";
 import type { ComponentType } from "react";
+import { WidgetLoading } from "./WidgetLoading";
 
-export function WidgetLoading({ label = "workspace" }: { label?: string }) {
-  return (
-    <div className="flex min-h-[120px] flex-1 items-center justify-center">
-      <div className="flex flex-col items-center gap-2">
-        <div
-          className="h-5 w-5 animate-spin rounded-full border-2"
-          style={{ borderColor: "var(--omni-border)", borderTopColor: "var(--omni-accent)" }}
-        />
-        <span className="text-[10px]" style={{ color: "var(--omni-text-muted)" }}>
-          Loading {label}…
-        </span>
-      </div>
-    </div>
-  );
-}
+export { WidgetLoading } from "./WidgetLoading";
 
 const dyn = (
   loader: () => Promise<{ default: ComponentType<Record<string, never>> | ComponentType<any> }>,
@@ -43,9 +30,24 @@ export const DynamicOmniChatShell = dyn(
   "agent chat",
 );
 
+export const DynamicOmniChatShellCompact = dyn(
+  () => import("../chat/OmniChatShell").then((m) => ({ default: m.OmniChatShell })),
+  "chat",
+);
+
+export const DynamicWorkbenchLiveBinder = dyn(
+  () => import("./live/WorkbenchLiveViewport").then((m) => ({ default: m.WorkbenchLiveBinder })),
+  "live preview",
+);
+
+export const DynamicClientMountGate = dyn(
+  () => import("./client/ClientMountGate").then((m) => ({ default: m.ClientMountGate })),
+  "workspace",
+);
+
 export const DynamicIDEMonacoWorkspace = dyn(
   () => import("./IDEMonacoWorkspace").then((m) => ({ default: m.IDEMonacoWorkspace })),
-  "code editor",
+  "editor",
 );
 
 export const DynamicIDEBottomPanel = dyn(
@@ -55,5 +57,5 @@ export const DynamicIDEBottomPanel = dyn(
 
 export const DynamicIDERightPanel = dyn(
   () => import("./IDERightPanel").then((m) => ({ default: m.IDERightPanel })),
-  "code bot",
+  "inspector",
 );

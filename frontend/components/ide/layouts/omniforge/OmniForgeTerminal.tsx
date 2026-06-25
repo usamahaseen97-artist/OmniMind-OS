@@ -7,6 +7,9 @@ import { useDevTerminalWs } from "../../../../lib/use-dev-terminal-ws";
 import { useOmniForgeShell } from "../../../../lib/omniforge-shell-context";
 import type { TerminalPanelTab } from "../../../../lib/omniforge-shell-context";
 import { OF } from "./omniforge-theme";
+import { OmniForgeProblemsPanel } from "../../../omniforge/enterprise/OmniForgeProblemsPanel";
+import { OmniForgeTasksPanel } from "../../../omniforge/enterprise/OmniForgeTasksPanel";
+import { OmniForgeProfilerPanel } from "../../../omniforge/enterprise/OmniForgeProfilerPanel";
 
 const TABS: { id: TerminalPanelTab; label: string }[] = [
   { id: "terminal", label: "Terminal" },
@@ -15,6 +18,8 @@ const TABS: { id: TerminalPanelTab; label: string }[] = [
   { id: "debug", label: "Debug Console" },
   { id: "ports", label: "Ports" },
   { id: "logs", label: "Logs" },
+  { id: "tasks", label: "Tasks" },
+  { id: "profiler", label: "Profiler" },
 ];
 
 export function OmniForgeTerminal({ onClose }: { onClose?: () => void }) {
@@ -88,11 +93,13 @@ export function OmniForgeTerminal({ onClose }: { onClose?: () => void }) {
       );
     }
     if (terminalTab === "problems") {
-      return (
-        <div className="p-3 text-[10px]" style={{ color: OF.textMuted }}>
-          Problems appear when build diagnostics are available.
-        </div>
-      );
+      return <OmniForgeProblemsPanel />;
+    }
+    if (terminalTab === "tasks") {
+      return <OmniForgeTasksPanel />;
+    }
+    if (terminalTab === "profiler") {
+      return <OmniForgeProfilerPanel />;
     }
     if (terminalTab === "output" || terminalTab === "debug" || terminalTab === "logs") {
       return (

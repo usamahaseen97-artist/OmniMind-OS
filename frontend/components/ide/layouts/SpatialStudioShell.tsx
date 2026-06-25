@@ -20,7 +20,13 @@ import { cn } from "../../../lib/utils";
 /**
  * Hybrid Spatial Studio — 20% materials | 48% preview+timeline | 32% AI + manual.
  */
-export function SpatialStudioShell({ tool }: { tool: SovereignToolDef }) {
+export function SpatialStudioShell({
+  tool,
+  embeddedInAppShell,
+}: {
+  tool: SovereignToolDef;
+  embeddedInAppShell?: boolean;
+}) {
   const routeId = tool.omniRouteId ?? tool.slug;
   const manualOpen = useSpatialManualPanelOpen();
 
@@ -71,6 +77,9 @@ export function SpatialStudioShell({ tool }: { tool: SovereignToolDef }) {
           </>
         }
         right={
+          embeddedInAppShell ? (
+            <div className="hidden w-0 overflow-hidden" aria-hidden />
+          ) : (
           <>
             <SplitPanelHeader
               title="AI & Manual Master"
@@ -106,6 +115,7 @@ export function SpatialStudioShell({ tool }: { tool: SovereignToolDef }) {
               </div>
             </SplitPanelBody>
           </>
+          )
         }
       />
     </div>

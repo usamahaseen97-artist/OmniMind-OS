@@ -1,10 +1,10 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { setTokens } from "../../../lib/omniforge-api";
 
-export default function AuthCallbackPage() {
+function AuthCallbackInner() {
   const params = useSearchParams();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
@@ -32,5 +32,19 @@ export default function AuthCallbackPage() {
     <main className="flex min-h-screen items-center justify-center bg-black text-cyan-300">
       <p>Signing you in…</p>
     </main>
+  );
+}
+
+export default function AuthCallbackPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="flex min-h-screen items-center justify-center bg-black text-cyan-300">
+          <p>Signing you in…</p>
+        </main>
+      }
+    >
+      <AuthCallbackInner />
+    </Suspense>
   );
 }

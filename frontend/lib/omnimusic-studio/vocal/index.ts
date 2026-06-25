@@ -1,0 +1,17 @@
+export { voiceAuthorizationEngine, VoiceAuthorizationEngine } from "./VoiceAuthorizationEngine";
+export { vocalTakeManagerEngine, VocalTakeManagerEngine } from "./VocalTakeManagerEngine";
+export { voiceAnalyzerCore, VoiceAnalyzerCore } from "./VoiceAnalyzerCore";
+export { pitchAnalyzerCore, PitchAnalyzerCore } from "./PitchAnalyzerCore";
+export { autoTuneEngineCore, AutoTuneEngineCore } from "./AutoTuneEngineCore";
+export { voiceCleanerCore, noiseReducerCore, breathRemovalCore, deEsserCore } from "./VoiceCleanerCore";
+export { eqAssistantCore, compressorAssistantCore, reverbAssistantCore, delayAssistantCore } from "./EffectAssistantsCore";
+export { vocalHarmonyEngineCore, doubleTrackingCore, choirGeneratorCore, backingVocalsCore } from "./VocalHarmonyEngineCore";
+export { vocalLibraryEngine, VocalLibraryEngine } from "./VocalLibraryEngine";
+export { compEditorCore, CompEditorCore } from "./CompEditorCore";
+export { lyricsSyncEngine, pronunciationEngine } from "./LyricsSyncEngine";
+export { performanceMonitorCore, PerformanceMonitorCore } from "./PerformanceMonitorCore";
+export { vocalAssistantEngine, VocalAssistantEngine } from "./VocalAssistantEngine";
+export { smartRecordingEngine, SmartRecordingEngine } from "./SmartRecordingEngine";
+export { vocalSessionCoordinator, VocalSessionCoordinator } from "./VocalSessionCoordinator";
+export { omnimusicVocalApi } from "./vocal-api";
+export * from "./constants";

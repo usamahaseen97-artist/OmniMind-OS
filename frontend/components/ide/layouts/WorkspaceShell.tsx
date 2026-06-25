@@ -15,20 +15,30 @@ export type WorkspaceShellProps = {
   workspace: ReactNode;
   chatHeaderSlot?: ReactNode;
   designMode?: boolean;
+  /** When inside OmniMind App Shell — copilot is global; hide duplicate chat column */
+  embeddedInAppShell?: boolean;
 };
 
 /**
  * Clean 2-panel flow — Chat | Workspace
  * Intermediate pipeline panel purged (image_21 green mark).
  */
-export function WorkspaceShell({ tool, workspace, chatHeaderSlot, designMode }: WorkspaceShellProps) {
+export function WorkspaceShell({
+  tool,
+  workspace,
+  chatHeaderSlot,
+  designMode,
+  embeddedInAppShell,
+}: WorkspaceShellProps) {
   const { chatOpen } = useWorkbenchZones();
   const routeId = tool.omniRouteId ?? tool.slug;
   const showUtility = showWorkspaceUtilityDeck(tool.slug);
+  const showChat = !embeddedInAppShell;
 
   return (
     <div className="flex h-full min-h-0 w-full flex-1 flex-col overflow-hidden">
       <div className="flex min-h-0 flex-1 overflow-hidden">
+        {showChat ? (
         <motion.aside
           layout
           initial={false}
@@ -59,8 +69,9 @@ export function WorkspaceShell({ tool, workspace, chatHeaderSlot, designMode }: 
             headerSlot={chatHeaderSlot}
           />
         </motion.aside>
+        ) : null}
 
-        {!chatOpen ? (
+        {showChat && !chatOpen ? (
           <button
             type="button"
             onClick={toggleChatPanel}
@@ -78,6 +89,7 @@ export function WorkspaceShell({ tool, workspace, chatHeaderSlot, designMode }: 
           className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden"
           style={{ background: "#0B0F19" }}
         >
+          {!embeddedInAppShell ? (
           <header
             className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b px-3 py-1.5"
             style={{ borderColor: "#1E293B", background: "#111827" }}
@@ -87,6 +99,14 @@ export function WorkspaceShell({ tool, workspace, chatHeaderSlot, designMode }: 
             </span>
             {showUtility ? <ProjectUtilityDeck toolSlug={tool.slug} /> : null}
           </header>
+          ) : showUtility ? (
+            <header
+              className="flex shrink-0 justify-end border-b px-3 py-1"
+              style={{ borderColor: "#1E293B", background: "#111827" }}
+            >
+              <ProjectUtilityDeck toolSlug={tool.slug} />
+            </header>
+          ) : null}
           <div className="min-h-0 flex-1 overflow-hidden">{workspace}</div>
         </motion.main>
       </div>

@@ -1,0 +1,1 @@
+export { DeEsser } from "./VocalProcessors";

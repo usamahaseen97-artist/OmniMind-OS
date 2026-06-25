@@ -217,8 +217,8 @@ export function OmniMindEcosystemProvider({ children }: { children: ReactNode })
 
   const tool = useMemo(() => ecosystemToolByPath(pathname), [pathname]);
   const breadcrumbs = useMemo(
-    () => buildBreadcrumbs(tool, breadcrumbSegments),
-    [tool, breadcrumbSegments],
+    () => buildBreadcrumbs(tool, breadcrumbSegments, pathname),
+    [tool, breadcrumbSegments, pathname],
   );
 
   const setWorkspaceProfile = useCallback((p: WorkspaceProfileId) => {
@@ -532,6 +532,12 @@ export function OmniMindEcosystemProvider({ children }: { children: ReactNode })
   );
 
   useEffect(() => {
+    const onWorkspaceCtx = (e: Event) => {
+      const detail = (e as CustomEvent<{ context?: { summary?: string } }>).detail;
+      if (detail?.context?.summary) {
+        pushAiSuggestion(`Brain context synced for active tool.`);
+      }
+    };
     const onArchitect = (e: Event) => {
       const analysis = (e as CustomEvent<{ analysis?: { languages?: string[]; database?: { recommended?: string }; auth?: { strategy?: string } } }>).detail?.analysis;
       if (!analysis) return;
@@ -547,8 +553,12 @@ export function OmniMindEcosystemProvider({ children }: { children: ReactNode })
         );
       }
     };
+    window.addEventListener("omnimind:brain-workspace-context", onWorkspaceCtx);
     window.addEventListener("omnimind:omniforge-architect", onArchitect);
-    return () => window.removeEventListener("omnimind:omniforge-architect", onArchitect);
+    return () => {
+      window.removeEventListener("omnimind:brain-workspace-context", onWorkspaceCtx);
+      window.removeEventListener("omnimind:omniforge-architect", onArchitect);
+    };
   }, [pushAiSuggestion, setTechStack]);
 
   const value = useMemo(

@@ -2,10 +2,15 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Search, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useOmniMindEcosystem } from "../../lib/omnimind-ecosystem-context";
-import { COMMAND_PALETTE_ITEMS } from "../../lib/omnimind-ecosystem-registry";
+import { OMNI_OS_COMMAND_ITEMS } from "../../lib/omnimind-os-command-items";
+import { normalizeHomeRoute } from "../../lib/normalize-home-route";
+import { omniCore } from "../../core/omnicore";
+import type { EcosystemToolId } from "../../lib/omnimind-ecosystem-registry";
 
 export function OmniMindCommandPalette() {
+  const router = useRouter();
   const { commandPaletteOpen, setCommandPaletteOpen, dispatchEcosystemCommand, navigateToTool } = useOmniMindEcosystem();
   const [query, setQuery] = useState("");
 
@@ -15,18 +20,59 @@ export function OmniMindCommandPalette() {
 
   const items = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return COMMAND_PALETTE_ITEMS;
-    return COMMAND_PALETTE_ITEMS.filter(
-      (i) => i.label.toLowerCase().includes(q) || i.group.toLowerCase().includes(q) || i.keywords?.includes(q),
+    if (!q) return OMNI_OS_COMMAND_ITEMS;
+
+    const nl = q.startsWith("ask ") || q.startsWith(">") || q.startsWith("ai ");
+    const coreItems = omniCore.commandPalette.setQuery(q).map((c) => ({
+      id: c.id,
+      label: c.label,
+      group: c.category,
+      keywords: c.keywords.join(" "),
+      action: "command" as const,
+      command: c.id,
+    }));
+
+    const filtered = OMNI_OS_COMMAND_ITEMS.filter(
+      (i) =>
+        i.label.toLowerCase().includes(q) ||
+        i.group.toLowerCase().includes(q) ||
+        i.keywords?.includes(q),
     );
+
+    if (nl) {
+      return [
+        {
+          id: "nl-ai",
+          label: `Ask OmniMind: ${query.replace(/^(ask|>|ai)\s*/i, "")}`,
+          group: "AI",
+          keywords: "natural language ai",
+          action: "command" as const,
+          command: "cmd-ai-natural",
+        },
+        ...filtered,
+        ...coreItems,
+      ];
+    }
+
+    return [...filtered, ...coreItems.filter((c) => !filtered.some((f) => f.id === c.id))];
   }, [query]);
 
   if (!commandPaletteOpen) return null;
 
-  const run = (item: (typeof COMMAND_PALETTE_ITEMS)[number]) => {
+  const run = (item: (typeof OMNI_OS_COMMAND_ITEMS)[number] | { id: string; action: string; command?: string; toolId?: string; href?: string }) => {
     setCommandPaletteOpen(false);
-    if (item.action === "tool" && item.toolId) navigateToTool(item.toolId);
-    else if (item.command) dispatchEcosystemCommand(item.command);
+    if (item.command === "cmd-ai-natural") {
+      window.dispatchEvent(new CustomEvent("omnimind:fill-prompt", { detail: { text: query.replace(/^(ask|>|ai)\s*/i, "") } }));
+      return;
+    }
+    if (item.action === "tool" && "toolId" in item && typeof item.toolId === "string") {
+      navigateToTool(item.toolId as EcosystemToolId);
+    } else if (item.action === "navigate" && "href" in item && item.href) {
+      router.push(normalizeHomeRoute(item.href));
+    } else if ("command" in item && item.command) {
+      omniCore.commandPalette.execute(item.command);
+      dispatchEcosystemCommand(item.command);
+    }
   };
 
   return (
@@ -38,7 +84,7 @@ export function OmniMindCommandPalette() {
             autoFocus
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Command palette — Build Website, Switch Tool…"
+            placeholder="Search tools, projects, commands, agents…"
             className="min-w-0 flex-1 bg-transparent text-[11px] text-zinc-200 outline-none placeholder:text-zinc-600"
             onKeyDown={(e) => {
               if (e.key === "Escape") setCommandPaletteOpen(false);
@@ -63,7 +109,7 @@ export function OmniMindCommandPalette() {
           ))}
         </div>
         <div className="border-t border-white/[0.04] px-3 py-1.5 font-mono text-[8px] text-zinc-600">
-          Ctrl+Shift+P · Enter to run · Esc to close
+          Ctrl+Shift+P · Ctrl+K · ask … or &gt; for AI · Enter to run · Esc
         </div>
       </div>
     </div>

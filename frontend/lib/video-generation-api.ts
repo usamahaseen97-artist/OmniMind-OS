@@ -1,5 +1,5 @@
 import { resolveBackendUrl } from "./backend-url";
-import type { ToolDispatchPayload, ToolDispatchResult } from "./omni-tools-api";
+import type { ToolDispatchPayload, ToolDispatchResult } from "./omni-tools-types";
 
 export type VideoJobStatus = {
   job_id: string;

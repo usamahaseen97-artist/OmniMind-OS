@@ -26,11 +26,11 @@ export const ACTIVITY_MENU_GROUPS: {
   },
   {
     label: "Computational Intelligence",
-    slugs: ["medical-diagnostic", "quantum-trading", "business-analytics", "nasa-solver"],
+    slugs: ["medical-diagnostic", "medical-diagnostic-suite", "quantum-trading", "business-analytics", "nasa-solver"],
   },
   {
     label: "Multimedia Production",
-    slugs: ["creative-visionary", "vfx-master", "digital-marketing-hub"],
+    slugs: ["creative-visionary", "visionary-studio", "vfx-master", "digital-marketing-hub"],
   },
 ];
 
@@ -40,9 +40,11 @@ const GROUP_BY_SLUG: Record<SovereignToolSlug, WorkbenchModuleGroup> = {
   "interior-landscape": "B",
   "nasa-solver": "C",
   "medical-diagnostic": "D",
+  "medical-diagnostic-suite": "F",
   "quantum-trading": "E",
   "business-analytics": "F",
   "creative-visionary": "G",
+  "visionary-studio": "G",
   "vfx-master": "H",
   "digital-marketing-hub": "I",
   omnimap: "generic",

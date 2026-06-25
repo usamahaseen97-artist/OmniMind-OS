@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import type { ReactNode } from "react";
 import type { SovereignToolDef } from "../../../lib/sovereign-tool-registry";
-import { WidgetLoading } from "../dynamic-workbench-widgets";
+import { WidgetLoading } from "../WidgetLoading";
 import { ClientMountGate } from "../client/ClientMountGate";
 import { WorkbenchLiveBinder } from "../live/WorkbenchLiveViewport";
 

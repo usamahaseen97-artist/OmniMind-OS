@@ -4,6 +4,8 @@ import { Suspense } from "react";
 import type { SovereignToolDef } from "../../../lib/sovereign-tool-registry";
 import { OmniForgeLayoutProvider } from "../../../lib/omniforge-layout-context";
 import { OmniForgeShellProvider } from "../../../lib/omniforge-shell-context";
+import { OmniForgeEngineeringProvider } from "../../../lib/omniforge-engineering-context";
+import { OmniForgeEnterpriseProvider } from "../../../lib/omniforge-enterprise-context";
 import { OmniForgeConnectionBar } from "./omniforge/OmniForgeConnectionBar";
 import { OmniForgeStackBootstrap } from "./omniforge/OmniForgeStackBootstrap";
 import { OmniForgeWorkspaceBoot } from "./omniforge/OmniForgeWorkspaceBoot";
@@ -17,6 +19,8 @@ export function ThreePanelDevShell({ tool }: { tool: SovereignToolDef }) {
   return (
     <OmniForgeLayoutProvider>
       <OmniForgeShellProvider>
+        <OmniForgeEngineeringProvider>
+        <OmniForgeEnterpriseProvider>
         <OmniMindEcosystemShell>
           <Suspense fallback={null}>
             <OmniForgeStackBootstrap legacySlug={tool.slug} />
@@ -27,6 +31,8 @@ export function ThreePanelDevShell({ tool }: { tool: SovereignToolDef }) {
             <OmniWebDevelopmentWorkbench />
           </div>
         </OmniMindEcosystemShell>
+        </OmniForgeEnterpriseProvider>
+        </OmniForgeEngineeringProvider>
       </OmniForgeShellProvider>
     </OmniForgeLayoutProvider>
   );

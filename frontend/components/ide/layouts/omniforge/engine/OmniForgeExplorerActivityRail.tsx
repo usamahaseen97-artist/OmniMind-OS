@@ -6,8 +6,12 @@ import {
   FolderTree,
   GitBranch,
   Image,
+  LayoutDashboard,
+  HeartPulse,
   Puzzle,
+  Rocket,
   Search,
+  TestTube,
   Webhook,
 } from "lucide-react";
 import { useOmniForgeShell, type ExplorerView } from "../../../../../lib/omniforge-shell-context";
@@ -22,6 +26,10 @@ const RAIL: { id: ExplorerView | IdeModuleId; icon: typeof FolderTree; label: st
   { id: "database", icon: Database, label: "Database", kind: "module" },
   { id: "api_tester", icon: Webhook, label: "API", kind: "module" },
   { id: "extensions", icon: Puzzle, label: "Extensions", kind: "module" },
+  { id: "enterprise_dashboard", icon: LayoutDashboard, label: "Dashboard", kind: "module" },
+  { id: "project_health", icon: HeartPulse, label: "Health", kind: "module" },
+  { id: "deployment_center", icon: Rocket, label: "Deploy", kind: "module" },
+  { id: "testing_center", icon: TestTube, label: "Tests", kind: "module" },
 ];
 
 /** VS-style activity rail — injected left of file explorer without changing theme. */

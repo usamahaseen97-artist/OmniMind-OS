@@ -12,6 +12,12 @@ import { ThreePanelDevShell } from "./ThreePanelDevShell";
 import { SpatialStudioShell } from "./SpatialStudioShell";
 import { MedicalStudioShell } from "./MedicalStudioShell";
 import { WorkspaceShell } from "./WorkspaceShell";
+import { BusinessAnalyticsEnterpriseWorkspace } from "../../analytics/enterprise/BusinessAnalyticsEnterpriseWorkspace";
+import {
+  DynamicMedicalEnterpriseWorkspace,
+  DynamicOmniMusicStudioShell,
+} from "./dynamic-flagship-workspaces";
+import { isProtectedShellTool } from "../../../lib/omnimind-os-pilot";
 
 function VfxRightWorkspace({ tool }: { tool: SovereignToolDef }) {
   return (
@@ -38,19 +44,29 @@ const GROUP_WORKSPACE: Record<
   B: (tool) => ({
     workspace: <DynamicToolLiveSimMatrix tool={tool} />,
     designMode: true,
-  }), // legacy fallback — Group B routes through SpatialStudioShell
+  }),
   C: (tool) => ({ workspace: <DynamicToolLiveSimMatrix tool={tool} /> }),
   D: (tool) => ({ workspace: <DynamicToolLiveSimMatrix tool={tool} /> }),
   E: (tool) => ({ workspace: <DynamicToolLiveSimMatrix tool={tool} /> }),
-  F: (tool) => ({ workspace: <DynamicToolLiveSimMatrix tool={tool} /> }),
+  F: (tool) => ({
+    workspace:
+      tool.slug === "business-analytics" ? (
+        <BusinessAnalyticsEnterpriseWorkspace tool={tool} />
+      ) : (
+        <DynamicToolLiveSimMatrix tool={tool} />
+      ),
+  }),
   G: (tool) => ({ workspace: <DynamicToolLiveSimMatrix tool={tool} /> }),
   H: (tool) => ({ workspace: <VfxRightWorkspace tool={tool} /> }),
   I: (tool) => ({ workspace: <DynamicToolLiveSimMatrix tool={tool} /> }),
   generic: (tool) => ({ workspace: <DynamicToolLiveSimMatrix tool={tool} /> }),
 };
 
+const embedded = { embeddedInAppShell: true as const };
+
 export function ZoneContentRouter({ tool }: { tool: SovereignToolDef }) {
   const group = getModuleGroup(tool.slug);
+  const osEmbedded = !isProtectedShellTool(tool.slug);
 
   useEffect(() => {
     resetWorkbenchZones();
@@ -61,19 +77,27 @@ export function ZoneContentRouter({ tool }: { tool: SovereignToolDef }) {
   }
 
   if (group === "B") {
-    return <SpatialStudioShell tool={tool} />;
+    return <SpatialStudioShell tool={tool} embeddedInAppShell={osEmbedded} />;
+  }
+
+  if (tool.slug === "medical-diagnostic-suite") {
+    return <DynamicMedicalEnterpriseWorkspace tool={tool} {...embedded} />;
+  }
+
+  if (tool.slug === "visionary-studio" || tool.slug === "creative-visionary") {
+    return <CreativeVisionaryShell tool={tool} embeddedInAppShell={osEmbedded} />;
+  }
+
+  if (tool.slug === "omnimusic") {
+    return <DynamicOmniMusicStudioShell tool={tool} {...embedded} />;
   }
 
   if (group === "D") {
-    return <MedicalStudioShell tool={tool} />;
-  }
-
-  if (tool.slug === "creative-visionary") {
-    return <CreativeVisionaryShell tool={tool} />;
+    return <MedicalStudioShell tool={tool} embeddedInAppShell={osEmbedded} />;
   }
 
   if (tool.slug === "digital-marketing-hub") {
-    return <DigitalMarketingHubShell tool={tool} />;
+    return <DigitalMarketingHubShell tool={tool} embeddedInAppShell={osEmbedded} />;
   }
 
   const cfg = GROUP_WORKSPACE[group](tool);
@@ -83,6 +107,7 @@ export function ZoneContentRouter({ tool }: { tool: SovereignToolDef }) {
       tool={tool}
       workspace={cfg.workspace}
       designMode={cfg.designMode}
+      embeddedInAppShell={osEmbedded}
     />
   );
 }

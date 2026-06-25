@@ -43,6 +43,7 @@ export const TOOL_ACCENT: Record<string, { glow: string; ring: string; text: str
   "medical-diagnostic": { glow: "from-rose-500/20", ring: "ring-rose-500/30", text: "text-rose-300" },
   "quantum-trading": { glow: "from-amber-500/20", ring: "ring-amber-500/30", text: "text-amber-300" },
   "creative-visionary": { glow: "from-fuchsia-500/20", ring: "ring-fuchsia-500/30", text: "text-fuchsia-300" },
+  "visionary-studio": { glow: "from-cyan-500/20", ring: "ring-cyan-500/30", text: "text-cyan-300" },
   "business-analytics": { glow: "from-sky-500/20", ring: "ring-sky-500/30", text: "text-sky-300" },
   "vfx-master": { glow: "from-purple-500/20", ring: "ring-purple-500/30", text: "text-purple-300" },
   "nasa-solver": { glow: "from-orange-500/20", ring: "ring-orange-500/30", text: "text-orange-300" },
@@ -62,6 +63,6 @@ export const TOOL_SIDEBAR_GROUPS: { label: string; slugs: string[] }[] = [
   { label: "Build & Deploy", slugs: ["omniforge-engine"] },
   { label: "Design & Space", slugs: ["architectural-designer", "interior-landscape"] },
   { label: "Intelligence", slugs: ["medical-diagnostic", "quantum-trading", "business-analytics", "nasa-solver"] },
-  { label: "Creative Studio", slugs: ["creative-visionary", "vfx-master"] },
+  { label: "Creative Studio", slugs: ["visionary-studio", "creative-visionary", "vfx-master"] },
   { label: "Omni Entertainment", slugs: ["omnimap", "omnimusic", "omnitv", "omnimovies", "omnitranslator"] },
 ];
