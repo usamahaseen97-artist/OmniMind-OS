@@ -21,6 +21,7 @@ from schemas.platform_enterprise import (
     AgentRegisterBody,
     AgentsSaveBody,
     ConversationSaveBody,
+    EnterpriseDocument,
     MemoryEntryBody,
     MemorySaveBody,
     PromptBody,

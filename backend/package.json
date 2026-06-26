@@ -1,0 +1,10 @@
+{
+  "name": "omnimind-backend",
+  "private": true,
+  "scripts": {
+    "typecheck": "python -m compileall -q .",
+    "test": "pytest tests/ -q",
+    "test:verbose": "pytest tests/ -v"
+  },
+  "devDependencies": {}
+}

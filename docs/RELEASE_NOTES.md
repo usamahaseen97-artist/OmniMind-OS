@@ -1,4 +1,25 @@
-# Release Notes — OmniMind OS V12 Enterprise
+# Release Notes — OmniMind OS
+
+## v1.0.0 — Enterprise Production Release (2026-06-17)
+
+**Tag:** `v1.0.0`  
+**Status:** Release Candidate → Production  
+**Decision:** **GO**
+
+### Release highlights
+
+- 84 API routers, 487 OpenAPI paths, 545 operations
+- 30 OmniCore platform modules with enterprise middleware
+- 75 automated backend tests passing
+- OpenAPI `/docs` generation fixed (EnterpriseDocument import)
+- Full enterprise documentation and Apache 2.0 license
+- Production Docker + Kubernetes deployment paths
+
+See [RELEASE_CANDIDATE_v1.0.0.md](RELEASE_CANDIDATE_v1.0.0.md) for verification evidence.
+
+---
+
+## V12 Enterprise Platform (development track)
 
 **Release date:** 2026-06-17  
 **Codename:** Enterprise Platform  

@@ -1,0 +1,15 @@
+{
+  "name": "omnimind",
+  "private": true,
+  "scripts": {
+    "lint": "npm run lint --prefix frontend",
+    "build": "npm run build --prefix frontend",
+    "typecheck": "npm run typecheck --prefix frontend && npm run typecheck --prefix backend",
+    "typecheck:frontend": "npm run typecheck --prefix frontend",
+    "typecheck:backend": "npm run typecheck --prefix backend",
+    "verify": "npm run lint && npm run test && npm run build && npm run typecheck:backend",
+    "test": "npm run test --prefix frontend && npm run test --prefix backend",
+    "test:frontend": "npm run test --prefix frontend",
+    "test:backend": "npm run test --prefix backend"
+  }
+}
