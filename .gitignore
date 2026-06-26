@@ -23,5 +23,17 @@ logs/
 .env.local
 .env.*.local
 
+# IDE / editor local rules
+.cursor/
+
 # Large generated dumps
 ALL_CODE.txt
+
+# Backend runtime-generated output (video pipeline, frames, etc.)
+backend/data/generated/
+
+# TypeScript / test artifacts
+*.tsbuildinfo
+frontend/coverage/
+frontend/.next/
+coverage/
