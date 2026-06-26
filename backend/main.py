@@ -64,6 +64,35 @@ from routers.spatial import router as spatial_router
 from routers.spatial_engine import router as spatial_engine_router
 from routers.spatial_hybrid import router as spatial_hybrid_router
 from routers.medical_diagnostic import router as medical_diagnostic_router
+from routers.medical_enterprise_imaging import router as medical_enterprise_imaging_router
+from routers.medical_enterprise_laboratory import router as medical_enterprise_laboratory_router
+from routers.medical_enterprise_multi_agent import router as medical_enterprise_multi_agent_router
+from routers.medical_enterprise_his import router as medical_enterprise_his_router
+from routers.medical_enterprise_governance import router as medical_enterprise_governance_router
+from routers.medical_enterprise_production import router as medical_enterprise_production_router
+from routers.visionary_studio import router as visionary_studio_router
+from routers.visionary_studio_ai import router as visionary_studio_ai_router
+from routers.visionary_studio_editor import router as visionary_studio_editor_router
+from routers.visionary_studio_vfx import router as visionary_studio_vfx_router
+from routers.visionary_studio_marketing import router as visionary_studio_marketing_router
+from routers.visionary_studio_3d import router as visionary_studio_3d_router
+from routers.visionary_studio_automation import router as visionary_studio_automation_router
+from routers.omnimusic_studio import router as omnimusic_studio_router
+from routers.omnimusic_studio_ai import router as omnimusic_studio_ai_router
+from routers.omnimusic_studio_vocal import router as omnimusic_studio_vocal_router
+from routers.omnimusic_studio_mixing import router as omnimusic_studio_mixing_router
+from routers.omnicore import router as omnicore_router
+from routers.omnicore_ai import router as omnicore_ai_router
+from routers.omnicore_assets import router as omnicore_assets_router
+from routers.omnicore_plugins import router as omnicore_plugins_router
+from routers.omnicore_collaboration import router as omnicore_collaboration_router
+from routers.omnicore_security import router as omnicore_security_router
+from routers.omnicore_quality import router as omnicore_quality_router
+from routers.omnicore_infra import router as omnicore_infra_router
+from routers.omnicore_ecosystem import router as omnicore_ecosystem_router
+from routers.omnicore_automation import router as omnicore_automation_router
+from routers.omnicore_mission_control import router as omnicore_mission_control_router
+from routers.omnicore_omnicloud import router as omnicore_omnicloud_router
 from routers.terminal_stream import router as terminal_stream_router
 from routers.infra_ops_stream import router as infra_ops_stream_router
 from routers.stream_preview import router as stream_preview_router
@@ -96,6 +125,7 @@ from routers.streaming_spark import router as streaming_spark_router
 from routers.movies import router as movies_router
 from routers.user_analytics import router as user_analytics_router
 from routers.tv_live_grid import router as tv_live_grid_router
+from routers.platform_ops import router as platform_ops_router
 from routers.tools_status import router as tools_status_router
 from routers.workflows import router as workflows_router
 from routers.core_tools import core_tools_router
@@ -222,6 +252,16 @@ async def lifespan(app: FastAPI):
 
     logging.getLogger("uvicorn.error").info("Application startup complete.")
     log.info("Application startup complete.")
+
+    from lib.structured_logging import configure_structured_logging
+    from lib.security.env_validation import validate_environment
+
+    configure_structured_logging()
+    boot_settings = get_settings()
+    env_report = validate_environment(production=boot_settings.omnimind_env == "production")
+    log.info("environment_validation ok=%s production=%s", env_report.get("ok"), env_report.get("production"))
+    if boot_settings.omnimind_env == "production" and not env_report.get("ok"):
+        log.warning("production environment validation failed: %s", env_report.get("missingRequired"))
 
     # Instant boot — placeholder only; Atlas connects in background (never enable memory here)
     app.state.mongodb = mongo_boot_pending()
@@ -411,6 +451,21 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="OmniMind V11 Sovereign Engine", lifespan=lifespan)
 
+from lib.enterprise.exceptions import PlatformError
+from lib.enterprise.handlers import platform_error_handler
+from middleware.audit_middleware import AuditMiddleware
+from middleware.metrics_middleware import MetricsMiddleware
+from middleware.request_context import RequestContextMiddleware
+from middleware.response_envelope import ResponseEnvelopeMiddleware
+
+app.add_exception_handler(PlatformError, platform_error_handler)
+
+# Enterprise middleware (last added = outermost on request)
+app.add_middleware(ResponseEnvelopeMiddleware)
+app.add_middleware(AuditMiddleware)
+app.add_middleware(MetricsMiddleware)
+app.add_middleware(RequestContextMiddleware)
+
 # --- CORS (deployment-ready) -------------------------------------------------
 # Local dev origins are always allowed. Add production domains via the
 # ALLOWED_ORIGINS env var (comma-separated). Set ALLOWED_ORIGINS="*" to open
@@ -526,6 +581,7 @@ async def fast_stream_middleware(request: Request, call_next):
     return response
 
 app.include_router(auth_router)
+app.include_router(platform_ops_router)
 app.include_router(orchestrator_router)
 app.include_router(webhooks_router)
 app.include_router(chat_router)
@@ -550,6 +606,35 @@ app.include_router(spatial_router)
 app.include_router(spatial_engine_router)
 app.include_router(spatial_hybrid_router)
 app.include_router(medical_diagnostic_router)
+app.include_router(medical_enterprise_imaging_router)
+app.include_router(medical_enterprise_laboratory_router)
+app.include_router(medical_enterprise_multi_agent_router)
+app.include_router(medical_enterprise_his_router)
+app.include_router(medical_enterprise_governance_router)
+app.include_router(medical_enterprise_production_router)
+app.include_router(visionary_studio_router)
+app.include_router(visionary_studio_ai_router)
+app.include_router(visionary_studio_editor_router)
+app.include_router(visionary_studio_vfx_router)
+app.include_router(visionary_studio_marketing_router)
+app.include_router(visionary_studio_3d_router)
+app.include_router(visionary_studio_automation_router)
+app.include_router(omnimusic_studio_router)
+app.include_router(omnimusic_studio_ai_router)
+app.include_router(omnimusic_studio_vocal_router)
+app.include_router(omnimusic_studio_mixing_router)
+app.include_router(omnicore_router)
+app.include_router(omnicore_ai_router)
+app.include_router(omnicore_assets_router)
+app.include_router(omnicore_plugins_router)
+app.include_router(omnicore_collaboration_router)
+app.include_router(omnicore_security_router)
+app.include_router(omnicore_quality_router)
+app.include_router(omnicore_infra_router)
+app.include_router(omnicore_ecosystem_router)
+app.include_router(omnicore_automation_router)
+app.include_router(omnicore_mission_control_router)
+app.include_router(omnicore_omnicloud_router)
 app.include_router(terminal_stream_router)
 app.include_router(infra_ops_stream_router)
 app.include_router(stream_preview_router)
@@ -558,8 +643,8 @@ app.include_router(omnicharge_router)
 app.include_router(gateway_router)
 app.include_router(platform_router)
 app.include_router(llm_integration_router)
-app.include_router(music_router)
 app.include_router(music_v1_router)
+app.include_router(music_router)
 app.include_router(entertainment_analytics_router)
 app.include_router(media_router)
 app.include_router(livetv_router)

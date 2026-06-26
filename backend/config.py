@@ -299,6 +299,10 @@ class Settings(BaseSettings):
         default="",
         validation_alias=AliasChoices("OTEL_EXPORTER_OTLP_ENDPOINT", "OTEL_ENDPOINT"),
     )
+    metrics_public: bool = Field(
+        default=False,
+        validation_alias=AliasChoices("OMNIMIND_METRICS_PUBLIC", "METRICS_PUBLIC"),
+    )
 
     @property
     def n8n_webhook_paths(self) -> dict[str, str]:
