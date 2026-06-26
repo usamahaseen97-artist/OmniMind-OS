@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: ghcr.io/omnimind/backend:canary
+          image: ghcr.io/omnimind/omnimind-backend:canary
           ports:
             - containerPort: 8001
           envFrom:
@@ -32,6 +32,23 @@ spec:
                 name: omnimind-config
             - secretRef:
                 name: omnimind-secrets
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: omnimind-backend-canary
+  namespace: omnimind
+  labels:
+    app: omnimind-backend
+    track: canary
+spec:
+  selector:
+    app: omnimind-backend
+    track: canary
+  ports:
+    - port: 8001
+      targetPort: 8001
+  type: ClusterIP
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress

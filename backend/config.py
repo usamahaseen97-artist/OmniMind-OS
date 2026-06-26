@@ -171,6 +171,7 @@ class Settings(BaseSettings):
         validation_alias=AliasChoices("ALLOWED_ORIGINS", "OMNIMIND_ALLOWED_ORIGINS"),
     )
     rate_limit: str = "30/minute"
+    platform_write_rate_limit: str = "120/minute"
     supabase_url: str = ""
     supabase_anon_key: str = Field(default="", validation_alias="SUPABASE_ANON_KEY")
     supabase_service_key: str = Field(

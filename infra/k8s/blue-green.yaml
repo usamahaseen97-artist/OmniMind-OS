@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: ghcr.io/omnimind/backend:green
+          image: ghcr.io/omnimind/omnimind-backend:green
           ports:
             - containerPort: 8001
           envFrom:

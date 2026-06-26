@@ -8,6 +8,10 @@ from typing import Annotated, Any, Optional
 import jwt
 from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from limits import parse
+from slowapi.errors import RateLimitExceeded
+from slowapi.util import get_remote_address
+from slowapi.wrappers import Limit
 
 from auth.security import decode_token
 from config import get_settings
@@ -17,6 +21,8 @@ from lib.security.zero_trust import authorize_request
 
 logger = logging.getLogger(__name__)
 _bearer = HTTPBearer(auto_error=False)
+
+_PLATFORM_WRITE_SCOPE = "platform-writes"
 
 # Paths that remain public for probes and orchestration.
 _PUBLIC_EXACT_PATHS = frozenset({
@@ -119,7 +125,7 @@ def platform_router_dependencies() -> list:
 
 
 async def enforce_platform_rate_limit(request: Request) -> None:
-    """Lightweight per-IP rate guard for platform mutation endpoints."""
+    """Per-IP SlowAPI rate guard for platform mutation endpoints."""
     if request.method not in ("POST", "PUT", "PATCH", "DELETE"):
         return
     if is_public_platform_path(request.url.path):
@@ -127,10 +133,33 @@ async def enforce_platform_rate_limit(request: Request) -> None:
     limiter = getattr(request.app.state, "limiter", None)
     if limiter is None:
         return
-    # slowapi limiter checked via shared key — 120/min platform writes
-    key = f"platform:{request.client.host if request.client else 'unknown'}"
-    # No-op hook point — full slowapi decorator integration remains on main routes.
-    logger.debug("platform_rate_limit_key=%s path=%s", key, request.url.path)
+
+    settings = get_settings()
+    limit_string = settings.platform_write_rate_limit or "120/minute"
+    limit_item = parse(limit_string)
+    limit_key = f"platform:{get_remote_address(request)}"
+    args = [limit_key, _PLATFORM_WRITE_SCOPE]
+    if limiter._key_prefix:
+        args = [limiter._key_prefix, *args]
+
+    if not limiter.limiter.hit(limit_item, *args):
+        logger.warning(
+            "platform_rate_limit_exceeded key=%s path=%s",
+            limit_key,
+            request.url.path,
+        )
+        failed = Limit(
+            limit_string,
+            lambda _request=None: limit_key,
+            _PLATFORM_WRITE_SCOPE,
+            False,
+            None,
+            None,
+            None,
+            1,
+            False,
+        )
+        raise RateLimitExceeded(failed)
 
 
 PlatformUser = Annotated[dict[str, Any], Depends(require_platform_auth)]

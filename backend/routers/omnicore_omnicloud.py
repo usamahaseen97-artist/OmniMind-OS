@@ -16,6 +16,7 @@ from lib.omnicloud import store
 from lib.omnicloud.remote_executor import list_jobs, run_job
 from schemas.platform_enterprise import (
     ConflictResolveBody,
+    EnterpriseDocument,
     MemoryCloudBody,
     OfflineQueueBody,
     RemoteJobBody,
@@ -39,7 +40,7 @@ def cloud_account() -> dict[str, Any]:
 
 @router.post("/devices")
 def cloud_register_device(body: EnterpriseDocument) -> dict[str, Any]:
-    device = store.register_device(body)
+    device = store.register_device(body.model_dump())
     return {"ok": True, "device": device}
 
 

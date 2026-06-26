@@ -139,7 +139,7 @@ spec:
         fsGroup: 999
       containers:
         - name: backend
-          image: ghcr.io/omnimind/backend:latest
+          image: ghcr.io/omnimind/omnimind-backend:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8001
@@ -207,7 +207,7 @@ spec:
         runAsUser: 1001
       containers:
         - name: frontend
-          image: ghcr.io/omnimind/frontend:latest
+          image: ghcr.io/omnimind/omnimind-frontend:latest
           ports:
             - containerPort: 3000
           env:
@@ -262,7 +262,7 @@ spec:
     spec:
       containers:
         - name: worker
-          image: ghcr.io/omnimind/backend:latest
+          image: ghcr.io/omnimind/omnimind-backend:latest
           command: ["python", "worker_main.py"]
           envFrom:
             - configMapRef:

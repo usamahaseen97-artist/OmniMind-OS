@@ -2,9 +2,9 @@ name: OmniMind V11 Production Deployment CI/CD
 
 on:
   push:
-    branches: [main]
+    branches: [master, main]
   pull_request:
-    branches: [main]
+    branches: [master, main]
 
 concurrency:
   group: omnimind-production-${{ github.ref }}
