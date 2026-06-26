@@ -162,3 +162,41 @@ async def me(user: CurrentUser) -> dict:
 @router.get("/health")
 async def auth_health() -> dict:
     return {"ok": True, "service": "jwt", "algorithm": "HS256"}
+
+
+@router.get("/oauth/{provider}/authorize")
+async def oauth_authorize(provider: str) -> dict:
+    """OAuth2 authorization redirect placeholder — configure provider credentials server-side."""
+    return {
+        "ok": True,
+        "provider": provider,
+        "authorize_url": f"/api/v1/auth/oauth/{provider}/callback",
+        "message": "Configure OAUTH client credentials in environment",
+    }
+
+
+@router.post("/passkey/register/options")
+async def passkey_register_options() -> dict:
+    """WebAuthn registration options placeholder."""
+    return {
+        "ok": True,
+        "challenge": "passkey-register-stub",
+        "rp": {"name": "OmniMind", "id": "omnimind.local"},
+    }
+
+
+@router.post("/passkey/login/options")
+async def passkey_login_options() -> dict:
+    return {"ok": True, "challenge": "passkey-login-stub", "timeout": 60000}
+
+
+@router.get("/sso/{protocol}/{org_id}/login")
+async def sso_login(protocol: str, org_id: str) -> dict:
+    """Enterprise SSO (SAML/OIDC) placeholder."""
+    return {
+        "ok": True,
+        "protocol": protocol,
+        "orgId": org_id,
+        "redirect": f"/api/v1/auth/sso/{protocol}/{org_id}/acs",
+        "message": "Configure SAML/OIDC metadata server-side",
+    }

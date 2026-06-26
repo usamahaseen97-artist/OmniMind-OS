@@ -288,6 +288,17 @@ class Settings(BaseSettings):
             "N8N_WEBHOOK_SECRET",
         ),
     )
+    omnimind_env: str = Field(
+        default="development",
+        validation_alias=AliasChoices("OMNIMIND_ENV", "NODE_ENV", "DEPLOY_ENV"),
+    )
+    s3_bucket: str = Field(default="", validation_alias=AliasChoices("S3_BUCKET", "OMNIMIND_S3_BUCKET"))
+    s3_region: str = Field(default="us-east-1", validation_alias="S3_REGION")
+    cdn_base_url: str = Field(default="", validation_alias=AliasChoices("CDN_BASE_URL", "OMNIMIND_CDN_URL"))
+    otel_exporter_endpoint: str = Field(
+        default="",
+        validation_alias=AliasChoices("OTEL_EXPORTER_OTLP_ENDPOINT", "OTEL_ENDPOINT"),
+    )
 
     @property
     def n8n_webhook_paths(self) -> dict[str, str]:

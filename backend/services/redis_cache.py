@@ -119,6 +119,16 @@ async def cache_set_json(key: str, payload: Any, ttl_seconds: Optional[int] = No
     await cache_set(key, json.dumps(payload, default=str), ttl_seconds)
 
 
+async def cache_delete(key: str) -> None:
+    """Delete a single cache key from Redis or memory fallback."""
+    if _redis_client is not None:
+        try:
+            await _redis_client.delete(key)
+        except Exception as exc:
+            logger.debug("Redis DELETE error %s: %s", key, exc)
+    _memory_fallback.pop(key, None)
+
+
 async def cache_get_or_load(
     key: str,
     loader: Callable[[], Awaitable[Any]],

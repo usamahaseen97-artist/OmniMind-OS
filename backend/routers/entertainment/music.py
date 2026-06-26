@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 import httpx
 from fastapi import APIRouter, HTTPException, Query, Request
-from fastapi.responses import StreamingResponse
+from fastapi.responses import RedirectResponse, StreamingResponse
 from pydantic import Field, field_validator
 
 from config import get_settings
@@ -38,8 +38,15 @@ from services.spotify_youtube_music import (
     search_song_with_stream,
 )
 
-router = APIRouter(prefix="/api/music", tags=["omni-music"])
-v1_router = APIRouter(prefix="/api/v1/music", tags=["omni-music"])
+router = APIRouter(prefix="/api/v1/music", tags=["omni-music"])
+v1_router = router
+legacy_router = APIRouter(prefix="/api/music", tags=["omni-music-legacy"])
+
+
+def _legacy_redirect(path: str, request: Request) -> RedirectResponse:
+    """307 to canonical /api/v1/music — preserves HTTP method and body."""
+    suffix = f"?{request.url.query}" if request.url.query else ""
+    return RedirectResponse(url=f"/api/v1/music{path}{suffix}", status_code=307)
 
 
 def _public_track(track: dict) -> dict:
@@ -86,7 +93,6 @@ class MusicRecommendRequest(StrictModel):
 
 
 @router.get("/health")
-@v1_router.get("/health")
 async def music_health():
     from services.elasticsearch_songs import elasticsearch_health
     from services.songs_static_provider import static_provider_health
@@ -120,7 +126,12 @@ async def music_health():
     }
 
 
-@v1_router.get("/play/youtube/{video_id}")
+@legacy_router.get("/health")
+async def legacy_music_health(request: Request):
+    return _legacy_redirect("/health", request)
+
+
+@router.get("/play/youtube/{video_id}")
 async def play_youtube_stream(video_id: str, request: Request):
     """Proxy YouTube audio stream (yt-dlp resolve) — CORS-safe playback for global search."""
     from services.omnimusic_global_search import youtube_stream_url_sync
@@ -177,7 +188,7 @@ async def play_youtube_stream(video_id: str, request: Request):
     )
 
 
-@v1_router.get("/play/{track_id}")
+@router.get("/play/{track_id}")
 async def play_audius_stream(track_id: str, request: Request):
     """Proxy Audius stream through OmniMind (CORS-safe, seek/range supported)."""
     host = await audius_client.get_discovery_host()
@@ -233,7 +244,6 @@ async def play_audius_stream(track_id: str, request: Request):
 
 
 @router.get("/catalog")
-@v1_router.get("/catalog")
 async def music_catalog(
     q: Annotated[str, Query(max_length=200)] = "",
     playlist: Annotated[Optional[str], Query(max_length=64)] = None,
@@ -269,7 +279,12 @@ async def music_catalog(
     }
 
 
-@router.get("/search")
+@legacy_router.get("/catalog")
+async def legacy_music_catalog(request: Request):
+    return _legacy_redirect("/catalog", request)
+
+
+@legacy_router.get("/search")
 async def music_search_spotify_youtube(
     song_name: Annotated[str, Query(min_length=1, max_length=200)],
 ):
@@ -303,7 +318,7 @@ async def music_search_spotify_youtube(
         raise HTTPException(status_code=500, detail=str(exc)) from exc
 
 
-@v1_router.post("/es/reindex")
+@router.post("/es/reindex")
 async def music_elasticsearch_reindex(replace: Annotated[bool, Query()] = True):
     """Bulk index production catalog into Elasticsearch songs index."""
     result = await safe_await(
@@ -319,7 +334,6 @@ async def music_elasticsearch_reindex(replace: Annotated[bool, Query()] = True):
 
 
 @router.post("/bulk-seed")
-@v1_router.post("/bulk-seed")
 async def music_bulk_seed(
     target: Annotated[int, Query(ge=100, le=3000)] = 1200,
     replace: Annotated[bool, Query()] = True,
@@ -336,7 +350,12 @@ async def music_bulk_seed(
     return result
 
 
-@v1_router.get("/es/search")
+@legacy_router.post("/bulk-seed")
+async def legacy_music_bulk_seed(request: Request):
+    return _legacy_redirect("/bulk-seed", request)
+
+
+@router.get("/es/search")
 async def music_elasticsearch_search(
     q: Annotated[str, Query(min_length=1, max_length=200)],
     limit: Annotated[int, Query(ge=1, le=20)] = 8,
@@ -357,7 +376,7 @@ async def music_elasticsearch_search(
     }
 
 
-@v1_router.get("/suggest")
+@router.get("/suggest")
 async def music_suggest(
     q: Annotated[str, Query(max_length=200)] = "",
     limit: Annotated[int, Query(ge=1, le=20)] = 10,
@@ -371,7 +390,7 @@ async def music_suggest(
     return {"query": q, "suggestions": items, "search_mode": "local_json"}
 
 
-@v1_router.get("/predict")
+@router.get("/predict")
 async def music_predict(
     q: Annotated[str, Query(min_length=1, max_length=120)],
 ):
@@ -380,7 +399,7 @@ async def music_predict(
     return {"partial": q, "queries": queries}
 
 
-@v1_router.post("/identify")
+@router.post("/identify")
 async def music_identify(body: MusicIdentifyRequest):
     """Identify song from lyric line / voice transcript (TikTok, Reel)."""
     result = await music_identify_snippet(body.snippet)
@@ -395,7 +414,7 @@ async def music_identify(body: MusicIdentifyRequest):
     return result
 
 
-@v1_router.post("/recommendations")
+@router.post("/recommendations")
 async def music_recommend(body: MusicRecommendRequest):
     """Personalized recommendations from play history + taste."""
     tracks = await safe_await(
@@ -413,7 +432,7 @@ async def music_recommend(body: MusicRecommendRequest):
     }
 
 
-@v1_router.get("/trending")
+@router.get("/trending")
 async def music_trending(
     limit: Annotated[int, Query(ge=1, le=80)] = 40,
     playlist: Annotated[Optional[str], Query(max_length=64)] = None,
@@ -442,7 +461,7 @@ async def music_trending(
     }
 
 
-@v1_router.get("/search")
+@router.get("/search")
 async def music_search_catalog(
     q: Annotated[str, Query(min_length=1, max_length=200)],
     category: Annotated[Optional[str], Query(max_length=32)] = None,
@@ -489,7 +508,6 @@ async def music_search_catalog(
 
 
 @router.post("/seed")
-@v1_router.post("/seed")
 async def music_seed(replace: Annotated[bool, Query()] = True):
     """Replace the songs collection with the production catalog."""
     result = await seed_songs(replace=replace)
@@ -506,8 +524,12 @@ async def music_seed(replace: Annotated[bool, Query()] = True):
     }
 
 
+@legacy_router.post("/seed")
+async def legacy_music_seed(request: Request):
+    return _legacy_redirect("/seed", request)
+
+
 @router.post("/generate")
-@v1_router.post("/generate")
 async def generate_music(body: MusicGenerateRequest):
     """Placeholder — wire to music model / Replicate / local pipeline later."""
     return {
@@ -522,3 +544,8 @@ async def generate_music(body: MusicGenerateRequest):
         "audio_url": None,
         "hint": "Connect WAN / Replicate / local audio model in a future release.",
     }
+
+
+@legacy_router.post("/generate")
+async def legacy_generate_music(request: Request):
+    return _legacy_redirect("/generate", request)
