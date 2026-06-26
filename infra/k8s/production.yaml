@@ -1,0 +1,362 @@
+# OmniMind Kubernetes — production architecture (Sprint 5)
+# Apply: kubectl apply -f infra/k8s/
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: omnimind
+  labels:
+    app.kubernetes.io/part-of: omnimind
+    app.kubernetes.io/managed-by: omnimind-devops
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: omnimind-config
+  namespace: omnimind
+data:
+  OMNIMIND_ENV: "production"
+  REDIS_ENABLED: "true"
+  REDIS_HOST: "omnimind-redis"
+  REDIS_PORT: "6379"
+  UVICORN_WORKERS: "4"
+  ALLOWED_ORIGINS: "https://app.omnimind.app"
+  OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector:4317"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: omnimind-secrets
+  namespace: omnimind
+type: Opaque
+stringData:
+  JWT_SECRET_KEY: "REPLACE_WITH_VAULT_SECRET"
+  WEBHOOK_SIGNING_SECRET: "REPLACE_WITH_VAULT_SECRET"
+  MONGODB_URI: "REPLACE_WITH_VAULT_SECRET"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: omnimind-redis
+  namespace: omnimind
+  labels:
+    app: omnimind-redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: omnimind-redis
+  template:
+    metadata:
+      labels:
+        app: omnimind-redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:7-alpine
+          args: ["redis-server", "--appendonly", "yes", "--maxmemory", "1gb", "--maxmemory-policy", "volatile-lru"]
+          ports:
+            - containerPort: 6379
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+          livenessProbe:
+            exec:
+              command: ["redis-cli", "ping"]
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            exec:
+              command: ["redis-cli", "ping"]
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          volumeMounts:
+            - name: redis-data
+              mountPath: /data
+      volumes:
+        - name: redis-data
+          persistentVolumeClaim:
+            claimName: omnimind-redis-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: omnimind-redis-pvc
+  namespace: omnimind
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: omnimind-redis
+  namespace: omnimind
+spec:
+  selector:
+    app: omnimind-redis
+  ports:
+    - port: 6379
+      targetPort: 6379
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: omnimind-backend
+  namespace: omnimind
+  labels:
+    app: omnimind-backend
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: omnimind-backend
+  template:
+    metadata:
+      labels:
+        app: omnimind-backend
+        version: stable
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/api/v1/omnicore/infra/metrics/prometheus"
+        prometheus.io/port: "8001"
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+        fsGroup: 999
+      containers:
+        - name: backend
+          image: ghcr.io/omnimind/backend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8001
+          envFrom:
+            - configMapRef:
+                name: omnimind-config
+            - secretRef:
+                name: omnimind-secrets
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: "4"
+              memory: 4Gi
+          livenessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: 8001
+            initialDelaySeconds: 45
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: 8001
+            initialDelaySeconds: 20
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: omnimind-backend
+  namespace: omnimind
+spec:
+  selector:
+    app: omnimind-backend
+  ports:
+    - port: 8001
+      targetPort: 8001
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: omnimind-frontend
+  namespace: omnimind
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: omnimind-frontend
+  template:
+    metadata:
+      labels:
+        app: omnimind-frontend
+        version: stable
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+      containers:
+        - name: frontend
+          image: ghcr.io/omnimind/frontend:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NEXT_PUBLIC_BACKEND_URL
+              value: "https://api.omnimind.app"
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: "2"
+              memory: 2Gi
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 60
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: omnimind-frontend
+  namespace: omnimind
+spec:
+  selector:
+    app: omnimind-frontend
+  ports:
+    - port: 3000
+      targetPort: 3000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: omnimind-worker
+  namespace: omnimind
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: omnimind-worker
+  template:
+    metadata:
+      labels:
+        app: omnimind-worker
+    spec:
+      containers:
+        - name: worker
+          image: ghcr.io/omnimind/backend:latest
+          command: ["python", "worker_main.py"]
+          envFrom:
+            - configMapRef:
+                name: omnimind-config
+            - secretRef:
+                name: omnimind-secrets
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: "2"
+              memory: 2Gi
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: omnimind-ingress
+  namespace: omnimind
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+spec:
+  tls:
+    - hosts:
+        - app.omnimind.app
+        - api.omnimind.app
+      secretName: omnimind-tls
+  rules:
+    - host: app.omnimind.app
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: omnimind-frontend
+                port:
+                  number: 3000
+    - host: api.omnimind.app
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: omnimind-backend
+                port:
+                  number: 8001
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: omnimind-backend-hpa
+  namespace: omnimind
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: omnimind-backend
+  minReplicas: 3
+  maxReplicas: 20
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: omnimind-worker-hpa
+  namespace: omnimind
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: omnimind-worker
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 75

@@ -1,0 +1,152 @@
+# OmniMind V11 — full production stack (Sprint 5)
+# Usage:
+#   cp infra/env/staging.env.example .env
+#   docker compose -f docker-compose.prod.yml up -d --build
+
+name: omnimind-prod
+
+services:
+  omnimind-ingress-lb:
+    image: nginx:alpine
+    container_name: omnimind-ingress-lb
+    ports:
+      - "${INGRESS_HTTP_PORT:-80}:80"
+    volumes:
+      - ./infra/nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      dynamic-core-service:
+        condition: service_healthy
+      omnimind-frontend:
+        condition: service_healthy
+    networks:
+      - omnimind-production-mesh
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+
+  omnimind-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_BACKEND_URL: ${NEXT_PUBLIC_BACKEND_URL:-http://localhost}
+    container_name: omnimind-frontend
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_BACKEND_URL: ${NEXT_PUBLIC_BACKEND_URL:-http://localhost}
+    expose:
+      - "3000"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 90s
+    networks:
+      - omnimind-production-mesh
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 2G
+
+  dynamic-core-service:
+    build:
+      context: ./backend
+      dockerfile: ../core_engine/Dockerfile
+    container_name: omnimind-dynamic-core
+    environment:
+      OMNIMIND_ENV: ${OMNIMIND_ENV:-staging}
+      REDIS_HOST: omnimind-cache
+      REDIS_PORT: "6379"
+      REDIS_ENABLED: "true"
+      JWT_SIGNING_KEY: ${JWT_SIGNING_KEY}
+      JWT_SECRET_KEY: ${JWT_SIGNING_KEY}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS}
+      WEBHOOK_SIGNING_SECRET: ${WEBHOOK_SIGNING_SECRET:-}
+      UVICORN_WORKERS: ${UVICORN_WORKERS:-2}
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT:-}
+    expose:
+      - "8001"
+    depends_on:
+      omnimind-cache:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8001/api/v1/health', timeout=3)",
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    networks:
+      - omnimind-production-mesh
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "4"
+          memory: 4G
+
+  omnimind-worker:
+    build:
+      context: ./backend
+      dockerfile: ../core_engine/Dockerfile
+    container_name: omnimind-worker
+    command: ["python", "worker_main.py"]
+    environment:
+      OMNIMIND_ENV: ${OMNIMIND_ENV:-staging}
+      REDIS_HOST: omnimind-cache
+      REDIS_PORT: "6379"
+      REDIS_ENABLED: "true"
+    depends_on:
+      omnimind-cache:
+        condition: service_healthy
+      dynamic-core-service:
+        condition: service_healthy
+    networks:
+      - omnimind-production-mesh
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 2G
+
+  omnimind-cache:
+    image: redis:7-alpine
+    container_name: omnimind-cache
+    command: redis-server --appendonly yes --maxmemory 1gb --maxmemory-policy volatile-lru
+    expose:
+      - "6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 2s
+      retries: 3
+    volumes:
+      - cache-persistence:/data
+    networks:
+      - omnimind-production-mesh
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 1G
+
+networks:
+  omnimind-production-mesh:
+    driver: bridge
+    name: omnimind-production-mesh
+
+volumes:
+  cache-persistence:

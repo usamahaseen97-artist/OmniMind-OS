@@ -1,0 +1,56 @@
+# Canary deployment — route 10% traffic to canary backend (Sprint 5)
+# Requires NGINX Ingress canary annotations. Apply after stable deployment is healthy.
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: omnimind-backend-canary
+  namespace: omnimind
+  labels:
+    app: omnimind-backend
+    track: canary
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: omnimind-backend
+      track: canary
+  template:
+    metadata:
+      labels:
+        app: omnimind-backend
+        track: canary
+        version: canary
+    spec:
+      containers:
+        - name: backend
+          image: ghcr.io/omnimind/backend:canary
+          ports:
+            - containerPort: 8001
+          envFrom:
+            - configMapRef:
+                name: omnimind-config
+            - secretRef:
+                name: omnimind-secrets
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: omnimind-api-canary
+  namespace: omnimind
+  annotations:
+    nginx.ingress.kubernetes.io/canary: "true"
+    nginx.ingress.kubernetes.io/canary-weight: "10"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: api.omnimind.app
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: omnimind-backend-canary
+                port:
+                  number: 8001

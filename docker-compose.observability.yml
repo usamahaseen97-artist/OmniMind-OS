@@ -1,0 +1,72 @@
+# OmniMind — observability stack (Prometheus + Grafana + OpenTelemetry)
+# Usage: docker compose -f docker-compose.observability.yml up -d
+
+name: omnimind-observability
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    container_name: omnimind-prometheus
+    volumes:
+      - ./infra/observability/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - omnimind-observability
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:11.2.0
+    container_name: omnimind-grafana
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-changeme}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - ./infra/observability/grafana/provisioning:/etc/grafana/provisioning:ro
+      - grafana-data:/var/lib/grafana
+    ports:
+      - "3001:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - omnimind-observability
+    restart: unless-stopped
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.111.0
+    container_name: omnimind-otel
+    command: ["--config=/etc/otel-collector.yaml"]
+    volumes:
+      - ./infra/observability/otel/otel-collector.yaml:/etc/otel-collector.yaml:ro
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+      - "8889:8889"
+    networks:
+      - omnimind-observability
+      - omnimind-production-mesh
+    restart: unless-stopped
+
+  alertmanager:
+    image: prom/alertmanager:v0.27.0
+    container_name: omnimind-alertmanager
+    volumes:
+      - ./infra/observability/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+    ports:
+      - "9093:9093"
+    networks:
+      - omnimind-observability
+    restart: unless-stopped
+
+networks:
+  omnimind-observability:
+    driver: bridge
+  omnimind-production-mesh:
+    external: true
+    name: omnimind-production-mesh
+
+volumes:
+  prometheus-data:
+  grafana-data:

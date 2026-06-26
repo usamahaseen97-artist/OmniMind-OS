@@ -1,0 +1,43 @@
+# Blue/Green deployment service switch (Sprint 5)
+# Deploy green alongside blue; switch Service selector when green is healthy.
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: omnimind-backend-green
+  namespace: omnimind
+spec:
+  selector:
+    app: omnimind-backend
+    version: green
+  ports:
+    - port: 8001
+      targetPort: 8001
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: omnimind-backend-green
+  namespace: omnimind
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: omnimind-backend
+      version: green
+  template:
+    metadata:
+      labels:
+        app: omnimind-backend
+        version: green
+    spec:
+      containers:
+        - name: backend
+          image: ghcr.io/omnimind/backend:green
+          ports:
+            - containerPort: 8001
+          envFrom:
+            - configMapRef:
+                name: omnimind-config
+            - secretRef:
+                name: omnimind-secrets
